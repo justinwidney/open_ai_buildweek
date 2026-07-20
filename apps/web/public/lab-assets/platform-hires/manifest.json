@@ -1,0 +1,16 @@
+{
+  "source": "platform-hires-source.png",
+  "reference": "finished/ChatGPT Image Jul 20, 2026, 10_23_53 AM.png",
+  "generation": {
+    "tool": "OpenAI image generation",
+    "mode": "new high-resolution raster derived from a local art-direction reference",
+    "promptSummary": "Three richly detailed front-facing 2.5D floating islands—ancient tree, crystal waterfall shrine, and fairytale castle—widely separated on solid chroma magenta with jagged layered rock undersides."
+  },
+  "role": "near-background orbital scenery only; never used as a playable platform",
+  "extraction": "Chroma rejection followed by connected-component silhouette masks; each output is isolated by shape before trimming.",
+  "assets": [
+    { "id": "tree-island-hd", "path": "tree-island-hd.png", "pixels": [521, 705] },
+    { "id": "waterfall-shrine-hd", "path": "waterfall-shrine-hd.png", "pixels": [470, 572] },
+    { "id": "castle-island-hd", "path": "castle-island-hd.png", "pixels": [605, 748] }
+  ]
+}

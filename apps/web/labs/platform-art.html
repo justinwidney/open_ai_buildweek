@@ -3,26 +3,26 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Lab 01 — High-detail Platform Art</title>
+    <title>Lab 01 — Base Platform + Purpose Meshes</title>
     <script type="module" src="/src/labs/platformArtLab.ts"></script>
   </head>
   <body>
     <main class="lab-shell">
       <header class="lab-header">
         <a class="lab-back" href="/labs/index.html">← All labs</a>
-        <div class="lab-heading"><span>Issue A · source-faithful 2.5D art</span><h1>Atlas-to-World Platform Art</h1></div>
+        <div class="lab-heading"><span>Issue A · one reusable foreground base</span><h1>Base Platform + Purpose Meshes</h1></div>
         <span class="lab-number">01</span>
       </header>
-      <div class="lab-stage"><canvas id="scene"></canvas><div class="lab-status" id="status">10_23_53 atlas · tree island</div></div>
+      <div class="lab-stage"><canvas id="scene"></canvas><div class="lab-status" id="status">Neutral base · foundation</div></div>
       <aside class="lab-panel">
-        <p class="lab-panel__lead">This lab uses exact high-detail cutouts from <em>10_23_53 AM</em>. A full painted island supplies the silhouette while flowers, lanterns, and trees sit on separate Z planes for parallax and physical rotation.</p>
-        <div class="lab-seam">Art source: public/lab-assets/platform-details/manifest.json<br>Production seam: world/assets/platformDetailCards.ts → createPlatformArtStack()</div>
-        <label class="lab-control"><span>Painted island</span><select id="variant"><option value="tree">Tree island</option><option value="waterfall">Waterfall island</option><option value="castle">Castle island</option><option value="garden">Build from separate parts</option></select></label>
-        <label class="lab-control"><span>Depth separation <output id="spread-output">1.00×</output></span><input id="spread" type="range" min="0" max="2" step="0.05" value="1"></label>
-        <label class="lab-check"><input id="details" type="checkbox" checked><span>Separate surface-detail cards</span></label>
-        <label class="lab-check"><input id="geometry" type="checkbox"><span>Show low-poly support mesh</span></label>
-        <div class="lab-buttons"><button id="front" class="lab-button is-active">Front view</button><button id="below" class="lab-button">Below view</button><button id="next-art" class="lab-button lab-button--primary">Next artwork</button></div>
-        <div class="lab-readout"><div><span>Source</span><b>10_23_53</b></div><div><span>Art cards</span><b id="layer-count">3</b></div><div><span>Camera</span><b id="camera-readout">front</b></div></div>
+        <p class="lab-panel__lead">Every playable island now starts with the same clean stone platform. Its purpose is communicated by separate physical meshes placed on top—not by replacing the whole platform artwork.</p>
+        <div class="lab-seam">Base: public/platform-base/manifest.json<br>Materials: world/assets/basePlatformMaterials.ts<br>Purpose meshes: content/forward/decorations.ts + signage.ts</div>
+        <label class="lab-control"><span>Platform purpose</span><select id="purpose"><option value="foundation">Foundation</option><option value="learning">Learning / skill</option><option value="milestone">Milestone</option><option value="path">Quiet path</option></select></label>
+        <label class="lab-control"><span>Purpose-mesh scale <output id="mesh-scale-output">1.00×</output></span><input id="mesh-scale" type="range" min="0.65" max="1.35" step="0.05" value="1"></label>
+        <label class="lab-check"><input id="purpose-meshes" type="checkbox" checked><span>Purpose-specific meshes</span></label>
+        <label class="lab-check"><input id="wireframe" type="checkbox"><span>Inspect base topology</span></label>
+        <div class="lab-buttons"><button id="front" class="lab-button is-active">Front view</button><button id="below" class="lab-button">Near edge</button><button id="next-purpose" class="lab-button lab-button--primary">Next purpose</button></div>
+        <div class="lab-readout"><div><span>Base</span><b>03_18_38</b></div><div><span>Purpose meshes</span><b id="mesh-count">0</b></div><div><span>Camera</span><b id="camera-readout">front</b></div></div>
       </aside>
     </main>
   </body>

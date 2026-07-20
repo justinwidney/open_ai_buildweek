@@ -31,9 +31,18 @@ const DEFAULT_TUNING: WorldTuning = {
   turnDuration: 1,
   rockProfile: "storybook",
   backdropEnabled: true,
+  cameraHeight: 1,
+  cameraTilt: 1,
+  depthGridEnabled: false,
+  texturesEnabled: true,
+  detailsEnabled: true,
+  platformsEnabled: true,
+  spriteOpacity: .9,
+  spriteSaturation: .86,
+  spriteWarmth: .12,
 };
 
-const WORLD_EFFECTS: readonly WorldEffect[] = ["backdrop", "travel", "turn", "rocks"];
+const WORLD_EFFECTS: readonly WorldEffect[] = ["view", "backdrop", "travel", "turn", "rocks", "art"];
 
 function effectFromHash(): WorldEffect {
   const candidate = window.location.hash.split("/")[1] as WorldEffect | undefined;
@@ -75,7 +84,9 @@ export function App() {
   const updateTuning = useCallback((next: WorldTuning) => {
     const rebuildWorld = tuning.rockProfile !== next.rockProfile
       || tuning.travelDuration !== next.travelDuration
-      || tuning.turnDuration !== next.turnDuration;
+      || tuning.turnDuration !== next.turnDuration
+      || tuning.texturesEnabled !== next.texturesEnabled
+      || tuning.detailsEnabled !== next.detailsEnabled;
     setTuning(next);
     if (rebuildWorld) {
       setCommand(undefined);

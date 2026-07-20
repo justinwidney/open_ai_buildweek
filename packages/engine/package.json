@@ -1,0 +1,13 @@
+{
+  "name": "@control-ai/engine",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Pure, dependency-light monthly financial and lifestyle simulation kernel.",
+  "type": "module",
+  "exports": { ".": "./src/index.ts" },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "tsx --test \"src/**/*.test.ts\""
+  }
+}

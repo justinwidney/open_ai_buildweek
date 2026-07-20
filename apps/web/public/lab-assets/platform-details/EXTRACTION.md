@@ -22,4 +22,5 @@ line work and texture pixels are preserved.
 
 When adding another atlas object, crop only one object, flood from all four
 corners, inspect it against a mid-blue background, then record its actual
-trimmed aspect ratio in `src/world/assets/platformDetailCards.ts`.
+trimmed dimensions in this file and `manifest.json`. These legacy cutouts are
+depth-mesh/reference inputs; the playable base now lives in `platform-base/`.

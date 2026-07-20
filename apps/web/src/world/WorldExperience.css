@@ -19,6 +19,40 @@
   z-index: 0;
 }
 
+.world-experience__depth-grid {
+  background-image:
+    repeating-linear-gradient(90deg, rgba(255, 244, 198, .24) 0 1px, transparent 1px 8.333%),
+    repeating-linear-gradient(0deg, rgba(255, 244, 198, .24) 0 1px, transparent 1px 12.5%);
+  border: 1px solid rgba(255, 244, 198, .55);
+  bottom: -19%;
+  left: 8%;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  right: 8%;
+  top: 37%;
+  transform: perspective(620px) rotateX(61deg);
+  transform-origin: center bottom;
+  transition: opacity 160ms ease;
+  z-index: 5;
+}
+
+.world-experience__depth-grid.is-visible { opacity: .82; }
+.world-experience__depth-grid span {
+  background: rgba(34, 42, 48, .64);
+  border-radius: 999px;
+  color: #fff1c1;
+  font: 700 9px/1 system-ui, sans-serif;
+  left: 1.5%;
+  letter-spacing: .12em;
+  padding: 4px 7px;
+  position: absolute;
+  text-transform: uppercase;
+}
+.world-experience__depth-grid [data-depth="far"] { top: 5%; }
+.world-experience__depth-grid [data-depth="mid"] { top: 43%; }
+.world-experience__depth-grid [data-depth="near"] { top: 80%; }
+
 .world-experience__canvas {
   filter:
     blur(calc(var(--world-transition) * 2.1px + var(--world-travel-blur)))
@@ -59,7 +93,7 @@
   text-transform: uppercase;
   transform: translateX(-50%);
   white-space: nowrap;
-  z-index: 5;
+  z-index: 6;
 }
 
 .world-experience[data-turning="true"] { cursor: wait; }

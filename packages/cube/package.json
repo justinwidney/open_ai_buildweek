@@ -1,0 +1,9 @@
+{
+  "name": "@control-ai/cube",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Cube Core data model (YAML) exposing simulation runs as queryable measures/dimensions. Schema-only scaffold; no server wired up yet.",
+  "scripts": {
+    "dev": "echo 'Not wired up yet: install cubejs-cli and point cube.config.js at a running Postgres instance. See README.md.' && exit 0"
+  }
+}

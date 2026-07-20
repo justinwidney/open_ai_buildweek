@@ -37,6 +37,24 @@ export interface WorldTuning {
   rockProfile: "soft" | "storybook" | "shattered";
   /** Keeps the supplied watercolor layers available for A/B comparison. */
   backdropEnabled: boolean;
+  /** Relative height of the locked 2.5D camera. One is the authored high view. */
+  cameraHeight: number;
+  /** Relative downward pitch of the locked 2.5D camera. */
+  cameraTilt: number;
+  /** Shows a perspective placement grid for near, mid, and far composition. */
+  depthGridEnabled: boolean;
+  /** Loads painted surface maps; disable to judge silhouettes and proportions. */
+  texturesEnabled: boolean;
+  /** Shows purpose props such as signs, trees, flowers, lanterns, and milestones. */
+  detailsEnabled: boolean;
+  /** Shows the Three.js gameplay hierarchy; disable for a background-only study. */
+  platformsEnabled: boolean;
+  /** Global transparency calibration for isolated background sprites. */
+  spriteOpacity: number;
+  /** Global saturation calibration for isolated background sprites. */
+  spriteSaturation: number;
+  /** Adds a restrained parchment warmth to isolated background sprites. */
+  spriteWarmth: number;
 }
 
 export type WorldCommandInput =
