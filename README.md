@@ -24,6 +24,10 @@ in-world tuning surface. Its focused pages are linkable at `#lab/backdrop`,
 watercolor layers, replay forward travel and world turns, and switch between
 soft, storybook, and shattered rock silhouettes.
 
+For isolated work, open `/labs/index.html`. It links six independent HTML
+experiments for platform art, physical scene rotation, continuous travel,
+directional panorama extension, floater sprites, and on-platform camera stance.
+
 ## Workspace
 
 - `apps/web` — responsive UI shell, Three.js scene, static path JSON, and asset mapping.

@@ -36,7 +36,8 @@
 .world-lab__segments button.is-active { background: linear-gradient(#9a7caf, #695079); color: #fff9e9; }
 .world-lab__footer { align-items: center; background: rgba(79, 65, 49, .08); display: flex; font: 10px/1.2 system-ui, sans-serif; justify-content: space-between; padding: 9px 15px; }
 .world-lab__footer span { opacity: .72; }
-.world-lab__footer button { background: transparent; border: 0; color: #684f7c; cursor: pointer; font-size: 10px; font-weight: 700; text-transform: uppercase; }
+.world-lab__footer div { align-items: center; display: flex; gap: 10px; }
+.world-lab__footer a, .world-lab__footer button { background: transparent; border: 0; color: #684f7c; cursor: pointer; font-size: 10px; font-weight: 700; padding: 0; text-decoration: none; text-transform: uppercase; }
 
 @media (max-width: 640px) {
   .world-lab { bottom: 76px; left: 12px; max-height: calc(100dvh - 150px); overflow: auto; width: calc(100vw - 24px); }

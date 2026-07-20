@@ -119,7 +119,7 @@ export function WorldEffectsLab({
 
       <footer className="world-lab__footer">
         <span>Press L to toggle this lab</span>
-        <button type="button" onClick={() => onCommand({ type: "reset" })}>Reset scene</button>
+        <div><a href="/labs/index.html">Standalone labs ↗</a><button type="button" onClick={() => onCommand({ type: "reset" })}>Reset scene</button></div>
       </footer>
     </aside>
   );

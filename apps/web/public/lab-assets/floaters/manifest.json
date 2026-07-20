@@ -1,0 +1,12 @@
+{
+  "source": "ChatGPT Image Jul 20, 2026, 12_31_34 PM (3).png",
+  "generationMode": "built-in image generation with magenta chroma-key post-processing",
+  "sprites": [
+    { "id": "balloon-large", "src": "/lab-assets/floaters/balloon-large-final.png", "depth": 0.38, "drift": 0.72 },
+    { "id": "spire-small", "src": "/lab-assets/floaters/spire-small-final.png", "depth": 0.76, "drift": 0.28 },
+    { "id": "balloon-small", "src": "/lab-assets/floaters/balloon-small-final.png", "depth": 0.86, "drift": 0.42 },
+    { "id": "island-small", "src": "/lab-assets/floaters/island-small-final.png", "depth": 0.58, "drift": 0.18 },
+    { "id": "island-large", "src": "/lab-assets/floaters/island-large-final.png", "depth": 0.42, "drift": 0.12 },
+    { "id": "airship-large", "src": "/lab-assets/floaters/airship-large-final.png", "depth": 0.32, "drift": 0.56 }
+  ]
+}
