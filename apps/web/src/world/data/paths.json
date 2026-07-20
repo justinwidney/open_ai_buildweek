@@ -1,5 +1,5 @@
 {
-  "startingCamera": { "position": [0, 7.4, 15.5], "lookAt": [0, 0.2, -7] },
+  "startingCamera": { "position": [0, 2.75, 4.72], "lookAt": [0, 0.72, -9.5] },
   "platforms": [
     { "id": "foundation", "title": "Foundation", "subtitle": "Know yourself", "position": [0, 0, 0], "radius": 5.1, "kind": "start" },
     { "id": "clarity", "title": "Clarity", "subtitle": "Choose a direction", "position": [0, 1.2, -13], "radius": 2.35, "kind": "front" },

@@ -45,14 +45,36 @@
   z-index: 1;
 }
 
-.layered-parallax-background__layer[data-layer="floaters"] {
-  opacity: .86;
-  z-index: 2;
-}
-
 .layered-parallax-background__layer[data-layer="islands"] {
   opacity: .58;
   z-index: 3;
+}
+
+.layered-parallax-background__floater {
+  --floater-opacity: 1;
+  --floater-scale: 1;
+  --floater-x: 0px;
+  --floater-y: 0px;
+  opacity: var(--floater-opacity);
+  position: absolute;
+  transform: translate3d(var(--floater-x), var(--floater-y), 0) scale(var(--floater-scale));
+  transform-origin: center;
+  transition: opacity 220ms ease, transform 480ms cubic-bezier(.2,.75,.25,1);
+  will-change: opacity, transform;
+  z-index: 2;
+}
+
+.layered-parallax-background__floater img {
+  animation: world-floater-bob 8.5s ease-in-out infinite alternate;
+  display: block;
+  filter: drop-shadow(0 12px 18px rgba(34,48,65,.22));
+  height: auto;
+  width: 100%;
+}
+
+@keyframes world-floater-bob {
+  from { transform: translate3d(-4px, -5px, 0) rotate(-.45deg); }
+  to { transform: translate3d(5px, 7px, 0) rotate(.55deg); }
 }
 
 .layered-parallax-background__layer[data-layer="foreground"] {
@@ -61,15 +83,22 @@
 }
 
 .layered-parallax-background[data-transitioning="true"]
-  .layered-parallax-background__layer {
+  .layered-parallax-background__layer,
+.layered-parallax-background[data-transitioning="true"]
+  .layered-parallax-background__floater {
   transition: none;
 }
 
 .layered-parallax-background[data-reduced-motion="true"]
-  .layered-parallax-background__layer {
+  .layered-parallax-background__layer,
+.layered-parallax-background[data-reduced-motion="true"]
+  .layered-parallax-background__floater {
   filter: none;
   transition: none;
 }
+
+.layered-parallax-background[data-reduced-motion="true"]
+  .layered-parallax-background__floater img { animation: none; }
 
 @media (max-aspect-ratio: 3 / 4) {
   .layered-parallax-background__image {
@@ -86,5 +115,6 @@
     filter: none !important;
     transition: none !important;
   }
-}
 
+  .layered-parallax-background__floater img { animation: none !important; }
+}

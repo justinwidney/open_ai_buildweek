@@ -3,6 +3,7 @@ import { sampleWorldSpin } from "../../animation/world-spin";
 import { disposeObjectTree, type QualityTier } from "../../core";
 import { createLayeredPlatform, createRopeBridge } from "../../geometry";
 import { createFantasyMaterialKit, FANTASY_PALETTE } from "../../materials";
+import { createPlatformArtStack, type PlatformArtVariant } from "../../assets/platformDetailCards";
 import type { Vec3, WorldDefinition, WorldPlatform } from "../../world.types";
 import { createFlowerPatch, createLantern, createMilestoneSpinner, createStorybookTree } from "./decorations";
 import { createFoundationInscription, createRouteNumber, createSkillSign } from "./signage";
@@ -213,6 +214,21 @@ export function createForwardWorldSlice(
       flowers.position.set(platform.radius * .36, build.surfaceY, -.2);
       platformGroup.add(flowers);
     }
+    const routeNumber = routeOrder.get(platform.id) ?? 0;
+    const artVariant: PlatformArtVariant = platform.kind === "start"
+      ? "garden"
+      : platform.kind === "front"
+        ? routeNumber >= 3 ? "castle" : "waterfall"
+        : "tree";
+    platformGroup.add(createPlatformArtStack({
+      radius: platform.radius,
+      surfaceY: build.surfaceY,
+      variant: artVariant,
+      detailSpread: platform.kind === "start" ? 1.1 : .72,
+      includeDetails: quality !== "off" && (platform.kind === "start" || platform.kind !== "front"),
+    }));
+    // The painted cards are added after the collision mesh, so tag them too.
+    attachPlatformHitTarget(platformGroup, platform);
     group.add(platformGroup);
     platformObjects.set(platform.id, platformGroup);
     platformBuilds.set(platform.id, build);
@@ -280,9 +296,13 @@ export function createForwardWorldSlice(
         for (const material of materials) {
           if (seen.has(material)) continue;
           seen.add(material);
+          if (material.userData.worldBaseOpacity === undefined) {
+            material.userData.worldBaseOpacity = material.opacity;
+            material.userData.worldBaseDepthWrite = material.depthWrite;
+          }
           material.transparent = clamped < .999 || material.transparent;
-          material.opacity = clamped;
-          material.depthWrite = clamped > .96;
+          material.opacity = Number(material.userData.worldBaseOpacity) * clamped;
+          material.depthWrite = clamped > .96 && Boolean(material.userData.worldBaseDepthWrite);
           material.needsUpdate = true;
         }
       });

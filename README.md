@@ -27,6 +27,8 @@ soft, storybook, and shattered rock silhouettes.
 For isolated work, open `/labs/index.html`. It links six independent HTML
 experiments for platform art, physical scene rotation, continuous travel,
 directional panorama extension, floater sprites, and on-platform camera stance.
+Use [`WORLD_LABS_LOD.md`](WORLD_LABS_LOD.md) as the living acceptance contract
+and update log for those labs and their promotion into the base world.
 
 ## Workspace
 

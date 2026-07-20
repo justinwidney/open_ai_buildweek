@@ -33,7 +33,6 @@ const durationInput = element<HTMLInputElement>("duration");
 const durationOutput = element<HTMLOutputElement>("duration-output");
 const status = element<HTMLElement>("status");
 const offsetReadout = element<HTMLElement>("offset");
-const velocityReadout = element<HTMLElement>("velocity");
 const retiredReadout = element<HTMLElement>("retired");
 const recycle = element<HTMLInputElement>("recycle");
 let running = false;
@@ -53,7 +52,7 @@ element("reset").addEventListener("click", () => {
   running = false; rail.position.z = 0; nextIndex = 0; retiredCount = 0;
   platforms.forEach(({ object, index }) => { object.position.z = -index * step; object.visible = true; });
   platforms.forEach((entry) => { entry.retired = false; });
-  canvas.style.filter = ""; offsetReadout.textContent = "0.0m"; velocityReadout.textContent = "0.0m/s"; retiredReadout.textContent = "0"; status.textContent = "Ready · camera locked";
+  canvas.style.filter = ""; offsetReadout.textContent = "0.0m"; retiredReadout.textContent = "0"; status.textContent = "Ready · camera locked";
 });
 
 function retirePassed() {
@@ -79,17 +78,17 @@ function animate(now: number) {
     const scale = total / 2100;
     const snapshot = sampleIslandTransition(now - startedAt, {
       travelDistance: step,
-      durations: { accelerationMs: 520 * scale, cruiseMs: 900 * scale, decelerationMs: 680 * scale, settlingMs: 0 },
-      maxBlurPx: 5.5,
+      durations: { accelerationMs: 380 * scale, cruiseMs: 900 * scale, decelerationMs: 820 * scale, settlingMs: 0 },
+      maxBlurPx: .78,
+      maxMotionBlurIntensity: .3,
     });
     rail.position.z = startOffset + snapshot.worldOffsetProgress * step;
-    canvas.style.filter = `blur(${snapshot.blurPx.toFixed(2)}px) saturate(${(1 - snapshot.motionBlurIntensity * .1).toFixed(3)})`;
+    canvas.style.filter = `blur(${snapshot.blurPx.toFixed(2)}px) saturate(${(1 - snapshot.motionBlurIntensity * .025).toFixed(3)})`;
     offsetReadout.textContent = `${rail.position.z.toFixed(1)}m`;
-    velocityReadout.textContent = `${snapshot.velocityPerSecond.toFixed(1)}m/s`;
     status.textContent = `${snapshot.phase} · camera locked`;
     retirePassed();
     if (snapshot.complete) {
-      running = false; nextIndex += 1; canvas.style.filter = ""; velocityReadout.textContent = "0.0m/s"; status.textContent = `Arrived at stop ${nextIndex + 1}`;
+      running = false; nextIndex += 1; canvas.style.filter = ""; status.textContent = `Arrived at stop ${nextIndex + 1}`;
     }
   }
   lab.renderer.render(lab.scene, lab.camera);

@@ -64,6 +64,15 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .floater-sprite { cursor: grab; filter: drop-shadow(0 14px 18px rgba(27,43,58,.22)); left: 50%; max-height: 32vh; max-width: 30vw; position: absolute; top: 50%; transform-origin: center; user-select: none; will-change: transform; z-index: 2; }
 .floater-sprite:active { cursor: grabbing; }
 .floater-sprite.is-selected { filter: drop-shadow(0 0 4px #fff6cd) drop-shadow(0 0 14px rgba(120,84,153,.8)); outline: 1px dashed rgba(255,250,221,.8); outline-offset: 5px; }
+.floater-sprite.has-error { background: rgba(116,48,70,.7); min-height: 80px; min-width: 120px; }
+.sprite-help { align-items: center; backdrop-filter: blur(9px); background: rgba(25,39,52,.56); border: 1px solid rgba(255,249,224,.42); border-radius: 999px; color: #fff7df; display: flex; font: 700 10px/1 system-ui,sans-serif; gap: 8px; left: 50%; letter-spacing: .04em; padding: 9px 13px; position: absolute; text-transform: uppercase; top: 145px; transform: translateX(-50%); white-space: nowrap; z-index: 12; }
+.sprite-help b { align-items: center; background: #f2d37d; border-radius: 50%; color: #33291f; display: inline-flex; height: 19px; justify-content: center; width: 19px; }
+.sprite-help span { opacity: .5; }
+.sprite-tray { display: grid; gap: 6px; grid-template-columns: repeat(6, minmax(0,1fr)); margin: 0 0 12px; }
+.sprite-choice { background: rgba(255,251,238,.46); border: 1px solid rgba(94,73,53,.38); border-radius: 8px; color: var(--ink); cursor: pointer; min-width: 0; padding: 4px; }
+.sprite-choice img { display: block; height: 42px; margin: auto; max-width: 100%; object-fit: contain; }
+.sprite-choice span { display: none; }
+.sprite-choice.is-active { background: #806397; box-shadow: 0 0 0 2px #fff4d1; }
 
 .camera-marker { background: rgba(50,39,31,.7); border: 2px solid #f5d98b; border-radius: 50%; bottom: 19%; box-shadow: 0 0 0 10px rgba(245,217,139,.12); height: 13px; left: 50%; pointer-events: none; position: absolute; transform: translateX(-50%); width: 13px; z-index: 8; }
 .camera-marker::after { border-bottom: 18px solid #f5d98b; border-left: 7px solid transparent; border-right: 7px solid transparent; content: ""; left: -2px; position: absolute; top: -22px; }
@@ -92,6 +101,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
   .lab-heading span { display: none; }
   .lab-panel { bottom: 12px; left: 12px; max-height: 46dvh; width: calc(100vw - 24px); }
   .lab-status { right: 12px; top: 72px; }
+  .sprite-help { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {

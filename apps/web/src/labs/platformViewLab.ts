@@ -34,8 +34,8 @@ let startOffset = 0;
 
 function applyCamera() {
   const eyeHeight = Number(height.value);
-  const zByStance = { edge: 5.1, on: 2.75, center: .7 } as const;
-  lab.camera.position.set(0, eyeHeight, zByStance[stance.value as keyof typeof zByStance] ?? 2.75);
+  const zByStance = { edge: 5.55, on: 3.15, center: .7 } as const;
+  lab.camera.position.set(0, eyeHeight, zByStance[stance.value as keyof typeof zByStance] ?? 5.55);
   lab.camera.fov = Number(fov.value);
   lab.camera.lookAt(0, .42, -10);
   lab.camera.updateProjectionMatrix();
@@ -53,15 +53,15 @@ fov.addEventListener("input", applyCamera);
 element("advance").addEventListener("click", () => {
   if (traveling) return; traveling = true; startedAt = performance.now(); startOffset = navigationRoot.position.z; status.textContent = "Advancing under locked camera";
 });
-element("reset").addEventListener("click", () => { traveling = false; navigationRoot.position.z = 0; stance.value = "on"; height.value = "1.72"; fov.value = "48"; canvas.style.filter = ""; applyCamera(); });
+element("reset").addEventListener("click", () => { traveling = false; navigationRoot.position.z = 0; stance.value = "edge"; height.value = "2.55"; fov.value = "48"; canvas.style.filter = ""; applyCamera(); });
 applyCamera();
 
 function animate(now: number) {
   if (traveling) {
     const snapshot = sampleIslandTransition(now - startedAt, {
       travelDistance: 15.2,
-      durations: { accelerationMs: 700, cruiseMs: 1100, decelerationMs: 850, settlingMs: 200 },
-      maxBlurPx: 3.5,
+      durations: { accelerationMs: 180, cruiseMs: 350, decelerationMs: 250, settlingMs: 80 },
+      maxBlurPx: .8,
     });
     navigationRoot.position.z = startOffset + snapshot.worldOffsetProgress * 15.2;
     canvas.style.filter = `blur(${snapshot.blurPx.toFixed(2)}px)`;

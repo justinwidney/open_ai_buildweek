@@ -24,7 +24,7 @@
     blur(calc(var(--world-transition) * 2.1px + var(--world-travel-blur)))
     saturate(calc(1 - var(--world-transition) * .12 - var(--world-travel-intensity) * .08));
   transform: translate3d(0, calc(var(--world-travel-intensity) * -2px), 0)
-    scale(calc(1 + var(--world-transition) * .008 + var(--world-travel-intensity) * .012));
+    scale(calc(1 + var(--world-transition) * .008 + var(--world-travel-intensity) * .004));
   transform-origin: center;
   z-index: 3;
 }

@@ -74,7 +74,7 @@ export function createPlatformTraveler(): PlatformTraveler {
         lengths,
         totalLength,
         startedAtMs: nowMs,
-        durationMs: reducedMotion ? 0 : THREE.MathUtils.clamp(totalLength * 85, 700, 2300),
+        durationMs: reducedMotion ? 0 : THREE.MathUtils.clamp(totalLength * 30, 420, 900),
       };
       group.visible = true;
       placeAtDistance(active, reducedMotion ? totalLength : 0);

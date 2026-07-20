@@ -10,6 +10,8 @@ export interface LayeredParallaxBackgroundHandle {
   setTravel(progress: number, depthLag?: number): void;
   /** Progress is the full 0..1 turn timeline, not an already-eased pulse. */
   setTurn(progress: number, direction?: ParallaxTransitionDirection): void;
+  /** Commits the backdrop to the next left/right sector after a route choice. */
+  setSector(direction: ParallaxTransitionDirection): void;
   /** @deprecated Use setTurn(). Retained as a transition-controller alias. */
   setTransition(progress: number, direction?: ParallaxTransitionDirection): void;
   /** Pass null to return to the prop / OS preference. */
@@ -46,6 +48,7 @@ interface RuntimeState {
   travelDepthLag: number;
   turnProgress: number;
   turnDirection: ParallaxTransitionDirection;
+  backgroundSector: number;
   imperativeReducedMotion: boolean | null;
   systemReducedMotion: boolean;
 }
@@ -80,20 +83,6 @@ const LAYERS: readonly LayerDefinition[] = [
     travelBlur: 0.1,
   },
   {
-    id: "floaters",
-    asset: "floaters.webp",
-    pointerX: 10,
-    pointerY: 5,
-    transitionX: 18,
-    transitionY: 5,
-    transitionRotation: 0.38,
-    transitionScale: 0.008,
-    transitionBlur: 0.55,
-    travelY: 3,
-    travelScale: 0.006,
-    travelBlur: 0.28,
-  },
-  {
     id: "islands",
     asset: "distant-islands.webp",
     pointerX: 16,
@@ -122,6 +111,15 @@ const LAYERS: readonly LayerDefinition[] = [
     travelBlur: 0.9,
   },
 ];
+
+const FLOATERS = [
+  { id: "balloon-large", asset: "/lab-assets/floaters/balloon-large-final.png", left: "13%", top: "17%", width: "clamp(72px, 8vw, 132px)", depth: .42, phase: "-2.8s" },
+  { id: "spire-small", asset: "/lab-assets/floaters/spire-small-final.png", left: "42%", top: "24%", width: "clamp(54px, 6vw, 94px)", depth: .75, phase: "-5.1s" },
+  { id: "balloon-small", asset: "/lab-assets/floaters/balloon-small-final.png", left: "76%", top: "18%", width: "clamp(45px, 5vw, 82px)", depth: .84, phase: "-7.4s" },
+  { id: "island-small", asset: "/lab-assets/floaters/island-small-final.png", left: "25%", top: "55%", width: "clamp(92px, 12vw, 190px)", depth: .65, phase: "-1.2s" },
+  { id: "island-large", asset: "/lab-assets/floaters/island-large-final.png", left: "70%", top: "54%", width: "clamp(145px, 18vw, 310px)", depth: .38, phase: "-4.4s" },
+  { id: "airship-large", asset: "/lab-assets/floaters/airship-large-final.png", left: "84%", top: "34%", width: "clamp(170px, 22vw, 360px)", depth: .3, phase: "-8.1s" },
+] as const;
 
 const BASE_SCALE = 1.08;
 
@@ -153,6 +151,7 @@ export const LayeredParallaxBackground = forwardRef<
 ) {
   const rootRef = useRef<HTMLDivElement>(null);
   const layerRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const floaterRefs = useRef<Array<HTMLDivElement | null>>([]);
   const intensityRef = useRef(clamp(intensity, 0, 2));
   const reducedMotionPropRef = useRef<boolean | undefined>(reducedMotion);
   const runtimeRef = useRef<RuntimeState>({
@@ -162,6 +161,7 @@ export const LayeredParallaxBackground = forwardRef<
     travelDepthLag: 1,
     turnProgress: 0,
     turnDirection: 1,
+    backgroundSector: 0,
     imperativeReducedMotion: null,
     systemReducedMotion: false,
   });
@@ -191,7 +191,8 @@ export const LayeredParallaxBackground = forwardRef<
       if (!element) return;
 
       const x = -runtime.pointerX * layer.pointerX * motionIntensity
-        + runtime.turnDirection * turnPulse * layer.transitionX;
+        + runtime.turnDirection * turnPulse * layer.transitionX
+        + runtime.backgroundSector * layer.transitionX * 1.65;
       const y = -runtime.pointerY * layer.pointerY * motionIntensity
         - turnPulse * layer.transitionY
         + travelPulse * layer.travelY;
@@ -206,6 +207,24 @@ export const LayeredParallaxBackground = forwardRef<
       element.style.setProperty("--parallax-rotation", `${rotation.toFixed(3)}deg`);
       element.style.setProperty("--parallax-scale", scale.toFixed(4));
       element.style.setProperty("--parallax-blur", `${blur.toFixed(3)}px`);
+    });
+
+    FLOATERS.forEach((floater, index) => {
+      const element = floaterRefs.current[index];
+      if (!element) return;
+      const nearness = 1 - floater.depth;
+      const x = -runtime.pointerX * (7 + nearness * 19) * motionIntensity
+        + runtime.turnDirection * turnPulse * (18 + nearness * 42)
+        + runtime.backgroundSector * (34 + nearness * 88);
+      const y = -runtime.pointerY * (4 + nearness * 11) * motionIntensity
+        - turnPulse * (4 + nearness * 12)
+        + travelPulse * (2 + nearness * 9);
+      const scale = 1 + turnPulse * nearness * .035 + travelPulse * nearness * .025;
+      const opacity = .58 + nearness * .42;
+      element.style.setProperty("--floater-x", `${x.toFixed(3)}px`);
+      element.style.setProperty("--floater-y", `${y.toFixed(3)}px`);
+      element.style.setProperty("--floater-scale", scale.toFixed(4));
+      element.style.setProperty("--floater-opacity", opacity.toFixed(3));
     });
   };
 
@@ -225,6 +244,12 @@ export const LayeredParallaxBackground = forwardRef<
       runtimeRef.current.turnDirection = direction < 0 ? -1 : 1;
       commitTransforms();
     },
+    setSector: (direction) => {
+      const step = direction < 0 ? -1 : 1;
+      const next = runtimeRef.current.backgroundSector + step;
+      runtimeRef.current.backgroundSector = next > 1 ? -1 : next < -1 ? 1 : next;
+      commitTransforms();
+    },
     setTransition: (progress, direction = 1) => {
       runtimeRef.current.turnProgress = clamp(progress, 0, 1);
       runtimeRef.current.turnDirection = direction < 0 ? -1 : 1;
@@ -241,6 +266,7 @@ export const LayeredParallaxBackground = forwardRef<
       runtimeRef.current.travelDepthLag = 1;
       runtimeRef.current.turnProgress = 0;
       runtimeRef.current.turnDirection = 1;
+      runtimeRef.current.backgroundSector = 0;
       commitTransforms();
     },
   }), []);
@@ -281,6 +307,24 @@ export const LayeredParallaxBackground = forwardRef<
             decoding="async"
             draggable={false}
             src={joinAssetPath(assetBaseUrl, layer.asset)}
+          />
+        </div>
+      ))}
+      {FLOATERS.map((floater, index) => (
+        <div
+          className="layered-parallax-background__floater"
+          data-depth={floater.depth}
+          data-floater={floater.id}
+          key={floater.id}
+          ref={(element) => { floaterRefs.current[index] = element; }}
+          style={{ left: floater.left, top: floater.top, width: floater.width }}
+        >
+          <img
+            alt=""
+            decoding="async"
+            draggable={false}
+            src={floater.asset}
+            style={{ animationDelay: floater.phase }}
           />
         </div>
       ))}

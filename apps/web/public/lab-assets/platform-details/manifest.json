@@ -1,0 +1,17 @@
+{
+  "source": "finished/ChatGPT Image Jul 20, 2026, 10_23_53 AM.png",
+  "method": "deterministic atlas crop with connected-background alpha removal",
+  "sprites": [
+    { "id": "carved-platform", "src": "/lab-assets/platform-details/carved-platform.png", "role": "platform-top" },
+    { "id": "small-platform", "src": "/lab-assets/platform-details/small-platform.png", "role": "platform-base" },
+    { "id": "tree-island", "src": "/lab-assets/platform-details/tree-island.png", "role": "complete-island" },
+    { "id": "waterfall-island", "src": "/lab-assets/platform-details/waterfall-island.png", "role": "complete-island" },
+    { "id": "castle-island", "src": "/lab-assets/platform-details/castle-island.png", "role": "complete-island" },
+    { "id": "rope-bridge", "src": "/lab-assets/platform-details/rope-bridge.png", "role": "connector" },
+    { "id": "storybook-tree", "src": "/lab-assets/platform-details/storybook-tree.png", "role": "surface-detail" },
+    { "id": "flower-bed", "src": "/lab-assets/platform-details/flower-bed.png", "role": "surface-detail" },
+    { "id": "lantern", "src": "/lab-assets/platform-details/lantern.png", "role": "surface-detail" },
+    { "id": "sign", "src": "/lab-assets/platform-details/sign.png", "role": "surface-detail" },
+    { "id": "purple-flag", "src": "/lab-assets/platform-details/purple-flag.png", "role": "surface-detail" }
+  ]
+}

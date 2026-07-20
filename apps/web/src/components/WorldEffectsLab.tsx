@@ -93,8 +93,8 @@ export function WorldEffectsLab({
 
         {activeEffect === "travel" && <>
           <p>The world advances beneath a fixed camera. Near islands lead, distant art lags, and passed geometry leaves the active scene after arrival.</p>
-          <RangeControl label="Travel duration" value={tuning.travelDuration} min={0.55} max={1.8} step={0.05} unit="×" onChange={(value) => patch({ travelDuration: value })} />
-          <RangeControl label="Motion blur" value={tuning.motionBlur} min={0} max={1.8} step={0.05} unit="×" onChange={(value) => patch({ motionBlur: value })} />
+          <RangeControl label="Travel duration" value={tuning.travelDuration} min={0.55} max={1.15} step={0.05} unit="×" onChange={(value) => patch({ travelDuration: value })} />
+          <RangeControl label="Motion blur" value={tuning.motionBlur} min={0} max={1} step={0.05} unit="×" onChange={(value) => patch({ motionBlur: value })} />
           <button className="world-lab__action" type="button" onClick={() => onCommand({ type: "travel-next" })}>Run next island</button>
         </>}
 

@@ -233,16 +233,20 @@ function sampleFullMotion(elapsedMs: number, options: ResolvedOptions): UpsideDo
     });
     const unsignedRotation = Math.abs(turn.rotationRadians);
     const hasSwapped = turn.incomingRevealStarted;
-    const outgoingProgress = clamp01(unsignedRotation / options.incomingRevealAngleRadians);
+    const outgoingProgress = clamp01(
+      (unsignedRotation - options.incomingRevealAngleRadians * .72)
+      / (options.incomingRevealAngleRadians * .6)
+    );
+    const outgoingOpacity = 1 - easeInOutSine(outgoingProgress);
     return {
       phase: "flipping",
       phaseProgress: progress,
       overallProgress,
       rotationRadians: turn.rotationRadians,
       incomingContentRotationRadians: turn.incomingCounterRotationRadians,
-      outgoingOpacity: 1 - easeOutCubic(outgoingProgress),
+      outgoingOpacity,
       incomingOpacity: hasSwapped ? easeOutCubic(turn.incomingRevealProgress) * 0.65 : 0,
-      shouldRenderOutgoing: !hasSwapped,
+      shouldRenderOutgoing: outgoingOpacity > .005,
       shouldRenderIncoming: hasSwapped,
       incomingRevealStarted: hasSwapped,
       motionBlurIntensity: turn.motionBlurIntensity,

@@ -2,6 +2,7 @@ import * as THREE from "three";
 import "./lab.css";
 import { createLabBridge, createLabPlatform } from "./labWorldObjects";
 import { addLabLighting, createThreeLab, element } from "./threeLab";
+import { createPlatformArtStack, setArtStackOpacity } from "../world/assets/platformDetailCards";
 
 const lab = createThreeLab(element<HTMLCanvasElement>("scene"), { fov: 42 });
 addLabLighting(lab.scene);
@@ -11,7 +12,7 @@ const turnRoot = new THREE.Group();
 turnRoot.name = "turn-root-all-spatial-elements";
 lab.scene.add(turnRoot);
 
-function buildWorld(name: string, tint: number) {
+function buildWorld(name: string, tint: number, withIncomingArt = false) {
   const root = new THREE.Group();
   root.name = name;
   const first = createLabPlatform(`${name}:first`, { radius: 4.4, seed: tint, details: true });
@@ -26,11 +27,27 @@ function buildWorld(name: string, tint: number) {
   const side = createLabPlatform(`${name}:side`, { radius: 2.1, seed: tint + 17, details: false });
   side.group.position.set(-7.5, .8, -9.5);
   root.add(side.group);
-  return root;
+  const revealArt = new THREE.Group();
+  revealArt.name = `${name}:reveal-only-art`;
+  if (withIncomingArt) {
+    const firstArt = createPlatformArtStack({ radius: 4.4, surfaceY: first.build.surfaceY, variant: "garden", detailSpread: 1.1 });
+    first.group.add(firstArt);
+    const secondArt = createPlatformArtStack({ radius: 2.5, surfaceY: second.build.surfaceY, variant: "waterfall", detailSpread: .72 });
+    second.group.add(secondArt);
+    const revealIsland = createLabPlatform(`${name}:reveal-island`, { radius: 1.65, seed: tint + 41, details: false });
+    revealIsland.group.position.set(7.2, 1.25, -10.5);
+    revealIsland.group.add(createPlatformArtStack({ radius: 1.65, surfaceY: revealIsland.build.surfaceY, variant: "castle", includeDetails: false }));
+    revealArt.add(revealIsland.group);
+    root.add(revealArt);
+  }
+  return { root, revealArt };
 }
 
-const outgoing = buildWorld("outgoing-world", 51);
-const incoming = buildWorld("incoming-world", 305);
+const outgoingBuild = buildWorld("outgoing-world", 51);
+const incomingBuild = buildWorld("incoming-world", 305, true);
+const outgoing = outgoingBuild.root;
+const incoming = incomingBuild.root;
+const incomingRevealArt = incomingBuild.revealArt;
 incoming.rotation.z = -Math.PI;
 turnRoot.add(outgoing, incoming);
 
@@ -64,16 +81,45 @@ let direction: 1 | -1 = 1;
 let playing = false;
 let startedAt = 0;
 
+function smoothstep(value: number) {
+  const clamped = THREE.MathUtils.clamp(value, 0, 1);
+  return clamped * clamped * (3 - 2 * clamped);
+}
+
+function setWorldOpacity(root: THREE.Object3D, opacity: number) {
+  root.traverse((object) => {
+    if (!(object instanceof THREE.Mesh || object instanceof THREE.Sprite)) return;
+    const materials = Array.isArray(object.material) ? object.material : [object.material];
+    materials.forEach((material) => {
+      if (material.userData.labBaseOpacity === undefined) material.userData.labBaseOpacity = material.opacity;
+      material.transparent = true;
+      material.opacity = Number(material.userData.labBaseOpacity) * opacity;
+      material.depthWrite = opacity > .96 && !(material instanceof THREE.SpriteMaterial);
+      material.needsUpdate = true;
+    });
+  });
+  root.visible = opacity > .002;
+}
+
 function setAngle(degrees: number) {
   const radians = THREE.MathUtils.degToRad(degrees) * direction;
   turnRoot.rotation.z = radians;
-  outgoing.visible = degrees < 90;
-  incoming.visible = degrees >= 90;
+  const outgoingAlpha = 1 - smoothstep((degrees - 34) / 78);
+  const incomingAlpha = smoothstep((degrees - 72) / 78);
+  setWorldOpacity(outgoing, outgoingAlpha);
+  setWorldOpacity(incoming, incomingAlpha);
+  incoming.rotation.set(0, -direction * (1 - incomingAlpha) * .52, -Math.PI * direction);
+  const revealScale = .74 + incomingAlpha * .26;
+  incoming.scale.setScalar(revealScale);
+  incoming.position.y = -(1 - incomingAlpha) * 1.25;
+  incomingRevealArt.rotation.y = direction * (1 - incomingAlpha) * .34;
+  incomingRevealArt.position.z = (1 - incomingAlpha) * -2.2;
+  setArtStackOpacity(incomingRevealArt, incomingAlpha);
   angleInput.value = String(degrees);
   angleOutput.value = `${Math.round(degrees)}°`;
   worldAngle.textContent = `${Math.round(degrees) * direction}°`;
-  revealState.textContent = degrees >= 90 ? "incoming" : "waiting";
-  status.textContent = `${Math.round(degrees)}° · ${degrees >= 90 ? "incoming world" : "outgoing world"}`;
+  revealState.textContent = `${Math.round(incomingAlpha * 100)}%`;
+  status.textContent = `${Math.round(degrees)}° · ${incomingAlpha > 0 ? "incoming art rotating in" : "outgoing world"}`;
 }
 
 angleInput.addEventListener("input", () => { playing = false; setAngle(Number(angleInput.value)); });

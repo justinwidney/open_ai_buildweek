@@ -1,1 +1,29 @@
-<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Lab 01 — Platform Art</title><script type="module" src="/src/labs/platformArtLab.ts"></script></head><body><main class="lab-shell"><header class="lab-header"><a class="lab-back" href="/labs/index.html">← All labs</a><div class="lab-heading"><span>Issue A · isolated geometry and material study</span><h1>Platform Art Direction</h1></div><span class="lab-number">01</span></header><div class="lab-stage"><canvas id="scene"></canvas><div class="lab-status" id="status">Storybook profile</div></div><aside class="lab-panel"><p class="lab-panel__lead">A deliberately richer platform study: irregular silhouette, deep ledges, carved top, watercolor stone, moss skirt, and small botanical details.</p><div class="lab-seam">Production seam: src/world/geometry/platforms/createLayeredPlatform.ts → createLayeredPlatform()</div><label class="lab-control"><span>Art profile</span><select id="profile"><option value="storybook">Storybook carved</option><option value="ancient">Ancient ruins</option><option value="wild">Wild crag</option></select></label><label class="lab-control"><span>Silhouette irregularity <output id="jagged-output">0.14</output></span><input id="jagged" type="range" min="0.04" max="0.3" step="0.01" value="0.14"></label><label class="lab-control"><span>Crag depth <output id="depth-output">1.18×</output></span><input id="depth" type="range" min="0.72" max="1.5" step="0.02" value="1.18"></label><div class="lab-buttons"><button id="front" class="lab-button is-active">Front view</button><button id="below" class="lab-button">Below view</button><button id="reseed" class="lab-button">Reseed</button></div><div class="lab-readout"><div><span>Facets</span><b>48</b></div><div><span>Layers</span><b>9</b></div><div><span>Camera</span><b id="camera-readout">front</b></div></div></aside></main></body></html>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Lab 01 — High-detail Platform Art</title>
+    <script type="module" src="/src/labs/platformArtLab.ts"></script>
+  </head>
+  <body>
+    <main class="lab-shell">
+      <header class="lab-header">
+        <a class="lab-back" href="/labs/index.html">← All labs</a>
+        <div class="lab-heading"><span>Issue A · source-faithful 2.5D art</span><h1>Atlas-to-World Platform Art</h1></div>
+        <span class="lab-number">01</span>
+      </header>
+      <div class="lab-stage"><canvas id="scene"></canvas><div class="lab-status" id="status">10_23_53 atlas · tree island</div></div>
+      <aside class="lab-panel">
+        <p class="lab-panel__lead">This lab uses exact high-detail cutouts from <em>10_23_53 AM</em>. A full painted island supplies the silhouette while flowers, lanterns, and trees sit on separate Z planes for parallax and physical rotation.</p>
+        <div class="lab-seam">Art source: public/lab-assets/platform-details/manifest.json<br>Production seam: world/assets/platformDetailCards.ts → createPlatformArtStack()</div>
+        <label class="lab-control"><span>Painted island</span><select id="variant"><option value="tree">Tree island</option><option value="waterfall">Waterfall island</option><option value="castle">Castle island</option><option value="garden">Build from separate parts</option></select></label>
+        <label class="lab-control"><span>Depth separation <output id="spread-output">1.00×</output></span><input id="spread" type="range" min="0" max="2" step="0.05" value="1"></label>
+        <label class="lab-check"><input id="details" type="checkbox" checked><span>Separate surface-detail cards</span></label>
+        <label class="lab-check"><input id="geometry" type="checkbox"><span>Show low-poly support mesh</span></label>
+        <div class="lab-buttons"><button id="front" class="lab-button is-active">Front view</button><button id="below" class="lab-button">Below view</button><button id="next-art" class="lab-button lab-button--primary">Next artwork</button></div>
+        <div class="lab-readout"><div><span>Source</span><b>10_23_53</b></div><div><span>Art cards</span><b id="layer-count">3</b></div><div><span>Camera</span><b id="camera-readout">front</b></div></div>
+      </aside>
+    </main>
+  </body>
+</html>

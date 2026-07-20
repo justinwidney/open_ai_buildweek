@@ -25,6 +25,7 @@ import type {
 const definition = pathData as unknown as WorldDefinition;
 const HALF_TURN = Math.PI;
 const WORLD_UP = new THREE.Vector3(0, 1, 0);
+const PLAYER_CAMERA_Z = 4.72;
 
 const DEFAULT_TUNING: WorldTuning = {
   parallaxDepth: 1,
@@ -68,8 +69,10 @@ function destinationFor(platform: WorldPlatform) {
     ? 0
     : Math.atan2(target.x, -target.z);
   const rotatedTarget = target.clone().applyAxisAngle(WORLD_UP, heading);
+  const stanceInset = THREE.MathUtils.clamp(platform.radius * .72, .78, 2.2);
+  const stanceAnchor = new THREE.Vector3(0, 0, PLAYER_CAMERA_Z - stanceInset);
   return {
-    position: rotatedTarget.multiplyScalar(-1),
+    position: stanceAnchor.sub(rotatedTarget),
     rotationY: heading,
   };
 }
@@ -167,12 +170,13 @@ export function WorldExperience({
     const travelScale = tuningRef.current.travelDuration;
     const islandTransition = createIslandTransitionController({
       reducedMotion,
-      maxBlurPx: 7,
+      maxBlurPx: .9,
+      maxMotionBlurIntensity: .3,
       durations: {
-        accelerationMs: 520 * travelScale,
-        cruiseMs: 900 * travelScale,
-        decelerationMs: 680 * travelScale,
-        settlingMs: 180 * travelScale,
+        accelerationMs: 170 * travelScale,
+        cruiseMs: 350 * travelScale,
+        decelerationMs: 250 * travelScale,
+        settlingMs: 70 * travelScale,
       },
     });
     const raycaster = new THREE.Raycaster();
@@ -244,8 +248,8 @@ export function WorldExperience({
       camera.aspect = width / height;
       if (camera.aspect < .72) {
         camera.fov = 54;
-        camera.position.set(0, 9.8, 23);
-        camera.lookAt(0, .35, -10.5);
+        camera.position.set(0, 3.15, 4.9);
+        camera.lookAt(0, .72, -8.5);
       } else {
         camera.fov = 45;
         camera.position.copy(desktopCameraPosition);
@@ -262,6 +266,9 @@ export function WorldExperience({
       transitionDirection = direction;
       incoming = createForwardWorldSlice(definition, nextIndex, quality, tuningRef.current.rockProfile);
       incoming.group.rotation.z = -HALF_TURN * direction;
+      incoming.group.rotation.y = -direction * .46;
+      incoming.group.position.y = -1.1;
+      incoming.group.scale.setScalar(.78);
       incoming.setOpacity(0);
       worldPivot.add(incoming.group);
       if (!transition.begin(nowMs)) {
@@ -270,6 +277,7 @@ export function WorldExperience({
         return false;
       }
       container.dataset.turning = "true";
+      parallaxRef.current?.setSector(direction);
       return true;
     };
 
@@ -287,6 +295,7 @@ export function WorldExperience({
       worldPivot.rotation.z = 0;
       current.group.rotation.set(0, 0, 0);
       current.group.position.set(0, 0, 0);
+      current.group.scale.setScalar(1);
       current.setOpacity(1);
       traveler = createPlatformTraveler();
       current.group.add(traveler.group);
@@ -308,6 +317,11 @@ export function WorldExperience({
       } else if (transition.isActive && incoming) {
         worldPivot.rotation.z = turnSnapshot.rotationRadians * transitionDirection;
         incoming.group.rotation.z = turnSnapshot.incomingContentRotationRadians * transitionDirection;
+        const revealProgress = THREE.MathUtils.clamp(turnSnapshot.incomingOpacity / .65, 0, 1);
+        const revealEase = revealProgress * revealProgress * (3 - 2 * revealProgress);
+        incoming.group.rotation.y = -transitionDirection * (1 - revealEase) * .46;
+        incoming.group.position.y = -(1 - revealEase) * 1.1;
+        incoming.group.scale.setScalar(.78 + revealEase * .22);
         current.setOpacity(turnSnapshot.outgoingOpacity);
         incoming.setOpacity(turnSnapshot.incomingOpacity);
         current.group.visible = turnSnapshot.shouldRenderOutgoing;
