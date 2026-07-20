@@ -1,7 +1,7 @@
 import type { WorldCommandInput, WorldTuning } from "../world";
 import "./WorldEffectsLab.css";
 
-export type WorldEffect = "backdrop" | "travel" | "turn" | "rocks";
+export type WorldEffect = "view" | "backdrop" | "travel" | "turn" | "rocks" | "art";
 
 export interface WorldEffectsLabProps {
   activeEffect: WorldEffect;
@@ -13,10 +13,12 @@ export interface WorldEffectsLabProps {
 }
 
 const EFFECTS: readonly { id: WorldEffect; label: string; eyebrow: string }[] = [
-  { id: "backdrop", label: "Depth layers", eyebrow: "01" },
-  { id: "travel", label: "Forward travel", eyebrow: "02" },
-  { id: "turn", label: "World turn", eyebrow: "03" },
-  { id: "rocks", label: "Rock profile", eyebrow: "04" },
+  { id: "view", label: "2.5D view", eyebrow: "01" },
+  { id: "backdrop", label: "Sprite match", eyebrow: "02" },
+  { id: "travel", label: "Travel", eyebrow: "03" },
+  { id: "turn", label: "World turn", eyebrow: "04" },
+  { id: "rocks", label: "Silhouette", eyebrow: "05" },
+  { id: "art", label: "Art layers", eyebrow: "06" },
 ];
 
 function RangeControl({
@@ -82,9 +84,22 @@ export function WorldEffectsLab({
       </nav>
 
       <section className="world-lab__body">
+        {activeEffect === "view" && <>
+          <p>The camera stays locked above the near rim. Height and pitch change the authored 2.5D projection without introducing free orbit controls.</p>
+          <RangeControl label="Camera height" value={tuning.cameraHeight} min={0.75} max={1.45} step={0.05} unit="×" onChange={(value) => patch({ cameraHeight: value })} />
+          <RangeControl label="Downward tilt" value={tuning.cameraTilt} min={0.7} max={1.5} step={0.05} unit="×" onChange={(value) => patch({ cameraTilt: value })} />
+          <label className="world-lab__switch">
+            <input type="checkbox" checked={tuning.depthGridEnabled} onChange={(event) => patch({ depthGridEnabled: event.currentTarget.checked })} />
+            <span>Show near / mid / far placement grid</span>
+          </label>
+        </>}
+
         {activeEffect === "backdrop" && <>
-          <p>Separate watercolor plates move at different rates while the playable scene remains sharp.</p>
+          <p>Separate watercolor plates move at different rates. Global sprite calibration brings cutout color and transparency into the same painted atmosphere.</p>
           <RangeControl label="Parallax depth" value={tuning.parallaxDepth} min={0} max={1.8} step={0.05} onChange={(value) => patch({ parallaxDepth: value })} />
+          <RangeControl label="Sprite opacity" value={tuning.spriteOpacity} min={0.2} max={1} step={0.05} unit="×" onChange={(value) => patch({ spriteOpacity: value })} />
+          <RangeControl label="Sprite saturation" value={tuning.spriteSaturation} min={0.35} max={1.35} step={0.05} unit="×" onChange={(value) => patch({ spriteSaturation: value })} />
+          <RangeControl label="Sprite warmth" value={tuning.spriteWarmth} min={0} max={0.45} step={0.03} unit="×" onChange={(value) => patch({ spriteWarmth: value })} />
           <label className="world-lab__switch">
             <input type="checkbox" checked={tuning.backdropEnabled} onChange={(event) => patch({ backdropEnabled: event.currentTarget.checked })} />
             <span>Use imported watercolor layers</span>
@@ -108,12 +123,28 @@ export function WorldEffectsLab({
         </>}
 
         {activeEffect === "rocks" && <>
-          <p>Compare deterministic silhouettes from the same locked front/below camera. A preset rebuilds only the current scene.</p>
+          <p>Compare deterministic platform silhouettes from the same locked high camera. A preset rebuilds only the current scene.</p>
           <div className="world-lab__segments" role="group" aria-label="Rock silhouette">
             {(["soft", "storybook", "shattered"] as const).map((profile) => (
               <button type="button" key={profile} className={tuning.rockProfile === profile ? "is-active" : undefined} onClick={() => patch({ rockProfile: profile })}>{profile}</button>
             ))}
           </div>
+        </>}
+
+        {activeEffect === "art" && <>
+          <p>Strip the scene back in stages. Flat materials make platform contours easier to match; background-only mode removes every gameplay mesh.</p>
+          <label className="world-lab__switch">
+            <input type="checkbox" checked={tuning.texturesEnabled} onChange={(event) => patch({ texturesEnabled: event.currentTarget.checked })} />
+            <span>Painted surface textures</span>
+          </label>
+          <label className="world-lab__switch">
+            <input type="checkbox" checked={tuning.detailsEnabled} onChange={(event) => patch({ detailsEnabled: event.currentTarget.checked })} />
+            <span>Platform purpose details</span>
+          </label>
+          <label className="world-lab__switch">
+            <input type="checkbox" checked={tuning.platformsEnabled} onChange={(event) => patch({ platformsEnabled: event.currentTarget.checked })} />
+            <span>Gameplay platforms and bridges</span>
+          </label>
         </>}
       </section>
 

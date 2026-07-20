@@ -3,7 +3,7 @@ import { sampleWorldSpin } from "../../animation/world-spin";
 import { disposeObjectTree, type QualityTier } from "../../core";
 import { createLayeredPlatform, createRopeBridge } from "../../geometry";
 import { createFantasyMaterialKit, FANTASY_PALETTE } from "../../materials";
-import { createPlatformArtStack, type PlatformArtVariant } from "../../assets/platformDetailCards";
+import { createBasePlatformMaterialSet } from "../../assets/basePlatformMaterials";
 import type { Vec3, WorldDefinition, WorldPlatform } from "../../world.types";
 import { createFlowerPatch, createLantern, createMilestoneSpinner, createStorybookTree } from "./decorations";
 import { createFoundationInscription, createRouteNumber, createSkillSign } from "./signage";
@@ -22,14 +22,19 @@ export interface ForwardWorldSlice {
 
 export type ForwardWorldRockProfile = "soft" | "storybook" | "shattered";
 
+export interface ForwardWorldPresentation {
+  readonly texturesEnabled?: boolean;
+  readonly detailsEnabled?: boolean;
+}
+
 const ROCK_PROFILES: Record<ForwardWorldRockProfile, {
   jaggedness: number;
   cragDepth: number;
   facetScale: number;
 }> = {
-  soft: { jaggedness: .07, cragDepth: .78, facetScale: 1.15 },
-  storybook: { jaggedness: .16, cragDepth: 1.05, facetScale: 1 },
-  shattered: { jaggedness: .28, cragDepth: 1.28, facetScale: .78 },
+  soft: { jaggedness: .012, cragDepth: .66, facetScale: 1.08 },
+  storybook: { jaggedness: .025, cragDepth: .72, facetScale: 1 },
+  shattered: { jaggedness: .045, cragDepth: .78, facetScale: .9 },
 };
 
 function vector(tuple: Vec3) {
@@ -108,17 +113,22 @@ export function createForwardWorldSlice(
   index: number,
   quality: QualityTier,
   rockProfile: ForwardWorldRockProfile = "storybook",
+  presentation: ForwardWorldPresentation = {},
 ): ForwardWorldSlice {
   const group = new THREE.Group();
   group.name = `forward-world:${index}`;
   group.userData.worldIndex = index;
-  const materialKit = createFantasyMaterialKit({ tier: quality, seed: 1947 + index * 101 });
+  const texturesEnabled = presentation.texturesEnabled ?? true;
+  const detailsEnabled = presentation.detailsEnabled ?? true;
+  const materialKit = createFantasyMaterialKit({
+    tier: quality,
+    seed: 1947 + index * 101,
+    texturesEnabled,
+  });
+  const basePlatform = createBasePlatformMaterialSet({ texturesEnabled });
   const shadows = quality !== "off" && quality !== "low";
   const rock = ROCK_PROFILES[rockProfile];
 
-  const stoneDark = materialKit.stone.clone();
-  stoneDark.name = "fantasy-stone-shadow";
-  stoneDark.color.copy(FANTASY_PALETTE.stoneShadow);
   const detail = new THREE.MeshStandardMaterial({
     name: "flower-detail",
     color: index % 2 ? 0xf0c29b : 0xcbbfe7,
@@ -173,24 +183,25 @@ export function createForwardWorldSlice(
       position: platform.position,
       seed: 31 + index * 977 + platformIndex * 127,
       shadows,
-      radialFacetCount: Math.round((quality === "high" ? 32 : 24) * rock.facetScale),
-      verticalFacetCount: quality === "high" ? 7 : 5,
+      baseShape: "stone-cylinder",
+      radialFacetCount: Math.round((quality === "high" ? 56 : 40) * rock.facetScale),
+      verticalFacetCount: quality === "high" ? 6 : 4,
       jaggedness: rock.jaggedness,
       cragDepth: rock.cragDepth,
-      edgeStoneCount: quality === "low" || quality === "off" ? Math.ceil(platform.radius * 2) : undefined,
-      detailCount: quality === "off" ? 0 : undefined,
+      edgeStoneCount: 0,
+      detailCount: 0,
       sockets: uniqueSockets,
       materials: {
-        stone: materialKit.stone,
-        stoneDark,
-        rim: materialKit.trim,
-        top: materialKit.foliage,
+        stone: basePlatform.wall,
+        stoneDark: basePlatform.wallDark,
+        rim: basePlatform.rim,
+        top: basePlatform.top,
         detail,
       },
     });
     const platformGroup = build.group;
     attachPlatformHitTarget(platformGroup, platform);
-    if (platform.kind === "start") {
+    if (detailsEnabled && platform.kind === "start") {
       platformGroup.add(createFoundationInscription(platform));
       const leftLantern = createLantern(decorations, .72);
       leftLantern.position.set(-platform.radius * .7, build.surfaceY, platform.radius * .22);
@@ -201,33 +212,20 @@ export function createForwardWorldSlice(
       const tree = createStorybookTree(decorations, .72);
       tree.position.set(-platform.radius * .58, build.surfaceY, -.55);
       platformGroup.add(tree);
-    } else if (platform.kind === "front") {
+    } else if (detailsEnabled && platform.kind === "front") {
       platformGroup.add(createRouteNumber(routeOrder.get(platform.id) ?? platformIndex + 1, platform.radius));
       if ((routeOrder.get(platform.id) ?? 0) >= 3) {
         const milestone = createMilestoneSpinner(decorations, Math.min(1, platform.radius * .46));
         milestone.position.set(0, build.surfaceY, -.08);
         platformGroup.add(milestone);
       }
-    } else {
+    } else if (detailsEnabled) {
       platformGroup.add(createSkillSign(platform, materialKit.trim.color));
       const flowers = createFlowerPatch(decorations, platformIndex + index * 13, quality === "low" ? 8 : 16);
       flowers.position.set(platform.radius * .36, build.surfaceY, -.2);
       platformGroup.add(flowers);
     }
-    const routeNumber = routeOrder.get(platform.id) ?? 0;
-    const artVariant: PlatformArtVariant = platform.kind === "start"
-      ? "garden"
-      : platform.kind === "front"
-        ? routeNumber >= 3 ? "castle" : "waterfall"
-        : "tree";
-    platformGroup.add(createPlatformArtStack({
-      radius: platform.radius,
-      surfaceY: build.surfaceY,
-      variant: artVariant,
-      detailSpread: platform.kind === "start" ? 1.1 : .72,
-      includeDetails: quality !== "off" && (platform.kind === "start" || platform.kind !== "front"),
-    }));
-    // The painted cards are added after the collision mesh, so tag them too.
+    // Purpose-specific decoration meshes sit on the same neutral base platform.
     attachPlatformHitTarget(platformGroup, platform);
     group.add(platformGroup);
     platformObjects.set(platform.id, platformGroup);

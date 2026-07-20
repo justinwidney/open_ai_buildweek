@@ -9,15 +9,19 @@ world loop.
 
 | Issue | HTML entry | Lab controller | Production seam under test |
 | --- | --- | --- | --- |
-| A. Platform art quality | `platform-art.html` | `src/labs/platformArtLab.ts` | `src/world/assets/platformDetailCards.ts` |
-| B. Every spatial element rotates | `rotation-rig.html` | `src/labs/rotationRigLab.ts` | `src/world/WorldExperience.tsx` world-root ownership |
+| A. Reusable base + purpose meshes | `platform-art.html` | `src/labs/platformArtLab.ts` | `src/world/assets/basePlatformMaterials.ts` + `content/forward/` decorations |
+| B. Exact mirror world + camera orbit | `rotation-rig.html` | `src/labs/rotationRigLab.ts` | `src/world/WorldExperience.tsx` world-root ownership |
 | C. Travel is continuous | `travel-rig.html` | `src/labs/travelRigLab.ts` | `src/world/animation/island-transition/islandTransition.ts` |
 | D. Left/right reveal different background sectors | `background-pan.html` | `src/labs/backgroundPanLab.ts` | `src/world/background/layers/LayeredParallaxBackground.tsx` |
-| E. Floaters are independent sprites | `floater-sprites.html` | `src/labs/floaterSpritesLab.ts` | `public/lab-assets/floaters/manifest.json` + production parallax layer |
+| E. Floaters, clouds, and ornate islands orbit independently | `floater-sprites.html` | `src/labs/floaterSpritesLab.ts` | `public/lab-assets/{floaters,clouds,platform-hires}/` + production parallax layer |
 | F. Camera stands on the platform | `platform-view.html` | `src/labs/platformViewLab.ts` | `src/world/WorldExperience.tsx` camera/navigation rig |
+| G. Art becomes silhouette geometry | `depth-mesh.html` | `src/labs/depthMeshLab.ts` | `public/lab-assets/platform-hires/` + future production mesh importer |
+| H. Platform detail is independently authored | `platform-detail.html` | `src/labs/platformDetailLab.ts` | `content/forward/decorations.ts` + `signage.ts` |
+| I. Sprites align by view, depth, color, and alpha | `sprite-grid.html` | `src/labs/spriteGridLab.ts` | `LayeredParallaxBackground.tsx` orbital sprite configuration |
+| J. Background matches without gameplay meshes | `background-only.html` | `src/labs/backgroundOnlyLab.tsx` | DOM watercolor layers and main-scene background-only controls |
 
 Shared lab-only code lives in `src/labs/lab.css`, `threeLab.ts`, and
-`labWorldObjects.ts`. Platform art is intentionally shared through
-`src/world/assets/platformDetailCards.ts`; it is the reviewed asset API, not
-lab-only scaffolding. Promote only the demonstrated API or transform rule into
-the named production seam.
+`labWorldObjects.ts`. The neutral gameplay base is shared through
+`src/world/assets/basePlatformMaterials.ts`; ornate HD islands belong to the
+background sprite system. Promote only the demonstrated API or transform rule
+into the named production seam.

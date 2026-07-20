@@ -2,81 +2,135 @@ import * as THREE from "three";
 import "./lab.css";
 import { createLabBridge, createLabPlatform } from "./labWorldObjects";
 import { addLabLighting, createThreeLab, element } from "./threeLab";
-import { createPlatformArtStack, setArtStackOpacity } from "../world/assets/platformDetailCards";
 
 const lab = createThreeLab(element<HTMLCanvasElement>("scene"), { fov: 42 });
 addLabLighting(lab.scene);
+
+/**
+ * The camera moves; neither world is animated into place.
+ *
+ * scene
+ * |- split-world-root
+ * |  |- primary-world (0deg)
+ * |  `- mirror-world  (exact clone, 180deg around Z)
+ * `- camera-orbit-rig (0..+/-180deg around Z)
+ *    `- camera
+ */
+const splitWorldRoot = new THREE.Group();
+splitWorldRoot.name = "split-world-root";
+lab.scene.add(splitWorldRoot);
+
+const cameraRig = new THREE.Group();
+cameraRig.name = "camera-orbit-rig";
+lab.scene.add(cameraRig);
+cameraRig.add(lab.camera);
 lab.camera.position.set(0, 6.4, 18);
 lab.camera.lookAt(0, -.2, -8);
-const turnRoot = new THREE.Group();
-turnRoot.name = "turn-root-all-spatial-elements";
-lab.scene.add(turnRoot);
 
-function buildWorld(name: string, tint: number, withIncomingArt = false) {
+const textureLoader = new THREE.TextureLoader();
+const floaterSpecs = [
+  { src: "/lab-assets/floaters/balloon-large-final.png", aspect: 221 / 362, position: [-8, 8, -22] as const, width: 4.8 },
+  { src: "/lab-assets/floaters/airship-large-final.png", aspect: 376 / 355, position: [9, 6, -28] as const, width: 6 },
+  { src: "/lab-assets/floaters/island-small-final.png", aspect: 223 / 289, position: [7.2, -.6, -19] as const, width: 3.8 },
+] as const;
+
+function createPhysicalArtPlane(src: string, width: number, aspect: number, name: string) {
+  const texture = textureLoader.load(src, (loaded) => {
+    loaded.colorSpace = THREE.SRGBColorSpace;
+    loaded.needsUpdate = true;
+  });
+  texture.colorSpace = THREE.SRGBColorSpace;
+  const material = new THREE.MeshBasicMaterial({
+    alphaTest: .025,
+    depthWrite: false,
+    map: texture,
+    side: THREE.DoubleSide,
+    toneMapped: false,
+    transparent: true,
+  });
+  material.userData.labBaseOpacity = 1;
+  material.userData.labBaseDepthWrite = false;
+  const plane = new THREE.Mesh(new THREE.PlaneGeometry(width, width / aspect), material);
+  plane.name = name;
+  plane.renderOrder = 18;
+  return plane;
+}
+
+function buildCanonicalWorld() {
   const root = new THREE.Group();
-  root.name = name;
-  const first = createLabPlatform(`${name}:first`, { radius: 4.4, seed: tint, details: true });
+  root.name = "primary-world";
+
+  const first = createLabPlatform("mirror-rig:first", { radius: 4.4, seed: 51, details: true, baseArt: true });
   first.group.position.set(0, 0, 0);
   root.add(first.group);
+
   const bridge = createLabBridge(9, .9);
   bridge.position.set(0, .12, -3.4);
   root.add(bridge);
-  const second = createLabPlatform(`${name}:second`, { radius: 2.5, seed: tint + 9, details: true });
+
+  const second = createLabPlatform("mirror-rig:second", { radius: 2.5, seed: 60, details: true, baseArt: true });
   second.group.position.set(0, 1.1, -13);
   root.add(second.group);
-  const side = createLabPlatform(`${name}:side`, { radius: 2.1, seed: tint + 17, details: false });
+
+  const side = createLabPlatform("mirror-rig:side", { radius: 2.1, seed: 68, details: false, baseArt: true });
   side.group.position.set(-7.5, .8, -9.5);
   root.add(side.group);
-  const revealArt = new THREE.Group();
-  revealArt.name = `${name}:reveal-only-art`;
-  if (withIncomingArt) {
-    const firstArt = createPlatformArtStack({ radius: 4.4, surfaceY: first.build.surfaceY, variant: "garden", detailSpread: 1.1 });
-    first.group.add(firstArt);
-    const secondArt = createPlatformArtStack({ radius: 2.5, surfaceY: second.build.surfaceY, variant: "waterfall", detailSpread: .72 });
-    second.group.add(secondArt);
-    const revealIsland = createLabPlatform(`${name}:reveal-island`, { radius: 1.65, seed: tint + 41, details: false });
-    revealIsland.group.position.set(7.2, 1.25, -10.5);
-    revealIsland.group.add(createPlatformArtStack({ radius: 1.65, surfaceY: revealIsland.build.surfaceY, variant: "castle", includeDetails: false }));
-    revealArt.add(revealIsland.group);
-    root.add(revealArt);
-  }
-  return { root, revealArt };
-}
 
-const outgoingBuild = buildWorld("outgoing-world", 51);
-const incomingBuild = buildWorld("incoming-world", 305, true);
-const outgoing = outgoingBuild.root;
-const incoming = incomingBuild.root;
-const incomingRevealArt = incomingBuild.revealArt;
-incoming.rotation.z = -Math.PI;
-turnRoot.add(outgoing, incoming);
-
-const loader = new THREE.TextureLoader();
-const spriteSpecs = [
-  ["/lab-assets/floaters/balloon-large-final.png", -8, 8, -22, 4.8],
-  ["/lab-assets/floaters/airship-large-final.png", 9, 6, -28, 6],
-] as const;
-function createAtmosphere(name: string) {
   const atmosphere = new THREE.Group();
-  atmosphere.name = name;
-  spriteSpecs.forEach(([src,x,y,z,scale]) => {
-    const material = new THREE.SpriteMaterial({ map: loader.load(src), transparent: true, depthWrite: false });
-    const sprite = new THREE.Sprite(material);
-    sprite.position.set(x,y,z); sprite.scale.set(scale,scale,1); atmosphere.add(sprite);
+  atmosphere.name = "physical-atmosphere-planes";
+  floaterSpecs.forEach(({ src, aspect, position, width }, index) => {
+    const plane = createPhysicalArtPlane(src, width, aspect, `atmosphere-plane-${index + 1}`);
+    plane.position.set(position[0], position[1], position[2]);
+    atmosphere.add(plane);
   });
-  return atmosphere;
+  root.add(atmosphere);
+  return root;
 }
-const outgoingAtmosphere = createAtmosphere("outgoing-world-atmosphere");
-const incomingAtmosphere = createAtmosphere("incoming-world-atmosphere");
-outgoing.add(outgoingAtmosphere);
-incoming.add(incomingAtmosphere);
+
+function cloneWorldWithIndependentMaterials(source: THREE.Group) {
+  const clone = source.clone(true);
+  clone.traverse((object) => {
+    if (!(object instanceof THREE.Mesh)) return;
+    object.material = Array.isArray(object.material)
+      ? object.material.map((material) => material.clone())
+      : object.material.clone();
+  });
+  return clone;
+}
+
+const primaryWorld = buildCanonicalWorld();
+const mirrorWorld = cloneWorldWithIndependentMaterials(primaryWorld);
+mirrorWorld.name = "mirror-world-exact-clone";
+mirrorWorld.rotation.z = Math.PI;
+splitWorldRoot.add(primaryWorld, mirrorWorld);
+
+function rememberMaterialState(root: THREE.Object3D) {
+  root.traverse((object) => {
+    if (!(object instanceof THREE.Mesh)) return;
+    const materials = Array.isArray(object.material) ? object.material : [object.material];
+    materials.forEach((material) => {
+      if (material.userData.labBaseOpacity === undefined) {
+        material.userData.labBaseOpacity = material.opacity;
+      }
+      if (material.userData.labBaseDepthWrite === undefined) {
+        material.userData.labBaseDepthWrite = material.depthWrite;
+      }
+    });
+  });
+}
+rememberMaterialState(primaryWorld);
+rememberMaterialState(mirrorWorld);
 
 const angleInput = element<HTMLInputElement>("angle");
 const angleOutput = element<HTMLOutputElement>("angle-output");
-const worldAngle = element<HTMLElement>("world-angle");
-const revealState = element<HTMLElement>("reveal-state");
+const rigAngleOutput = element<HTMLElement>("rig-angle");
+const primaryAlphaOutput = element<HTMLElement>("primary-alpha");
+const mirrorAlphaOutput = element<HTMLElement>("mirror-alpha");
 const status = element<HTMLElement>("status");
 const atmosphereToggle = element<HTMLInputElement>("include-atmosphere");
+const primaryAtmosphere = primaryWorld.getObjectByName("physical-atmosphere-planes");
+const mirrorAtmosphere = mirrorWorld.getObjectByName("physical-atmosphere-planes");
+
 let direction: 1 | -1 = 1;
 let playing = false;
 let startedAt = 0;
@@ -88,69 +142,81 @@ function smoothstep(value: number) {
 
 function setWorldOpacity(root: THREE.Object3D, opacity: number) {
   root.traverse((object) => {
-    if (!(object instanceof THREE.Mesh || object instanceof THREE.Sprite)) return;
+    if (!(object instanceof THREE.Mesh)) return;
     const materials = Array.isArray(object.material) ? object.material : [object.material];
     materials.forEach((material) => {
-      if (material.userData.labBaseOpacity === undefined) material.userData.labBaseOpacity = material.opacity;
-      material.transparent = true;
-      material.opacity = Number(material.userData.labBaseOpacity) * opacity;
-      material.depthWrite = opacity > .96 && !(material instanceof THREE.SpriteMaterial);
+      const baseOpacity = Number(material.userData.labBaseOpacity ?? 1);
+      const baseDepthWrite = Boolean(material.userData.labBaseDepthWrite ?? material.depthWrite);
+      material.transparent = opacity < .999 || material.transparent;
+      material.opacity = baseOpacity * opacity;
+      material.depthWrite = baseDepthWrite && opacity > .98;
       material.needsUpdate = true;
     });
   });
-  root.visible = opacity > .002;
 }
 
 function setAngle(degrees: number) {
   const radians = THREE.MathUtils.degToRad(degrees) * direction;
-  turnRoot.rotation.z = radians;
-  const outgoingAlpha = 1 - smoothstep((degrees - 34) / 78);
-  const incomingAlpha = smoothstep((degrees - 72) / 78);
-  setWorldOpacity(outgoing, outgoingAlpha);
-  setWorldOpacity(incoming, incomingAlpha);
-  incoming.rotation.set(0, -direction * (1 - incomingAlpha) * .52, -Math.PI * direction);
-  const revealScale = .74 + incomingAlpha * .26;
-  incoming.scale.setScalar(revealScale);
-  incoming.position.y = -(1 - incomingAlpha) * 1.25;
-  incomingRevealArt.rotation.y = direction * (1 - incomingAlpha) * .34;
-  incomingRevealArt.position.z = (1 - incomingAlpha) * -2.2;
-  setArtStackOpacity(incomingRevealArt, incomingAlpha);
+  cameraRig.rotation.z = radians;
+
+  // Both complete worlds exist for the entire turn. Only their contribution is
+  // crossfaded through the split; no world or artwork is positioned/revealed.
+  const mirrorMix = smoothstep((degrees - 62) / 56);
+  const primaryAlpha = 1 - mirrorMix;
+  setWorldOpacity(primaryWorld, primaryAlpha);
+  setWorldOpacity(mirrorWorld, mirrorMix);
+
   angleInput.value = String(degrees);
   angleOutput.value = `${Math.round(degrees)}°`;
-  worldAngle.textContent = `${Math.round(degrees) * direction}°`;
-  revealState.textContent = `${Math.round(incomingAlpha * 100)}%`;
-  status.textContent = `${Math.round(degrees)}° · ${incomingAlpha > 0 ? "incoming art rotating in" : "outgoing world"}`;
+  rigAngleOutput.textContent = `${Math.round(degrees) * direction}°`;
+  primaryAlphaOutput.textContent = `${Math.round(primaryAlpha * 100)}%`;
+  mirrorAlphaOutput.textContent = `${Math.round(mirrorMix * 100)}%`;
+
+  const phase = degrees < 62
+    ? "camera orbiting primary world"
+    : degrees <= 118
+      ? "crossing the mirror split"
+      : "camera orbiting mirrored world";
+  status.textContent = `${Math.round(degrees)}° · ${phase}`;
 }
 
-angleInput.addEventListener("input", () => { playing = false; setAngle(Number(angleInput.value)); });
-atmosphereToggle.addEventListener("change", () => {
-  if (atmosphereToggle.checked) {
-    outgoing.add(outgoingAtmosphere);
-    incoming.add(incomingAtmosphere);
-    incomingAtmosphere.visible = true;
-  } else {
-    lab.scene.add(outgoingAtmosphere);
-    incomingAtmosphere.visible = false;
-  }
+angleInput.addEventListener("input", () => {
+  playing = false;
+  setAngle(Number(angleInput.value));
 });
-element("play-left").addEventListener("click", () => { direction = -1; playing = true; startedAt = performance.now(); });
-element("play-right").addEventListener("click", () => { direction = 1; playing = true; startedAt = performance.now(); });
-element("reset").addEventListener("click", () => { playing = false; direction = 1; setAngle(0); });
-let spatialChildCount = 0;
-turnRoot.traverse(() => { spatialChildCount += 1; });
-element("child-count").textContent = String(spatialChildCount - 1);
+
+atmosphereToggle.addEventListener("change", () => {
+  if (primaryAtmosphere) primaryAtmosphere.visible = atmosphereToggle.checked;
+  if (mirrorAtmosphere) mirrorAtmosphere.visible = atmosphereToggle.checked;
+});
+
+function play(nextDirection: 1 | -1) {
+  direction = nextDirection;
+  playing = true;
+  startedAt = performance.now();
+  setAngle(0);
+}
+
+element("play-left").addEventListener("click", () => play(-1));
+element("play-right").addEventListener("click", () => play(1));
+element("reset").addEventListener("click", () => {
+  playing = false;
+  direction = 1;
+  setAngle(0);
+});
+
+let mirroredChildCount = 0;
+mirrorWorld.traverse(() => { mirroredChildCount += 1; });
+element("child-count").textContent = String(mirroredChildCount - 1);
 setAngle(0);
 
 function animate(now: number) {
   if (playing) {
     const progress = Math.min(1, (now - startedAt) / 3000);
-    const eased = -(Math.cos(Math.PI * progress) - 1) / 2;
+    const eased = .5 - Math.cos(Math.PI * progress) * .5;
     setAngle(eased * 180);
     if (progress >= 1) playing = false;
   }
-  [outgoingAtmosphere, incomingAtmosphere].forEach((atmosphere) => {
-    atmosphere.children.forEach((object, index) => { object.position.y += Math.sin(now * .001 + index) * .0008; });
-  });
   lab.renderer.render(lab.scene, lab.camera);
   requestAnimationFrame(animate);
 }

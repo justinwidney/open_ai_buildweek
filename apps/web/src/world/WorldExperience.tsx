@@ -25,7 +25,7 @@ import type {
 const definition = pathData as unknown as WorldDefinition;
 const HALF_TURN = Math.PI;
 const WORLD_UP = new THREE.Vector3(0, 1, 0);
-const PLAYER_CAMERA_Z = 4.72;
+const PLAYER_CAMERA_Z = 4.55;
 
 const DEFAULT_TUNING: WorldTuning = {
   parallaxDepth: 1,
@@ -34,6 +34,15 @@ const DEFAULT_TUNING: WorldTuning = {
   turnDuration: 1,
   rockProfile: "storybook",
   backdropEnabled: true,
+  cameraHeight: 1,
+  cameraTilt: 1,
+  depthGridEnabled: false,
+  texturesEnabled: true,
+  detailsEnabled: true,
+  platformsEnabled: true,
+  spriteOpacity: .9,
+  spriteSaturation: .86,
+  spriteWarmth: .12,
 };
 
 type PointerState = { x: number; y: number; moved: boolean };
@@ -146,7 +155,17 @@ export function WorldExperience({
     scene.add(worldPivot);
 
     let worldIndex = 0;
-    let current = createForwardWorldSlice(definition, worldIndex, quality, tuningRef.current.rockProfile);
+    const worldPresentation = () => ({
+      texturesEnabled: tuningRef.current.texturesEnabled,
+      detailsEnabled: tuningRef.current.detailsEnabled,
+    });
+    let current = createForwardWorldSlice(
+      definition,
+      worldIndex,
+      quality,
+      tuningRef.current.rockProfile,
+      worldPresentation(),
+    );
     let incoming: ForwardWorldSlice | undefined;
     let pendingWorldIndex = worldIndex;
     let transitionDirection: 1 | -1 = 1;
@@ -242,20 +261,36 @@ export function WorldExperience({
       return platform ? beginPlatformTravel(platform) : false;
     };
 
-    const resize = () => {
+    const applyCameraTuning = () => {
       const { width, height } = container.getBoundingClientRect();
       if (width === 0 || height === 0) return;
       camera.aspect = width / height;
+      const heightScale = tuningRef.current.cameraHeight;
+      const tiltScale = tuningRef.current.cameraTilt;
       if (camera.aspect < .72) {
         camera.fov = 54;
-        camera.position.set(0, 3.15, 4.9);
-        camera.lookAt(0, .72, -8.5);
+        camera.position.set(0, 5.55 * heightScale, 4.65);
+        camera.lookAt(0, .18 - (tiltScale - 1) * 2.1, -8.1);
       } else {
-        camera.fov = 45;
-        camera.position.copy(desktopCameraPosition);
-        camera.lookAt(desktopLookAt);
+        camera.fov = 48;
+        camera.position.set(
+          desktopCameraPosition.x,
+          desktopCameraPosition.y * heightScale,
+          desktopCameraPosition.z,
+        );
+        camera.lookAt(
+          desktopLookAt.x,
+          desktopLookAt.y - (tiltScale - 1) * 2.35,
+          desktopLookAt.z,
+        );
       }
       camera.updateProjectionMatrix();
+    };
+
+    const resize = () => {
+      const { width, height } = container.getBoundingClientRect();
+      if (width === 0 || height === 0) return;
+      applyCameraTuning();
       renderer.setSize(width, height, false);
     };
 
@@ -264,7 +299,13 @@ export function WorldExperience({
       const nextIndex = worldIndex + direction;
       pendingWorldIndex = nextIndex;
       transitionDirection = direction;
-      incoming = createForwardWorldSlice(definition, nextIndex, quality, tuningRef.current.rockProfile);
+      incoming = createForwardWorldSlice(
+        definition,
+        nextIndex,
+        quality,
+        tuningRef.current.rockProfile,
+        worldPresentation(),
+      );
       incoming.group.rotation.z = -HALF_TURN * direction;
       incoming.group.rotation.y = -direction * .46;
       incoming.group.position.y = -1.1;
@@ -310,6 +351,8 @@ export function WorldExperience({
 
     const animate = (timestamp: number) => {
       lastFrameTimestamp = timestamp;
+      applyCameraTuning();
+      worldPivot.visible = tuningRef.current.platformsEnabled;
       const elapsed = Math.max(0, (timestamp - animationStartedAt) / 1000);
       const turnSnapshot = transition.update(timestamp);
       if (turnSnapshot.completedThisFrame) {
@@ -482,7 +525,16 @@ export function WorldExperience({
         className={tuning.backdropEnabled ? undefined : "layered-parallax-background--disabled"}
         intensity={tuning.parallaxDepth}
         ref={parallaxRef}
+        spriteOpacity={tuning.spriteOpacity}
+        spriteSaturation={tuning.spriteSaturation}
+        spriteWarmth={tuning.spriteWarmth}
       />
+      <div
+        aria-hidden="true"
+        className={`world-experience__depth-grid${tuning.depthGridEnabled ? " is-visible" : ""}`}
+      >
+        <span data-depth="far">far</span><span data-depth="mid">mid</span><span data-depth="near">near</span>
+      </div>
       <div className="world-experience__transition-wash" />
       <div className="world-experience__hint">↑ or W: travel · ← →: turn world · select an island · L: effects lab</div>
     </div>

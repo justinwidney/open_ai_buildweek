@@ -1,5 +1,6 @@
 {
   "source": "finished/ChatGPT Image Jul 20, 2026, 10_23_53 AM.png",
+  "role": "legacy atlas studies and depth-mesh inputs; not playable platform art",
   "method": "deterministic atlas crop with connected-background alpha removal",
   "sprites": [
     { "id": "carved-platform", "src": "/lab-assets/platform-details/carved-platform.png", "role": "platform-top" },

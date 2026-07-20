@@ -44,6 +44,8 @@ export interface LayeredPlatformOptions {
   jaggedness?: number;
   /** Underside depth as a multiple of radius. Defaults to 1. */
   cragDepth?: number;
+  /** Neutral gameplay bases use a short masonry cylinder; scenery may retain a tapered crag. */
+  baseShape?: "floating-crag" | "stone-cylinder";
   /** @deprecated Use radialFacetCount. Retained for existing quality settings. */
   radialSegments?: number;
   edgeStoneCount?: number;
@@ -133,6 +135,7 @@ export function createLayeredPlatform(options: LayeredPlatformOptions): LayeredP
   );
   const jaggedness = options.jaggedness ?? 0.13;
   const cragDepth = options.cragDepth ?? 1;
+  const baseShape = options.baseShape ?? "floating-crag";
   if (!Number.isFinite(jaggedness) || jaggedness < 0 || jaggedness > 0.45) {
     throw new RangeError("Platform jaggedness must be between zero and 0.45.");
   }
@@ -177,12 +180,19 @@ export function createLayeredPlatform(options: LayeredPlatformOptions): LayeredP
     "stone-shelf",
     createFacetedRadialGeometry({
       profile: radialProfile,
-      rings: [
-        { y: surfaceY - radius * 0.04, radius: radius * 0.9, profileScale: 0.8 },
-        { y: surfaceY - radius * 0.14, radius: radius * 0.95, profileScale: 1 },
-        { y: surfaceY - radius * 0.28, radius: radius * 0.84, profileScale: 1.12, twist: Math.PI / radialFacetCount * 0.1 },
-        { y: surfaceY - radius * 0.4, radius: radius * 0.73, profileScale: 0.9 },
-      ],
+      rings: baseShape === "stone-cylinder"
+        ? [
+            { y: surfaceY - radius * 0.035, radius: radius * .91, profileScale: .35 },
+            { y: surfaceY - radius * .14, radius: radius * .915, profileScale: .3 },
+            { y: surfaceY - radius * .28, radius: radius * .9, profileScale: .32 },
+            { y: surfaceY - radius * .4, radius: radius * .89, profileScale: .28 },
+          ]
+        : [
+            { y: surfaceY - radius * 0.04, radius: radius * 0.9, profileScale: 0.8 },
+            { y: surfaceY - radius * 0.14, radius: radius * 0.95, profileScale: 1 },
+            { y: surfaceY - radius * 0.28, radius: radius * 0.84, profileScale: 1.12, twist: Math.PI / radialFacetCount * 0.1 },
+            { y: surfaceY - radius * 0.4, radius: radius * 0.73, profileScale: 0.9 },
+          ],
       capTop: true,
       capBottom: true,
     }),
@@ -192,6 +202,15 @@ export function createLayeredPlatform(options: LayeredPlatformOptions): LayeredP
   const undersideRings: FacetedRadialRing[] = [];
   for (let index = 0; index <= verticalFacetCount; index += 1) {
     const progress = index / verticalFacetCount;
+    if (baseShape === "stone-cylinder") {
+      undersideRings.push({
+        y: surfaceY - radius * (.38 + .34 * progress),
+        radius: radius * (.89 - progress * .025),
+        profileScale: .26 + progress * .08,
+        twist: index % 2 === 0 ? 0 : Math.PI / radialFacetCount * .08,
+      });
+      continue;
+    }
     const alternatingLedge = index > 0 && index < verticalFacetCount
       ? index % 2 === 0 ? 1.07 : 0.975
       : 1;
@@ -258,10 +277,15 @@ export function createLayeredPlatform(options: LayeredPlatformOptions): LayeredP
     "lower-strata",
     createFacetedRadialGeometry({
       profile: radialProfile,
-      rings: [
-        { y: surfaceY - radius * 0.61, radius: radius * 0.57, profileScale: 1.12 },
-        { y: surfaceY - radius * 0.65, radius: radius * 0.53, profileScale: 1.18 },
-      ],
+      rings: baseShape === "stone-cylinder"
+        ? [
+            { y: surfaceY - radius * .58, radius: radius * .89, profileScale: .28 },
+            { y: surfaceY - radius * .62, radius: radius * .875, profileScale: .3 },
+          ]
+        : [
+            { y: surfaceY - radius * 0.61, radius: radius * 0.57, profileScale: 1.12 },
+            { y: surfaceY - radius * 0.65, radius: radius * 0.53, profileScale: 1.18 },
+          ],
     }),
     options.materials.stone,
   );

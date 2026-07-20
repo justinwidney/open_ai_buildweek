@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { createLayeredPlatform } from "../world/geometry/platforms";
+import { createBasePlatformMaterialSet } from "../world/assets/basePlatformMaterials";
 import { makeWatercolorTexture } from "./threeLab";
 
 export interface LabPlatformOptions {
@@ -9,9 +10,23 @@ export interface LabPlatformOptions {
   cragDepth?: number;
   profile?: "storybook" | "ancient" | "wild";
   details?: boolean;
+  /** Uses the approved neutral stone base instead of procedural lab materials. */
+  baseArt?: boolean;
+  /** Disable image maps when the lab needs a silhouette-only comparison. */
+  textures?: boolean;
 }
 
-function makeKit(profile: NonNullable<LabPlatformOptions["profile"]>, seed: number) {
+function makeKit(profile: NonNullable<LabPlatformOptions["profile"]>, seed: number, baseArt = false, textures = true) {
+  if (baseArt) {
+    const base = createBasePlatformMaterialSet({ texturesEnabled: textures });
+    return {
+      stone: base.wall,
+      stoneDark: base.wallDark,
+      rim: base.rim,
+      top: base.top,
+      detail: new THREE.MeshStandardMaterial({ color: 0xd8b55f, emissive: 0x372348, emissiveIntensity: .09, roughness: .8 }),
+    };
+  }
   const ancient = profile === "ancient";
   const wild = profile === "wild";
   const stoneMap = makeWatercolorTexture(seed, ancient ? "#8e8a7c" : "#8796a2", ancient ? "#cfc0a4" : "#d7c9b6");
@@ -48,7 +63,7 @@ export function createLabPlatform(id: string, options: LabPlatformOptions = {}) 
   const radius = options.radius ?? 4.8;
   const seed = options.seed ?? 41;
   const profile = options.profile ?? "storybook";
-  const materials = makeKit(profile, seed);
+  const materials = makeKit(profile, seed, options.baseArt, options.textures ?? true);
   const build = createLayeredPlatform({
     id,
     radius,
@@ -58,8 +73,9 @@ export function createLabPlatform(id: string, options: LabPlatformOptions = {}) 
     verticalFacetCount: profile === "wild" ? 10 : 8,
     jaggedness: options.jaggedness ?? (profile === "wild" ? .22 : profile === "ancient" ? .1 : .14),
     cragDepth: options.cragDepth ?? (profile === "wild" ? 1.34 : 1.16),
-    edgeStoneCount: Math.round(radius * 8),
-    detailCount: Math.round(radius * 7),
+    baseShape: options.baseArt ? "stone-cylinder" : "floating-crag",
+    edgeStoneCount: options.baseArt ? 0 : Math.round(radius * 8),
+    detailCount: options.baseArt ? 0 : Math.round(radius * 7),
     shadows: true,
   });
   const group = build.group;

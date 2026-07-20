@@ -1,1 +1,47 @@
-<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Lab 02 — Full World Rotation</title><script type="module" src="/src/labs/rotationRigLab.ts"></script></head><body><main class="lab-shell"><header class="lab-header"><a class="lab-back" href="/labs/index.html">← All labs</a><div class="lab-heading"><span>Issue B · isolated scene hierarchy</span><h1>Rotating World Reveal</h1></div><span class="lab-number">02</span></header><div class="lab-stage"><canvas id="scene"></canvas><div class="lab-status" id="status">0° · outgoing world</div></div><aside class="lab-panel"><p class="lab-panel__lead">The outgoing world rotates away as an opposite world fades, scales, and counter-rotates into place. Its detailed platform artwork exists only while that incoming world is being revealed.</p><div class="lab-seam">Production seam: src/world/WorldExperience.tsx → worldPivot + incoming.group<br>Acceptance: spatial children rotate · incoming artwork crossfades · final world is upright</div><label class="lab-control"><span>Rotation angle <output id="angle-output">0°</output></span><input id="angle" type="range" min="0" max="180" step="1" value="0"></label><label class="lab-check"><input id="include-atmosphere" type="checkbox" checked><span>Atmosphere belongs to world root</span></label><div class="lab-buttons"><button id="play-left" class="lab-button">Turn left</button><button id="play-right" class="lab-button lab-button--primary">Turn right</button><button id="reset" class="lab-button">Reset</button></div><div class="lab-readout"><div><span>World root</span><b id="world-angle">0°</b></div><div><span>Incoming alpha</span><b id="reveal-state">0%</b></div><div><span>Children</span><b id="child-count">0</b></div></div></aside></main></body></html>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Lab 02 — Mirror-Split Camera Orbit</title>
+    <script type="module" src="/src/labs/rotationRigLab.ts"></script>
+  </head>
+  <body>
+    <main class="lab-shell">
+      <header class="lab-header">
+        <a class="lab-back" href="/labs/index.html">← All labs</a>
+        <div class="lab-heading">
+          <span>Issue B · exact mirrored hierarchy</span>
+          <h1>Mirror-Split Camera Orbit</h1>
+        </div>
+        <span class="lab-number">02</span>
+      </header>
+      <div class="lab-stage">
+        <canvas id="scene"></canvas>
+        <div class="lab-status" id="status">0° · camera orbiting primary world</div>
+      </div>
+      <aside class="lab-panel">
+        <p class="lab-panel__lead">Two complete, identical platform worlds remain fixed around one split axis. The second is an exact 180° mirror. The camera rig physically orbits between them, with a midpoint crossfade so either turn ends upright.</p>
+        <div class="lab-seam">Hierarchy: split-world-root → primary-world + mirror-world(rotateZ 180°)<br>camera-orbit-rig → camera(rotateZ 0…±180°)<br>Acceptance: exact clone · no reveal translation · PlaneGeometry atmosphere · final mirror upright</div>
+        <label class="lab-control">
+          <span>Camera orbit <output id="angle-output">0°</output></span>
+          <input id="angle" type="range" min="0" max="180" step="1" value="0">
+        </label>
+        <label class="lab-check">
+          <input id="include-atmosphere" type="checkbox" checked>
+          <span>Atmosphere planes belong to both worlds</span>
+        </label>
+        <div class="lab-buttons">
+          <button id="play-left" class="lab-button">Orbit left</button>
+          <button id="play-right" class="lab-button lab-button--primary">Orbit right</button>
+          <button id="reset" class="lab-button">Reset</button>
+        </div>
+        <div class="lab-readout">
+          <div><span>Camera rig</span><b id="rig-angle">0°</b></div>
+          <div><span>Primary / mirror</span><b><span id="primary-alpha">100%</span> / <span id="mirror-alpha">0%</span></b></div>
+          <div><span>Mirrored children</span><b id="child-count">0</b></div>
+        </div>
+      </aside>
+    </main>
+  </body>
+</html>

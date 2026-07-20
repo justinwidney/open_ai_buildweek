@@ -61,7 +61,26 @@ importers:
         specifier: latest
         version: 8.1.5(esbuild@0.28.1)(tsx@4.23.1)
 
+  packages/cube: {}
+
+  packages/db:
+    dependencies:
+      '@control-ai/engine':
+        specifier: workspace:*
+        version: link:../engine
+
+  packages/engine: {}
+
   packages/shared: {}
+
+  packages/worker:
+    dependencies:
+      '@control-ai/db':
+        specifier: workspace:*
+        version: link:../db
+      '@control-ai/engine':
+        specifier: workspace:*
+        version: link:../engine
 
 packages:
 

@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Lab 08 — Platform Detail Forge</title>
+    <script type="module" src="/src/labs/platformDetailLab.ts"></script>
+    <style>
+      .detail-placement-grid { background-image: repeating-linear-gradient(90deg,rgba(255,241,188,.23) 0 1px,transparent 1px 10%),repeating-linear-gradient(0deg,rgba(255,241,188,.23) 0 1px,transparent 1px 10%); inset: 42% 9% -20%; opacity: 0; pointer-events: none; position: absolute; transform: perspective(560px) rotateX(62deg); transform-origin: center bottom; z-index: 12; }
+      .detail-placement-grid.is-visible { opacity: 1; }
+      .detail-catalog { display: grid; gap: 6px; grid-template-columns: 1fr 1fr; margin-top: 12px; }
+      .detail-catalog .lab-check { margin: 0; }
+    </style>
+  </head>
+  <body>
+    <main class="lab-shell">
+      <header class="lab-header">
+        <a class="lab-back" href="/labs/index.html">← All labs</a>
+        <div class="lab-heading"><span>Issue H · additive platform art direction</span><h1>Platform Detail Forge</h1></div>
+        <span class="lab-number">08</span>
+      </header>
+      <div class="lab-stage">
+        <canvas id="scene"></canvas>
+        <div class="detail-placement-grid" id="placement-grid"></div>
+        <div class="lab-status" id="status">High 2.5D view · tree selected</div>
+      </div>
+      <aside class="lab-panel">
+        <p class="lab-panel__lead">Build the platform one independent asset at a time. Select a detail, place it on the grid, then strip texture to judge only silhouette, scale, and spacing.</p>
+        <div class="lab-seam">Production seam: content/forward/decorations.ts + signage.ts<br>Rule: every detail remains an independently placeable physical group</div>
+        <label class="lab-control"><span>Selected detail</span><select id="asset"></select></label>
+        <label class="lab-check"><input id="asset-enabled" type="checkbox" checked><span>Show selected detail</span></label>
+        <label class="lab-control"><span>Left / right <output id="x-output">-2.10m</output></span><input id="x" type="range" min="-4" max="4" step="0.05" value="-2.1"></label>
+        <label class="lab-control"><span>Front / back <output id="z-output">-0.45m</output></span><input id="z" type="range" min="-3.6" max="3.6" step="0.05" value="-0.45"></label>
+        <label class="lab-control"><span>Scale <output id="scale-output">1.00×</output></span><input id="scale" type="range" min="0.35" max="1.8" step="0.05" value="1"></label>
+        <label class="lab-control"><span>Rotation <output id="rotation-output">0°</output></span><input id="rotation" type="range" min="-180" max="180" step="5" value="0"></label>
+        <div class="detail-catalog" id="catalog"></div>
+        <label class="lab-check"><input id="textures" type="checkbox" checked><span>Painted base textures</span></label>
+        <label class="lab-check"><input id="wireframe" type="checkbox"><span>Wireframe shape inspection</span></label>
+        <label class="lab-check"><input id="grid" type="checkbox" checked><span>Placement grid</span></label>
+        <div class="lab-buttons"><button id="high" class="lab-button is-active">High 2.5D</button><button id="edge" class="lab-button">Near edge</button><button id="reset" class="lab-button lab-button--primary">Reset layout</button></div>
+        <div class="lab-readout"><div><span>Visible details</span><b id="visible-count">0</b></div><div><span>Texture</span><b id="texture-readout">painted</b></div><div><span>Camera</span><b id="camera-readout">high</b></div></div>
+      </aside>
+    </main>
+  </body>
+</html>

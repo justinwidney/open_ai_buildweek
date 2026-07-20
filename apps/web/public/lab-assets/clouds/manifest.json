@@ -1,0 +1,20 @@
+{
+  "atlasSource": "finished/ChatGPT Image Jul 20, 2026, 02_39_01 PM.png",
+  "backwallSource": "finished/ChatGPT Image Jul 20, 2026, 02_39_16 PM.png",
+  "backwall": "/world-background/sunrise-backwall-v2.webp",
+  "segmentation": "connected-shape alpha component masks; bounding boxes used only after isolation for transparent trim",
+  "sprites": [
+    { "id": "streak-large", "src": "/lab-assets/clouds/streak-large.png", "componentId": 2 },
+    { "id": "tower-glow", "src": "/lab-assets/clouds/tower-glow.png", "componentId": 1 },
+    { "id": "pink-islet", "src": "/lab-assets/clouds/pink-islet.png", "componentId": 3 },
+    { "id": "wing-sunset", "src": "/lab-assets/clouds/wing-sunset.png", "componentId": 4 },
+    { "id": "cumulus-right", "src": "/lab-assets/clouds/cumulus-right.png", "componentId": 9 },
+    { "id": "garden-cumulus", "src": "/lab-assets/clouds/garden-cumulus.png", "componentId": 13 },
+    { "id": "lavender-puff", "src": "/lab-assets/clouds/lavender-puff.png", "componentId": 12 },
+    { "id": "ribbon-middle", "src": "/lab-assets/clouds/ribbon-middle.png", "componentId": 18 },
+    { "id": "tower-left", "src": "/lab-assets/clouds/tower-left.png", "componentId": 23 },
+    { "id": "golden-ribbon", "src": "/lab-assets/clouds/golden-ribbon.png", "componentId": 44 },
+    { "id": "bottom-cumulus", "src": "/lab-assets/clouds/bottom-cumulus.png", "componentId": 46 },
+    { "id": "violet-bank", "src": "/lab-assets/clouds/violet-bank.png", "componentId": 37 }
+  ]
+}

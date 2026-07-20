@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Lab 07 — Alpha Outline Depth Mesh</title>
+    <script type="module" src="/src/labs/depthMeshLab.ts"></script>
+    <style>
+      .depth-mesh-previews { display: grid; gap: 8px; grid-template-columns: 1fr 1fr; margin: 0 0 14px; }
+      .depth-mesh-preview { background: rgba(33,42,51,.78); border: 1px solid rgba(91,70,48,.42); border-radius: 8px; overflow: hidden; padding: 6px; }
+      .depth-mesh-preview span { color: #fff4d5; display: block; font: 700 8px/1 system-ui,sans-serif; letter-spacing: .12em; margin: 1px 2px 6px; text-transform: uppercase; }
+      .depth-mesh-preview canvas { background-image: linear-gradient(45deg,#6e7780 25%,transparent 25%),linear-gradient(-45deg,#6e7780 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#6e7780 75%),linear-gradient(-45deg,transparent 75%,#6e7780 75%); background-position: 0 0,0 5px,5px -5px,-5px 0; background-size: 10px 10px; display: block; height: 92px; image-rendering: auto; object-fit: contain; width: 100%; }
+      .depth-mesh-busy { align-items: center; background: rgba(20,31,42,.55); color: #fff4d5; display: flex; font: 700 11px/1 system-ui,sans-serif; inset: 0; justify-content: center; letter-spacing: .12em; opacity: 0; pointer-events: none; position: absolute; text-transform: uppercase; transition: opacity .15s ease; z-index: 14; }
+      .depth-mesh-busy.is-visible { opacity: 1; }
+      @media (max-width: 620px) { .depth-mesh-previews { display: none; } }
+    </style>
+  </head>
+  <body>
+    <main class="lab-shell">
+      <header class="lab-header">
+        <a class="lab-back" href="/labs/index.html">← All labs</a>
+        <div class="lab-heading"><span>Issue G · silhouette-derived geometry</span><h1>Alpha Outline Depth Mesh</h1></div>
+        <span class="lab-number">07</span>
+      </header>
+      <div class="lab-stage">
+        <canvas id="scene"></canvas>
+        <div class="depth-mesh-busy" id="busy">Tracing alpha silhouette…</div>
+        <div class="lab-status" id="status">Loading platform artwork</div>
+      </div>
+      <aside class="lab-panel">
+        <p class="lab-panel__lead">This study traces the transparent shape itself—not its rectangular crop—then turns the artwork luminance into a physically lit, subdivided relief mesh.</p>
+        <div class="depth-mesh-previews">
+          <div class="depth-mesh-preview"><span>Source + alpha</span><canvas id="source-preview" width="300" height="184"></canvas></div>
+          <div class="depth-mesh-preview"><span>Luminance depth</span><canvas id="depth-preview" width="300" height="184"></canvas></div>
+        </div>
+        <label class="lab-control"><span>Artwork</span><select id="asset">
+          <option value="tree-island-hd">HD tree island</option>
+          <option value="waterfall-island-hd">HD waterfall shrine</option>
+          <option value="castle-island-hd">HD castle island</option>
+          <option value="carved-platform">Carved platform</option>
+          <option value="small-platform">Small platform</option>
+          <option value="tree-island">Tree island</option>
+          <option value="waterfall-island">Waterfall island</option>
+          <option value="castle-island">Castle island</option>
+          <option value="storybook-tree">Storybook tree</option>
+          <option value="flower-bed">Flower bed</option>
+          <option value="lantern">Lantern</option>
+          <option value="sign">Sign</option>
+          <option value="purple-flag">Purple flag</option>
+          <option value="rope-bridge">Rope bridge</option>
+        </select></label>
+        <label class="lab-control"><span>Alpha threshold <output id="alpha-output">0.16</output></span><input id="alpha" type="range" min="0.02" max="0.8" step="0.01" value="0.16"></label>
+        <label class="lab-control"><span>Depth strength <output id="depth-output">1.15</output></span><input id="depth" type="range" min="0" max="3" step="0.05" value="1.15"></label>
+        <label class="lab-control"><span>Mesh resolution <output id="resolution-output">96</output></span><input id="resolution" type="range" min="24" max="160" step="8" value="96"></label>
+        <label class="lab-control"><span>Camera angle <output id="angle-output">24°</output></span><input id="angle" type="range" min="-70" max="70" step="1" value="24"></label>
+        <label class="lab-control"><span>Surface view</span><select id="surface"><option value="texture">Textured relief</option><option value="wireframe">Wireframe topology</option></select></label>
+        <label class="lab-check"><input id="outline" type="checkbox" checked><span>Vector-like alpha outline</span></label>
+        <div class="lab-buttons"><button id="front" class="lab-button">Front</button><button id="three-quarter" class="lab-button is-active">3/4 view</button><button id="download-outline" class="lab-button">Download SVG outline</button><button id="reset" class="lab-button lab-button--primary">Reset</button></div>
+        <div class="lab-readout"><div><span>Triangles</span><b id="triangle-count">—</b></div><div><span>Contours</span><b id="contour-count">—</b></div><div><span>Source</span><b id="source-size">—</b></div></div>
+      </aside>
+    </main>
+  </body>
+</html>

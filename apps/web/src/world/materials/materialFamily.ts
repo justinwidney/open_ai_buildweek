@@ -39,13 +39,15 @@ export interface FantasyMaterialKitOptions {
   readonly tier?: QualityTier;
   readonly seed?: number;
   readonly maxAnisotropy?: number;
+  /** Disable generated maps when judging only shape, scale, and placement. */
+  readonly texturesEnabled?: boolean;
 }
 
 export function createFantasyMaterialKit(options: FantasyMaterialKitOptions = {}): FantasyMaterialKit {
   const tier = options.tier ?? "high";
   const profile = qualityProfile(tier);
   const textures = new Map<ProceduralTextureKind, Texture>();
-  if (profile.textureSize > 0) {
+  if ((options.texturesEnabled ?? true) && profile.textureSize > 0) {
     for (const [index, kind] of (["parchment", "stone", "foliage", "trim"] as const).entries()) {
       textures.set(kind, createProceduralTexture(kind, {
         size: profile.textureSize,

@@ -1,0 +1,16 @@
+{
+  "geometryReference": {
+    "source": "finished/ChatGPT Image Jul 20, 2026, 03_18_38 PM (1).png",
+    "output": "/platform-base/base-platform-reference.png",
+    "role": "neutral gameplay platform proportion and stone-block reference"
+  },
+  "materialAtlas": {
+    "source": "finished/ChatGPT Image Jul 20, 2026, 03_18_38 PM (2).png",
+    "segmentation": "connected components selected by label before trim; no neighboring atlas component is retained",
+    "outputs": [
+      { "id": "platform-top", "path": "/platform-base/platform-top.png", "pixels": [887, 937] },
+      { "id": "platform-wall", "path": "/platform-base/platform-wall.png", "pixels": [397, 986] },
+      { "id": "platform-ground-strip", "path": "/platform-base/platform-ground-strip.png", "pixels": [1231, 196] }
+    ]
+  }
+}
