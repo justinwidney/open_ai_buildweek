@@ -18,7 +18,7 @@ world loop.
 | G. Art becomes silhouette geometry | `depth-mesh.html` | `src/labs/depthMeshLab.ts` | `public/lab-assets/platform-hires/` + future production mesh importer |
 | H. Platform detail is independently authored | `platform-detail.html` | `src/labs/platformDetailLab.ts` | `content/forward/decorations.ts` + `signage.ts` |
 | I. Sprites align by view, depth, color, and alpha | `sprite-grid.html` | `src/labs/spriteGridLab.ts` | `LayeredParallaxBackground.tsx` orbital sprite configuration |
-| J. Background matches without gameplay meshes | `background-only.html` | `src/labs/backgroundOnlyLab.tsx` | DOM watercolor layers and main-scene background-only controls |
+| J. Procedural SVG background without gameplay meshes | `background-only.html` | `src/labs/backgroundOnlyLab.tsx` + `tools/svg/catalog.json` | Curated SVG groups, weighted seeded recycling, optional cloud obstruction, and zero WebGL canvases |
 
 Shared lab-only code lives in `src/labs/lab.css`, `threeLab.ts`, and
 `labWorldObjects.ts`. The neutral gameplay base is shared through

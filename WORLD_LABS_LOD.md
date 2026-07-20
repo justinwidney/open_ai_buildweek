@@ -45,7 +45,7 @@ trim—rectangular crops are never sprite boundaries.
 | G. Outline + depth mesh | `/labs/depth-mesh.html` | `src/labs/depthMeshLab.ts` | Alpha-clipped BufferGeometry; luminance depth displacement; recomputed normals; marching-squares outline; SVG outline export | `public/lab-assets/platform-hires/` and future production mesh importer | Isolated lab ready |
 | H. Additive detail forge | `/labs/platform-detail.html` | `src/labs/platformDetailLab.ts` | Every platform detail can be independently enabled, placed, scaled, rotated, and judged with texture removed | `content/forward/decorations.ts`, `signage.ts`, and `WorldTuning.detailsEnabled` | Lab ready; main controls promoted |
 | I. Sprite depth grid | `/labs/sprite-grid.html` | `src/labs/spriteGridLab.ts` | Reference and Sobel-edge overlays; left/center/right views; per-sprite depth, offset, scale, opacity, saturation, and warmth output | `LayeredParallaxBackground.tsx` calibration props | Lab ready; global calibration promoted |
-| J. Background-only match | `/labs/background-only.html` | `src/labs/backgroundOnlyLab.tsx` | Collapsible controls; backwall + repeated distant plate + six route-safe clouds; protected straight/±45° corridors; zero WebGL canvases | `WorldTuning.platformsEnabled` and DOM parallax layer | Infinite-horizon lab ready; main toggle promoted |
+| J. Procedural SVG background | `/labs/background-only.html` | `src/labs/backgroundOnlyLab.tsx` | Curated SVG groups; weighted seeded generation; recyclable depth slots; optional cloud obstruction; zero WebGL canvases | `tools/svg/catalog.json` and DOM parallax layer | Local procedural lab ready; main toggle promoted |
 
 ## Level-of-detail tiers
 
@@ -214,3 +214,18 @@ crossfade/state transition and removes ambient floater animation.
   45° right platform corridors remain free of balloons, airships, or sprites.
 - Added pause and forward-speed controls; the explicit lab toggle owns motion
   so browser-level reduced-motion settings cannot silently freeze the test.
+
+### 2026-07-20 — Classified procedural SVG stream pass 9
+
+- Replaced the fixed PNG island and cloud streams with direct Vite discovery of
+  every source file under `tools/svg/sprites_svg/`.
+- Curated all 73 current sprites into distant islands, mountain landmarks,
+  clouds and mist, floating islands, trees, rocks, water, vegetation, and
+  ground shelves; corrected sheet-classifier mistakes such as the wooded islet
+  and two water pools.
+- Added weighted seeded selection and 26 recyclable depth slots. Every slot
+  chooses a different eligible SVG after it passes the camera, while newly
+  added uncataloged files enter a conservative far-depth review group.
+- Added per-group inclusion controls, moving labels, a random-world seed,
+  depth spread, and explicit cloud-obstruction probability. Only clouds marked
+  `occlusion: allowed` may cross the center view by default.
