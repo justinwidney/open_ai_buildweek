@@ -27,6 +27,12 @@ export interface LayeredParallaxBackgroundProps {
   readonly spriteOpacity?: number;
   readonly spriteSaturation?: number;
   readonly spriteWarmth?: number;
+  /** Restricts the orbital layer to an explicitly approved set of sprite IDs. */
+  readonly visibleSpriteIds?: readonly string[];
+  /** Repeats the distant plate into progressively deeper atmospheric ridges. */
+  readonly infiniteHorizon?: boolean;
+  /** Scales the spacing of the repeated distant ridges. */
+  readonly horizonDepth?: number;
 }
 
 interface LayerDefinition {
@@ -201,6 +207,9 @@ export const LayeredParallaxBackground = forwardRef<
     spriteOpacity = 1,
     spriteSaturation = 1,
     spriteWarmth = 0,
+    visibleSpriteIds,
+    infiniteHorizon = false,
+    horizonDepth = 1,
   },
   forwardedRef,
 ) {
@@ -227,6 +236,7 @@ export const LayeredParallaxBackground = forwardRef<
 
   intensityRef.current = clamp(intensity, 0, 2);
   reducedMotionPropRef.current = reducedMotion;
+  const visibleSpriteIdSet = visibleSpriteIds ? new Set(visibleSpriteIds) : undefined;
 
   const shouldReduceMotion = () => {
     const runtime = runtimeRef.current;
@@ -419,7 +429,7 @@ export const LayeredParallaxBackground = forwardRef<
 
   useEffect(() => {
     commitTransforms();
-  }, [intensity, reducedMotion]);
+  }, [horizonDepth, infiniteHorizon, intensity, reducedMotion, spriteOpacity, spriteSaturation, spriteWarmth, visibleSpriteIds]);
 
   return (
     <div
@@ -430,6 +440,7 @@ export const LayeredParallaxBackground = forwardRef<
         "--sprite-opacity": clamp(spriteOpacity, 0, 1),
         "--sprite-saturation": clamp(spriteSaturation, 0, 2),
         "--sprite-warmth": clamp(spriteWarmth, 0, 1),
+        "--horizon-depth": clamp(horizonDepth, .25, 2),
       } as CSSProperties}
     >
       {LAYERS.map((layer, index) => (
@@ -448,7 +459,37 @@ export const LayeredParallaxBackground = forwardRef<
           />
         </div>
       ))}
+      {infiniteHorizon && (
+        <div className="layered-parallax-background__infinite-horizon">
+          {Array.from({ length: 6 }, (_, index) => {
+            const depth = clamp(horizonDepth, .25, 2);
+            const progress = index / 5;
+            const top = 40.5 + Math.pow(progress, 1.55) * 43 * depth;
+            const scale = .42 + progress * 1.08 * depth;
+            const opacity = .08 + (1 - Math.abs(progress - .48) * 1.65) * .13;
+            return (
+              <div
+                className="layered-parallax-background__horizon-ridge"
+                data-ridge={index}
+                key={index}
+                style={{
+                  "--ridge-blur": `${Math.max(0, 2.2 - index * .34).toFixed(2)}px`,
+                  "--ridge-opacity": clamp(opacity, .05, .22),
+                  "--ridge-scale": scale,
+                  "--ridge-top": `${Math.min(89, top).toFixed(2)}%`,
+                } as CSSProperties}
+              >
+                <img alt="" decoding="async" draggable={false} src={joinAssetPath(assetBaseUrl, "distant-islands.webp")} />
+                <img alt="" decoding="async" draggable={false} src={joinAssetPath(assetBaseUrl, "distant-islands.webp")} />
+                <img alt="" decoding="async" draggable={false} src={joinAssetPath(assetBaseUrl, "distant-islands.webp")} />
+              </div>
+            );
+          })}
+          <div className="layered-parallax-background__vanishing-mist" />
+        </div>
+      )}
       {ORBITAL_SPRITES.map((sprite, index) => (
+        visibleSpriteIdSet && !visibleSpriteIdSet.has(sprite.id) ? null :
         <div
           className="layered-parallax-background__orbital-sprite"
           data-depth={sprite.depth}

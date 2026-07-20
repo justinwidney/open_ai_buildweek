@@ -2,6 +2,7 @@
   --sprite-opacity: 1;
   --sprite-saturation: 1;
   --sprite-warmth: 0;
+  --horizon-depth: 1;
   background: linear-gradient(180deg, #6595d1 0%, #bfd1f0 52%, #fae0ce 100%);
   contain: layout paint;
   inset: 0;
@@ -51,6 +52,53 @@
 .layered-parallax-background__layer[data-layer="islands"] {
   opacity: .58;
   z-index: 3;
+}
+
+.layered-parallax-background__infinite-horizon {
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  position: absolute;
+  z-index: 2;
+}
+
+.layered-parallax-background__horizon-ridge {
+  --ridge-blur: 0px;
+  --ridge-opacity: .12;
+  --ridge-scale: 1;
+  --ridge-top: 44%;
+  display: flex;
+  filter: blur(var(--ridge-blur)) saturate(.72);
+  height: clamp(100px, 21vh, 260px);
+  left: -100%;
+  mask-image: linear-gradient(180deg, transparent 0, #000 18%, #000 70%, transparent 100%);
+  mix-blend-mode: multiply;
+  opacity: var(--ridge-opacity);
+  position: absolute;
+  top: var(--ridge-top);
+  transform: scale(var(--ridge-scale));
+  transform-origin: 50% 0;
+  width: 300%;
+}
+
+.layered-parallax-background__horizon-ridge img {
+  flex: 0 0 33.333%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 44%;
+  width: 33.333%;
+}
+
+.layered-parallax-background__horizon-ridge img:first-child,
+.layered-parallax-background__horizon-ridge img:last-child { transform: scaleX(-1); }
+
+.layered-parallax-background__vanishing-mist {
+  background: radial-gradient(ellipse at 50% 50%, rgba(255, 237, 201, .72), rgba(226, 209, 225, .26) 36%, transparent 72%);
+  height: 24%;
+  left: 4%;
+  position: absolute;
+  right: 4%;
+  top: 31%;
 }
 
 .layered-parallax-background__orbital-sprite {

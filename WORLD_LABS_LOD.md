@@ -45,7 +45,7 @@ trim—rectangular crops are never sprite boundaries.
 | G. Outline + depth mesh | `/labs/depth-mesh.html` | `src/labs/depthMeshLab.ts` | Alpha-clipped BufferGeometry; luminance depth displacement; recomputed normals; marching-squares outline; SVG outline export | `public/lab-assets/platform-hires/` and future production mesh importer | Isolated lab ready |
 | H. Additive detail forge | `/labs/platform-detail.html` | `src/labs/platformDetailLab.ts` | Every platform detail can be independently enabled, placed, scaled, rotated, and judged with texture removed | `content/forward/decorations.ts`, `signage.ts`, and `WorldTuning.detailsEnabled` | Lab ready; main controls promoted |
 | I. Sprite depth grid | `/labs/sprite-grid.html` | `src/labs/spriteGridLab.ts` | Reference and Sobel-edge overlays; left/center/right views; per-sprite depth, offset, scale, opacity, saturation, and warmth output | `LayeredParallaxBackground.tsx` calibration props | Lab ready; global calibration promoted |
-| J. Background-only match | `/labs/background-only.html` | `src/labs/backgroundOnlyLab.tsx` | DOM layers only; zero WebGL canvases; reference wipe/difference; independent background groups | `WorldTuning.platformsEnabled` and DOM parallax layer | Lab ready; main toggle promoted |
+| J. Background-only match | `/labs/background-only.html` | `src/labs/backgroundOnlyLab.tsx` | Collapsible controls; backwall + repeated distant plate + six route-safe clouds; protected straight/±45° corridors; zero WebGL canvases | `WorldTuning.platformsEnabled` and DOM parallax layer | Infinite-horizon lab ready; main toggle promoted |
 
 ## Level-of-detail tiers
 
@@ -188,3 +188,16 @@ crossfade/state transition and removes ambient floater animation.
   left/center/right calibration records.
 - Added a DOM-only background reconstruction lab with reference wipe and
   difference comparison; the page intentionally creates zero gameplay meshes.
+
+### 2026-07-20 — Route-safe infinite background pass 7
+
+- Collapsed the Background-Only Match controls to a single left-edge button by
+  default so the art fills the review viewport.
+- Reduced the default composition to the sunrise backwall, distant island
+  plate, and six upper-edge clouds; balloons, airships, ornate island sprites,
+  foreground cards, and low corridor-blocking clouds remain excluded.
+- Added straight, 45° left, and 45° right route guides with a shared vanishing
+  point and deterministic sector selection.
+- Repeated the distant plate across six progressively scaled, horizontally
+  tiled atmospheric ridges so the horizon reads as continuous depth instead of
+  one terminal back plane.
