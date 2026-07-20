@@ -1,0 +1,14 @@
+{
+  "input": "finished/ChatGPT Image Jul 20, 2026, 10_11_35 AM.png",
+  "output": "apps/web/public/reference-crops/jul20-1011",
+  "tiles": [
+    { "name": "brand", "crop": [24, 15, 265, 56] },
+    { "name": "toolbar", "crop": [775, 8, 363, 57] },
+    { "name": "active-skill-card", "crop": [1675, 57, 215, 622] },
+    { "name": "question-dock", "crop": [1460, 748, 422, 64] },
+    { "name": "values-sign", "crop": [43, 503, 174, 151] },
+    { "name": "strengths-sign", "crop": [418, 385, 147, 120] },
+    { "name": "mindset-sign", "crop": [1281, 284, 113, 105] },
+    { "name": "time-energy-sign", "crop": [1456, 405, 163, 146] }
+  ]
+}

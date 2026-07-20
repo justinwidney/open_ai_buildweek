@@ -1,0 +1,26 @@
+{
+  "name": "control-ai-world",
+  "private": true,
+  "version": "0.1.0",
+  "description": "A data-driven skill-planning world built with React and Three.js",
+  "type": "module",
+  "scripts": {
+    "build": "pnpm -r --if-present build",
+    "typecheck": "pnpm -r --if-present typecheck",
+    "test": "pnpm -r --if-present test",
+    "test:world": "pnpm --dir apps/web exec tsx src/world/testing/verify-world.ts",
+    "dev:web": "pnpm --filter @control-ai/web dev",
+    "dev:devvit": "npm run dev -w apps/devvit",
+    "sprites:build": "node tools/pixel/compile.mjs",
+    "sprites:import": "node tools/pixel/import-image.mjs",
+    "sprites:extract": "node tools/pixel/extract-atlas.mjs",
+    "sprites:anim": "node tools/pixel/animate-preview.mjs",
+    "smoke:visual": "node tools/smoke/visual-smoke.mjs"
+  },
+  "devDependencies": {
+    "@fontsource/silkscreen": "^5.2.6",
+    "pngjs": "^7.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.5.0"
+  }
+}

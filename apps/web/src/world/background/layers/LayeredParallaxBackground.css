@@ -1,0 +1,90 @@
+.layered-parallax-background {
+  background: linear-gradient(180deg, #6595d1 0%, #bfd1f0 52%, #fae0ce 100%);
+  contain: layout paint;
+  inset: 0;
+  isolation: isolate;
+  overflow: hidden;
+  pointer-events: none;
+  position: absolute;
+  user-select: none;
+  z-index: 0;
+}
+
+.layered-parallax-background__layer {
+  --parallax-blur: 0px;
+  --parallax-rotation: 0deg;
+  --parallax-scale: 1.08;
+  --parallax-x: 0px;
+  --parallax-y: 0px;
+  filter: blur(var(--parallax-blur));
+  inset: -8%;
+  position: absolute;
+  transform: translate3d(var(--parallax-x), var(--parallax-y), 0)
+    rotate(var(--parallax-rotation)) scale(var(--parallax-scale));
+  transform-origin: 50% 50%;
+  transition: filter 180ms ease-out, transform 180ms cubic-bezier(.2, .75, .25, 1);
+  will-change: filter, transform;
+}
+
+.layered-parallax-background__image {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+  width: 100%;
+}
+
+.layered-parallax-background__layer[data-layer="backwall"] { z-index: 0; }
+
+.layered-parallax-background__layer:not([data-layer="backwall"]) {
+  mix-blend-mode: multiply;
+}
+
+.layered-parallax-background__layer[data-layer="horizon"] {
+  opacity: .72;
+  z-index: 1;
+}
+
+.layered-parallax-background__layer[data-layer="floaters"] {
+  opacity: .86;
+  z-index: 2;
+}
+
+.layered-parallax-background__layer[data-layer="islands"] {
+  opacity: .58;
+  z-index: 3;
+}
+
+.layered-parallax-background__layer[data-layer="foreground"] {
+  opacity: .48;
+  z-index: 4;
+}
+
+.layered-parallax-background[data-transitioning="true"]
+  .layered-parallax-background__layer {
+  transition: none;
+}
+
+.layered-parallax-background[data-reduced-motion="true"]
+  .layered-parallax-background__layer {
+  filter: none;
+  transition: none;
+}
+
+@media (max-aspect-ratio: 3 / 4) {
+  .layered-parallax-background__image {
+    object-position: 50% 46%;
+  }
+
+  .layered-parallax-background__layer[data-layer="foreground"] {
+    opacity: .34;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .layered-parallax-background__layer {
+    filter: none !important;
+    transition: none !important;
+  }
+}
+

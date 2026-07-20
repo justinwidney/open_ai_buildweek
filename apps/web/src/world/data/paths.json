@@ -1,0 +1,16 @@
+{
+  "startingCamera": { "position": [0, 7.4, 15.5], "lookAt": [0, 0.2, -7] },
+  "platforms": [
+    { "id": "foundation", "title": "Foundation", "subtitle": "Know yourself", "position": [0, 0, 0], "radius": 5.1, "kind": "start" },
+    { "id": "clarity", "title": "Clarity", "subtitle": "Choose a direction", "position": [0, 1.2, -13], "radius": 2.35, "kind": "front" },
+    { "id": "values", "title": "Values", "subtitle": "What matters", "position": [-10.5, 1.6, -12], "radius": 2.65, "kind": "left" },
+    { "id": "mindset", "title": "Mindset", "subtitle": "Grow your view", "position": [10.5, 1.6, -12], "radius": 2.65, "kind": "right" },
+    { "id": "rhythm", "title": "Rhythm", "subtitle": "Time & energy", "position": [0, 2.6, -24], "radius": 1.75, "kind": "front" },
+    { "id": "leadership", "title": "Leadership", "subtitle": "Bring others along", "position": [0, 3.5, -34], "radius": 1.3, "kind": "front" }
+  ],
+  "paths": [
+    { "id": "front", "angle": 90, "platformIds": ["foundation", "clarity", "rhythm", "leadership"] },
+    { "id": "left", "angle": 45, "platformIds": ["foundation", "values"] },
+    { "id": "right", "angle": 135, "platformIds": ["foundation", "mindset"] }
+  ]
+}

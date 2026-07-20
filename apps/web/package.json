@@ -1,0 +1,21 @@
+{
+  "name": "@control-ai/web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build && node scripts/prepare-sites.mjs",
+    "typecheck": "tsc -b --pretty false"
+  },
+  "dependencies": {
+    "@control-ai/shared": "workspace:*",
+    "@vitejs/plugin-react": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "three": "latest",
+    "@react-three/fiber": "latest",
+    "@react-three/drei": "latest"
+  },
+  "devDependencies": { "vite": "latest", "typescript": "^5.5.0", "@types/react": "latest", "@types/react-dom": "latest", "@types/three": "latest" }
+}
