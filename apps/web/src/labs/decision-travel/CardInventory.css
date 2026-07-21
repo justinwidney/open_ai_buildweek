@@ -1,36 +1,20 @@
-.journey-inventory-button {
-  align-items: center;
-  background: linear-gradient(180deg, var(--journey-color-parchment), var(--journey-color-parchment-deep));
-  border: 2px solid var(--journey-color-card-border);
+/* The inventory is a plain shell tool in the header row; it only adds a count. */
+.shell-tool--inventory { position: relative; }
+.shell-tool--inventory > b {
+  background: var(--journey-color-violet);
+  border: 2px solid #f6ecd2;
   border-radius: var(--r-pill);
-  box-shadow: 0 5px 0 #4a301c, 0 12px 24px rgba(25, 29, 27, .3), inset 0 0 0 3px rgba(255, 245, 207, .45);
-  color: var(--journey-color-ink);
-  cursor: pointer;
-  display: flex;
-  font: 800 var(--text-sm)/var(--text-sm-lh) var(--journey-font-display);
-  gap: var(--sp-2);
-  left: 50%;
-  letter-spacing: .08em;
-  min-height: 52px;
-  padding: var(--sp-2) var(--sp-4);
+  color: #fff6d9;
+  display: grid;
+  font: 800 var(--text-label)/1 var(--journey-font-ui);
+  min-height: 21px;
+  min-width: 21px;
+  padding: 3px;
+  place-items: center;
   position: absolute;
-  text-transform: uppercase;
-  top: 45%;
-  transform: translate(-50%, -50%);
-  transition: filter .18s ease, transform .18s ease;
-  z-index: var(--journey-layer-world-ui);
+  right: -7px;
+  top: -7px;
 }
-
-.journey-inventory-button:hover,
-.journey-inventory-button:focus-visible {
-  filter: brightness(1.08);
-  outline: 2px solid #fff1b7;
-  outline-offset: 3px;
-  transform: translate(-50%, -50%) scale(1.05);
-}
-
-.journey-inventory-button > span { color: var(--journey-color-violet); font: 700 var(--text-lg)/1 var(--journey-font-display); }
-.journey-inventory-button > b { background: var(--journey-color-violet); border-radius: var(--r-pill); color: #fff6d9; display: grid; font: 800 var(--text-label)/1 var(--journey-font-ui); min-height: 22px; min-width: 22px; padding: 5px; place-items: center; }
 
 .card-inventory-layer {
   background:
@@ -120,7 +104,6 @@
 @keyframes inventory-card-arrive { from { opacity: 0; transform: translateY(14px) rotate(-1deg); } to { opacity: 1; transform: none; } }
 
 @media (max-width: 760px) {
-  .journey-inventory-button { min-height: 46px; padding: var(--sp-2) var(--sp-3); top: 57%; }
   .card-inventory-layer { padding: var(--sp-2); }
   .card-inventory { height: calc(100dvh - (2 * var(--sp-2))); }
   .card-inventory__header { gap: var(--sp-3); padding: var(--sp-3); }
@@ -131,11 +114,9 @@
 }
 
 @media (max-width: 420px) {
-  .journey-inventory-button { font-size: var(--text-label); gap: var(--sp-1); }
   .card-inventory__grid { grid-template-columns: 1fr 1fr; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .inventory-card { animation: none; }
-  .journey-inventory-button { transition: none; }
 }

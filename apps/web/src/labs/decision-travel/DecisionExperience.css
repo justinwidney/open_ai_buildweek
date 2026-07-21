@@ -5,35 +5,33 @@
   z-index: var(--journey-layer-signs, 20);
 }
 
+/* Sits in the header row between the wordmark and the tool buttons; the
+   max-width keeps it clear of both before it would ever reach them. */
 .road-decision__prompt {
+  align-items: center;
   animation: decision-prompt-in .45s ease both;
   background: linear-gradient(120deg, rgba(244, 233, 209, .96), rgba(222, 204, 170, .95));
   border: 1px solid rgba(82, 61, 37, .75);
   border-radius: 13px;
   box-shadow: 0 7px 20px rgba(30, 28, 24, .24), inset 0 0 0 3px rgba(255, 250, 228, .42);
+  display: flex;
+  gap: 12px;
+  justify-content: center;
   left: 50%;
-  max-width: min(560px, calc(100vw - 40px));
-  padding: 11px 52px 12px 18px;
+  max-width: min(520px, calc(100vw - 680px));
+  min-height: clamp(44px, 3.25vw, 64px);
+  padding: 6px 18px;
   pointer-events: auto;
   position: absolute;
   text-align: center;
-  top: clamp(98px, 9vw, 142px);
+  top: clamp(14px, 1.7vw, 30px);
   transform: translateX(-50%);
   width: max-content;
   z-index: var(--journey-layer-world-ui, 40);
 }
 
-.road-decision__prompt span {
-  color: #725b39;
-  display: block;
-  font: 800 9px/1 system-ui, sans-serif;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-}
-
-.road-decision__prompt h2 { font-size: clamp(18px, 1.7vw, 26px); margin: 3px 0; }
-.road-decision__prompt p { color: #5e4c36; font-size: 12px; margin: 0; }
-.road-decision__prompt button { background: transparent; border: 0; color: var(--journey-color-violet, #6a4a97); cursor: pointer; font: 700 10px/1 var(--journey-font-ui, system-ui, sans-serif); position: absolute; right: 12px; text-transform: uppercase; top: 13px; }
+.road-decision__prompt h2 { font-size: clamp(17px, 1.5vw, 24px); margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.road-decision__prompt button { background: transparent; border: 0; color: var(--journey-color-violet, #6a4a97); cursor: pointer; flex: none; font: 700 10px/1 var(--journey-font-ui, system-ui, sans-serif); text-transform: uppercase; }
 
 .road-decision__sign-field { inset: 0; position: absolute; z-index: var(--journey-layer-signs, 20); }
 
@@ -82,6 +80,7 @@
 
 .road-sign__copy small { color: var(--journey-color-ink-muted, #755225); font: 800 8px/1 var(--journey-font-ui, system-ui, sans-serif); letter-spacing: .13em; text-transform: uppercase; }
 .road-sign__copy strong { display: -webkit-box; font-size: clamp(14px, 1.35vw, 20px); font-variant: small-caps; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+.road-sign__icon { display: inline-block; font-variant: normal; margin-right: .3em; transform: translateY(.06em); }
 .road-decision__hint { bottom: clamp(213px, 19vw, 292px); color: #fff8dd; font: 800 10px/1 var(--journey-font-ui, system-ui, sans-serif); left: 50%; letter-spacing: .12em; margin: 0; position: absolute; text-shadow: 0 2px 5px rgba(20, 26, 28, .85); text-transform: uppercase; transform: translateX(-50%); z-index: var(--journey-layer-world-ui, 40); }
 
 .decision-window-layer {
@@ -129,6 +128,92 @@
 }
 
 .decision-window::before { border: 1px solid rgba(94, 67, 40, .32); border-radius: 12px; content: ""; inset: 8px; pointer-events: none; position: absolute; z-index: 2; }
+
+/* Catalog sorters live on their own screen. Only the title, search field,
+   cards, and lower actions remain in the visual hierarchy. */
+.decision-window-layer--deck {
+  align-items: stretch;
+  background:
+    radial-gradient(circle at 50% -18%, rgba(199, 226, 225, .55), transparent 43%),
+    radial-gradient(circle at 15% 82%, rgba(181, 142, 77, .28), transparent 35%),
+    linear-gradient(155deg, var(--journey-color-deck-screen-top, #26444e), var(--journey-color-deck-screen-mid, #43615d) 52%, var(--journey-color-deck-screen-bottom, #8b744c));
+  padding: clamp(12px, 2dvh, 22px) clamp(10px, 2.6vw, 42px);
+}
+
+.decision-window-layer--deck .decision-window--deck {
+  animation: decision-deck-scene-open .42s ease both;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  gap: clamp(10px, 1.8dvh, 18px);
+  height: 100%;
+  max-width: 1480px;
+  min-height: 0;
+  overflow: visible;
+}
+
+.decision-window--deck::before { display: none; }
+
+.decision-deck-page__topbar {
+  align-items: center;
+  display: flex;
+  flex: 0 0 auto;
+  gap: var(--sp-3, 12px);
+  justify-content: center;
+  min-height: 52px;
+  width: 100%;
+}
+
+.decision-deck-page__back {
+  backdrop-filter: blur(10px);
+  background: rgba(247, 235, 203, .9);
+  border: 1px solid rgba(100, 72, 41, .78);
+  box-shadow: 0 8px 22px rgba(11, 22, 24, .26);
+  color: var(--journey-color-ink, #342719);
+  cursor: pointer;
+  flex: 0 0 200px;
+  z-index: 4;
+}
+
+.decision-deck-page__back {
+  align-items: center;
+  border-radius: var(--journey-radius-control, 8px);
+  display: flex;
+  font: 800 var(--text-label, 11px)/1 var(--journey-font-ui, system-ui, sans-serif);
+  gap: var(--sp-2, 8px);
+  justify-content: center;
+  letter-spacing: .06em;
+  padding: 11px 14px;
+  text-transform: uppercase;
+}
+
+.decision-deck-page__back span { color: var(--journey-color-violet, #6a4a97); font: 700 19px/1 var(--journey-font-display, Georgia, serif); }
+.decision-deck-page__back:hover, .decision-deck-page__back:focus-visible { filter: brightness(1.08); outline: 2px solid var(--journey-color-gold, #d5ad4f); outline-offset: 3px; }
+
+.decision-deck-page__balance { flex: 0 0 200px; }
+.decision-deck-page__heading { color: #fff4d8; flex: 1 1 auto; min-width: 0; text-align: center; text-shadow: 0 3px 12px rgba(9, 19, 22, .74); }
+.decision-deck-page__heading span { color: #ead69a; display: block; font: 800 var(--text-label, 11px)/1 var(--journey-font-ui, system-ui, sans-serif); letter-spacing: var(--track-label, .12em); text-transform: uppercase; }
+.decision-deck-page__heading h2 { color: inherit; font: 700 var(--text-display, clamp(28px, 2.4vw, 40px))/var(--text-display-lh, 1.05) var(--journey-font-display, Georgia, serif); margin: var(--sp-1, 4px) 0 0; }
+
+.decision-search.decision-search--deck {
+  backdrop-filter: blur(12px);
+  background: rgba(255, 249, 229, .94);
+  border-color: rgba(102, 74, 40, .88);
+  box-shadow: 0 12px 30px rgba(10, 21, 23, .32), inset 0 0 0 2px rgba(255, 255, 255, .3);
+  flex: 0 0 48px;
+  height: 48px;
+  margin: 0 auto;
+  max-width: 650px;
+  max-height: 48px;
+  min-height: 48px;
+  padding: 2px 16px;
+  width: min(650px, calc(100% - 110px));
+}
+
+.decision-search.decision-search--deck:focus-within { box-shadow: 0 14px 34px rgba(10, 21, 23, .4), 0 0 0 3px rgba(213, 173, 79, .48); }
+.decision-search.decision-search--deck input { font-size: var(--text-body, 15px); height: 44px; padding: 0; text-align: center; }
+
 .decision-window__header { align-items: center; background: linear-gradient(90deg, #e5d2ac, #f8efd9 48%, #dcc49c); border-bottom: 1px solid rgba(103, 76, 47, .45); display: flex; gap: 15px; padding: 17px 25px 14px; position: relative; }
 .decision-window__back { align-items: center; align-self: stretch; background: rgba(94, 65, 125, .1); border: 1px solid rgba(94, 65, 125, .35); border-radius: 8px; color: #563d71; cursor: pointer; display: flex; flex-direction: column; font: 800 8px/1.1 system-ui, sans-serif; justify-content: center; letter-spacing: .08em; min-width: 72px; text-transform: uppercase; }
 .decision-window__back span { color: #563d71; font: 22px/1 Georgia, serif; }
@@ -154,13 +239,12 @@
 .decision-window__categories button.is-active { background: #6d4e91; border-color: #4d356d; color: #fff8e6; }
 
 .decision-deck {
-  border-top: 1px solid rgba(103, 76, 47, .32);
   display: grid;
   flex: 1;
   gap: var(--sp-2, 8px);
-  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-rows: minmax(0, 1fr) auto;
   min-height: 0;
-  padding: var(--sp-2, 8px) var(--sp-5, 24px) var(--sp-3, 12px);
+  position: relative;
 }
 
 .decision-deck__status {
@@ -175,7 +259,7 @@
 }
 .decision-deck__status b { color: var(--journey-color-violet, #5b3e79); font-size: var(--text-sm, 14px); }
 .decision-deck__viewport { align-items: stretch; display: grid; gap: var(--sp-3, 12px); grid-template-columns: 42px minmax(0, 1fr) 42px; min-height: 0; }
-.decision-deck__cards { display: grid; gap: clamp(8px, 1.25vw, 18px); grid-template-columns: repeat(5, minmax(0, 1fr)); min-height: 0; perspective: 1200px; }
+.decision-deck__cards { align-items: stretch; display: grid; gap: clamp(10px, 1.5vw, 22px); grid-template-columns: repeat(5, minmax(0, 1fr)); min-height: 0; padding: clamp(4px, .8dvh, 8px) 0 clamp(8px, 1.4dvh, 14px); perspective: 1200px; }
 
 .decision-deck__arrow {
   align-self: center;
@@ -209,6 +293,7 @@
   text-align: left;
   transform-origin: center bottom;
   transition: box-shadow .18s ease, filter .18s ease, transform .18s ease;
+  will-change: transform;
 }
 .decision-deck-card::after { border: 1px solid rgba(255, 238, 175, .65); border-radius: calc(var(--journey-radius-window, 14px) - 4px); content: ""; inset: 4px; pointer-events: none; position: absolute; }
 .decision-deck-card:hover:not(:disabled), .decision-deck-card:focus-visible { box-shadow: 0 18px 32px rgba(46, 31, 19, .34), 0 0 0 3px rgba(106, 74, 151, .28); filter: brightness(1.035); outline: none; transform: translateY(-8px) rotateX(2deg) scale(1.018); }
@@ -233,10 +318,11 @@
 
 .decision-deck__empty { align-items: center; color: var(--journey-color-ink-muted, #725f49); display: flex; flex-direction: column; gap: var(--sp-2, 8px); grid-column: 1 / -1; justify-content: center; text-align: center; }
 .decision-deck__empty b { color: var(--journey-color-ink, #342719); font: 700 var(--text-title, 24px)/1.1 var(--journey-font-display, Georgia, serif); }
-.decision-deck__controls { align-items: center; display: flex; gap: var(--sp-3, 12px); justify-content: center; min-height: 38px; }
-.decision-deck__shuffle { background: linear-gradient(180deg, #765597, #51366f); border: 1px solid #3f2859; border-radius: var(--journey-radius-control, 9px); box-shadow: 0 3px 0 #33213f; color: #fff5d8; cursor: pointer; font: 800 var(--text-label, 10px)/1 var(--journey-font-ui, system-ui, sans-serif); letter-spacing: .09em; padding: 10px 18px; text-transform: uppercase; }
+.decision-deck__controls { align-items: center; display: flex; gap: var(--sp-3, 12px); justify-content: center; min-height: 46px; }
+.decision-deck__shuffle { background: linear-gradient(180deg, #765597, #51366f); border: 1px solid #3f2859; border-radius: var(--journey-radius-control, 9px); box-shadow: 0 4px 0 #33213f, 0 10px 24px rgba(12, 20, 21, .28); color: #fff5d8; cursor: pointer; font: 800 var(--text-label, 10px)/1 var(--journey-font-ui, system-ui, sans-serif); letter-spacing: .09em; padding: 12px 22px; text-transform: uppercase; white-space: nowrap; }
 .decision-deck__shuffle:hover, .decision-deck__shuffle:focus-visible { filter: brightness(1.1); outline: 2px solid var(--journey-color-gold, #dfbd63); outline-offset: 2px; }
-.decision-deck__later { background: transparent; border: 0; color: var(--journey-color-ink-muted, #6f5b44); cursor: pointer; font: 700 var(--text-label, 10px)/1 var(--journey-font-ui, system-ui, sans-serif); padding: 8px; text-decoration: underline; }
+.decision-deck__later { background: transparent; border: 0; color: #fff2cf; cursor: pointer; font: 800 var(--text-label, 10px)/1 var(--journey-font-ui, system-ui, sans-serif); letter-spacing: .06em; padding: 10px; text-decoration: underline; text-shadow: 0 2px 6px rgba(8, 18, 20, .85); text-transform: uppercase; white-space: nowrap; }
+.decision-deck__later:hover, .decision-deck__later:focus-visible { color: #fff; outline: 2px solid var(--journey-color-gold, #dfbd63); outline-offset: 2px; }
 
 .decision-deck__cards.is-forward { animation: decision-deck-forward .32s cubic-bezier(.2, .75, .2, 1) both; }
 .decision-deck__cards.is-back { animation: decision-deck-back .32s cubic-bezier(.2, .75, .2, 1) both; }
@@ -380,17 +466,33 @@
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
+@keyframes decision-deck-scene-open {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+
 @media (max-width: 999px) {
   .decision-window { height: calc(100dvh - 112px); min-height: 0; }
   .decision-window-layer { padding: 82px 10px 30px; }
+  .decision-window-layer--deck { padding: 10px; }
+  .decision-window-layer--deck .decision-window--deck { height: 100%; }
   .decision-window__body { grid-template-columns: minmax(0, 1fr) 285px; }
   .decision-results__grid { grid-template-columns: 1fr; }
   .decision-deck__cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
+/* Too narrow to share the header row with the wordmark and the tools, so the
+   title steps down below them. 760px is where the tool row itself drops. */
+@media (max-width: 900px) {
+  .road-decision__prompt { max-width: min(560px, calc(100vw - 40px)); top: clamp(72px, 8vw, 96px); }
+}
+
+@media (max-width: 760px) {
+  .road-decision__prompt { top: 112px; }
+}
+
 @media (max-width: 680px) {
-  .road-decision__prompt { padding: 10px 34px 10px 13px; top: 109px; width: calc(100vw - 24px); }
-  .road-decision__prompt p { display: none; }
+  .road-decision__prompt { padding: 10px 13px; top: 109px; width: calc(100vw - 24px); }
   .road-decision__sign-field { align-items: flex-start; display: flex; gap: 3px; inset: 32% 0 auto; overflow-x: auto; padding: 0 20vw 12px; scrollbar-width: none; }
   .road-decision__sign { flex: 0 0 196px; height: 155px; left: auto; position: relative; top: auto; transform: none; width: 196px; }
   .road-decision__sign:hover:not(:disabled), .road-decision__sign:focus-visible { transform: scale(1.04) translateY(-3px); }
@@ -399,6 +501,8 @@
   .decision-window-layer { align-items: stretch; padding: 76px 6px 8px; }
   .decision-window-layer--page { padding: 6px; }
   .decision-window-layer--page .decision-window { height: calc(100dvh - 12px); }
+  .decision-window-layer--deck { padding: 6px; }
+  .decision-window-layer--deck .decision-window--deck { gap: 7px; height: calc(100dvh - 12px); }
   .decision-window { border-radius: 13px; height: auto; min-height: 0; }
   .decision-window__header { gap: 9px; padding: 12px 16px 10px; }
   .decision-window__mark { flex-basis: 38px; height: 42px; }
@@ -406,7 +510,14 @@
   .decision-window__toolbar { padding: 10px 14px 7px; }
   .decision-window__toolbar select { max-width: 120px; }
   .decision-window__categories { padding: 0 14px 8px; }
-  .decision-deck { gap: 6px; padding: 6px 8px 8px; }
+  .decision-deck-page__topbar { gap: 6px; min-height: 44px; }
+  .decision-deck-page__back, .decision-deck-page__balance { flex-basis: 132px; }
+  .decision-deck-page__back { font-size: 8px; gap: 4px; padding: 7px 6px; }
+  .decision-deck-page__back span { font-size: 16px; }
+  .decision-deck-page__heading h2 { font-size: clamp(23px, 7vw, 30px); }
+  .decision-search.decision-search--deck { flex-basis: 48px; height: 48px; max-height: 48px; min-height: 48px; padding: 0 10px; width: min(650px, calc(100% - 28px)); }
+  .decision-search.decision-search--deck input { font-size: 12px; height: 46px; padding: 0; }
+  .decision-window--deck .decision-deck { gap: 6px; padding: 0; }
   .decision-deck__status { font-size: 7px; padding: 0 4px; }
   .decision-deck__status b { font-size: 10px; }
   .decision-deck__viewport { gap: 5px; grid-template-columns: 27px minmax(0, 1fr) 27px; }
@@ -422,8 +533,9 @@
   .decision-deck-card__metrics span + span { display: none; }
   .decision-deck-card__difficulty { display: none; }
   .decision-deck-card__open { font-size: 6px; padding-top: 4px; }
-  .decision-deck__controls { min-height: 34px; }
-  .decision-deck__shuffle { padding: 9px 14px; }
+  .decision-deck__controls { min-height: 40px; }
+  .decision-deck__shuffle { padding: 8px 12px; }
+  .decision-deck__later { padding: 7px 9px; }
   .decision-window__body { display: flex; flex-direction: column; overflow: auto; }
   .decision-results { flex: 1 0 47%; overflow: visible; padding: 10px 12px 16px; }
   .decision-detail { flex: 0 0 auto; overflow: visible; padding: 18px 17px 22px; }
@@ -448,6 +560,9 @@
   .decision-window__header p, .decision-window__notice { display: none; }
   .decision-window__toolbar { padding-bottom: 6px; padding-top: 7px; }
   .decision-window__categories { padding-bottom: 6px; }
+  .decision-window-layer--deck .decision-window--deck { gap: 6px; }
+  .decision-deck-page__heading h2 { font-size: clamp(22px, 4.5dvh, 30px); }
+  .decision-deck__controls { min-height: 38px; }
   .decision-deck-card__copy { gap: 3px; padding-bottom: 6px; padding-top: 6px; }
   .decision-deck-card__open { padding-top: 4px; }
 }

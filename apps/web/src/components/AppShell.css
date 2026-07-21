@@ -28,7 +28,18 @@
 }
 
 .app-shell__brand { align-items: center; display: flex; gap: 17px; left: clamp(16px, 1.55vw, 30px); position: absolute; top: clamp(14px, 1.7vw, 30px); z-index: var(--journey-layer-shell-ui, 300); }
-.app-shell__wordmark { display: grid; line-height: 1; text-shadow: 0 1px 1px #f9edd2; text-transform: uppercase; }
+.app-shell__wordmark {
+  backdrop-filter: blur(8px);
+  background: linear-gradient(120deg, rgba(249, 240, 219, .94), rgba(218, 196, 158, .92));
+  border: 1px solid rgba(103, 78, 51, .82);
+  border-radius: 10px;
+  box-shadow: 0 3px 0 rgba(91, 68, 45, .76), 0 8px 20px rgba(25, 31, 32, .24), inset 0 0 0 2px rgba(255, 250, 231, .46);
+  display: grid;
+  line-height: 1;
+  padding: 10px 16px;
+  text-shadow: 0 1px 1px #fff6df;
+  text-transform: uppercase;
+}
 .app-shell__wordmark strong { font-size: clamp(17px, 1.28vw, 25px); font-variant: small-caps; letter-spacing: .05em; }
 .app-shell__wordmark span { font-size: clamp(12px, .87vw, 17px); letter-spacing: .08em; margin-top: 4px; }
 
@@ -37,10 +48,7 @@
 }
 .shell-icon-button:hover, .shell-icon-button:focus-visible { filter: brightness(1.09); outline: 2px solid #fff7d8; outline-offset: 3px; transform: translateY(-2px); }
 .shell-icon-button.is-active { background: radial-gradient(circle at 34% 27%, #fff9d8 0 8%, #e8d592 42%, #a88455 100%); box-shadow: 0 2px 0 #614c35, inset 0 0 0 2px rgba(255, 246, 194, .5), 0 0 0 4px rgba(255, 239, 171, .3), 0 6px 14px rgba(20, 20, 20, .28); }
-.shell-menu-button { flex-direction: column; gap: 5px; }
-.shell-menu-button span { background: #33312b; border-radius: 3px; height: 3px; width: 45%; }
-
-.app-shell__tools { display: flex; gap: clamp(8px, .72vw, 14px); left: 50%; position: absolute; top: clamp(14px, 1.7vw, 30px); transform: translateX(-50%); z-index: var(--journey-layer-shell-ui, 300); }
+.app-shell__tools { display: flex; gap: clamp(8px, .72vw, 14px); position: absolute; right: clamp(16px, 1.7vw, 33px); top: clamp(14px, 1.7vw, 30px); z-index: var(--journey-layer-shell-ui, 300); }
 .shell-tool--path { font-size: 35px; transform: rotate(-25deg); }
 .shell-tool--ideas { font-size: 29px; }
 .shell-tool--profile { font-size: 31px; }
@@ -78,26 +86,20 @@
 .skill-panel__activities { background: linear-gradient(#e8d9be, #c5aa85); border: 1px solid #7c654e; border-radius: 7px; box-shadow: inset 0 0 0 2px rgba(255, 245, 215, .5), 0 2px 1px rgba(54,39,25,.3); color: #33291f; cursor: pointer; font: 600 13px/1.1 Georgia, serif; font-variant: small-caps; padding: 8px 11px; text-align: center; text-transform: uppercase; width: 100%; }
 .skill-panel__activities span { color: #684b86; float: right; font-size: 19px; margin-top: -4px; }
 
-.app-shell__prompt { align-items: center; background: linear-gradient(90deg, #eadcc4, #fbf0dd 55%, #e4d1b8); border: 2px solid #796957; border-radius: 15px; box-shadow: 0 3px 0 #665744, 0 8px 18px rgba(18, 23, 31, .29), inset 0 0 0 2px rgba(255, 253, 233, .65); display: flex; gap: 11px; min-height: 51px; padding: 6px 7px 6px 14px; position: absolute; bottom: clamp(16px, 2.25vw, 43px); right: clamp(16px, 1.75vw, 34px); width: min(430px, calc(100vw - 32px)); z-index: var(--journey-layer-shell-ui, 300); }
 .app-shell__hud { bottom: clamp(16px, 2.25vw, 43px); left: clamp(16px, 1.55vw, 30px); max-width: min(520px, calc(100vw - 32px)); position: absolute; z-index: var(--journey-layer-shell-ui, 300); }
-.prompt-spark { font-size: 21px; }
-.app-shell__prompt input { background: transparent; border: 0; color: #332a23; flex: 1; font: 15px Georgia, serif; min-width: 0; outline: 0; }
-.app-shell__prompt input::placeholder { color: #3f352c; opacity: .92; }
-.app-shell__prompt button { background: linear-gradient(145deg, #a98db9, #6e4e8a); border: 2px solid #664d7a; border-radius: 50%; box-shadow: inset 0 1px 2px #d9c4df; color: #f5ebdc; cursor: pointer; font: bold 20px/1 Georgia, serif; height: 34px; width: 34px; }
 .sr-only { clip: rect(0, 0, 0, 0); clip-path: inset(50%); height: 1px; overflow: hidden; position: absolute; white-space: nowrap; width: 1px; }
 
 @media (max-width: 760px) {
   .app-shell__brand { gap: 10px; }
   .app-shell__wordmark strong { font-size: 17px; }
-  .app-shell__wordmark span { display: none; }
-  .app-shell__tools { gap: 6px; left: 50%; right: auto; top: 64px; transform: translateX(-50%); width: max-content; }
+  .app-shell__wordmark { padding: 9px 12px; }
+  .app-shell__tools { gap: 6px; left: auto; right: 12px; top: 64px; width: max-content; }
   .app-shell__tools .shell-icon-button { font-size: 20px; height: 38px; width: 38px; }
   .app-shell__tools .shell-tool--profile, .app-shell__tools .shell-tool--share { display: none; }
   .skill-panel { bottom: 82px; max-height: min(520px, calc(100dvh - 153px)); right: 12px; top: auto; transform: translateX(calc(100% + 24px)); transition: transform .25s ease; width: min(300px, calc(100vw - 24px)); }
   .skill-panel--open, .skill-panel:focus-within { opacity: 1; transform: translateX(0); }
   .skill-panel--page { width: min(390px, calc(100vw - 24px)); }
   .app-shell__hud { bottom: 80px; left: 12px; }
-  .app-shell__prompt { bottom: 14px; right: 12px; width: calc(100vw - 24px); }
 }
 
 @media (max-width: 430px) {

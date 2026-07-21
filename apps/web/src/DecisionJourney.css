@@ -19,7 +19,7 @@
   display: block;
   height: 100%;
   inset: 0;
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
   position: absolute;
   transform-origin: 50% 72%;
@@ -35,36 +35,6 @@
   pointer-events: none;
   position: absolute;
   z-index: var(--journey-layer-atmosphere, 10);
-}
-
-.journey-world__route-label {
-  align-items: center;
-  backdrop-filter: blur(10px);
-  background: var(--journey-color-world-label, rgba(39, 46, 43, .72));
-  border: 1px solid rgba(255, 242, 194, .68);
-  border-radius: 999px;
-  box-shadow: 0 5px 18px rgba(24, 36, 42, .22);
-  color: var(--journey-color-world-label-ink, #fff3cb);
-  display: flex;
-  gap: 9px;
-  left: 50%;
-  padding: 7px 12px;
-  position: absolute;
-  top: clamp(82px, 8vw, 116px);
-  transform: translateX(-50%);
-  white-space: nowrap;
-  z-index: var(--journey-layer-world-ui, 40);
-}
-
-.journey-world__route-label span {
-  font: 800 8px/1 system-ui, sans-serif;
-  letter-spacing: .12em;
-  opacity: .72;
-  text-transform: uppercase;
-}
-
-.journey-world__route-label b {
-  font: 700 12px/1 Georgia, serif;
 }
 
 .journey-hud {
@@ -109,11 +79,6 @@
   align-items: center;
   display: flex;
   gap: 5px;
-}
-
-.journey-hud__utility .journey-hud__reset + .journey-hud__reset {
-  border-left: 1px solid rgba(106, 74, 151, .25);
-  padding-left: 9px;
 }
 
 .journey-hud__progress {
@@ -215,11 +180,9 @@
 @media (max-width: 1050px) and (min-width: 761px) {
   .journey-hud { width: min(430px, calc(100vw - 32px)); }
   .journey-hud__actions .ornate-btn { min-width: 180px; }
-  .app-shell__prompt { width: min(340px, calc(100vw - 32px)); }
 }
 
 @media (max-width: 760px) {
-  .journey-world__route-label { max-width: calc(100vw - 24px); overflow: hidden; text-overflow: ellipsis; top: 112px; }
   .journey-hud { padding: 12px 14px; width: calc(100vw - 24px); }
   .journey-hud p { display: none; }
   .journey-hud__actions { margin-top: 8px; }

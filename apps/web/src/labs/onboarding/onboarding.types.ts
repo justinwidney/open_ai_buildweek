@@ -45,6 +45,8 @@ export interface OnboardingWorkExperience {
 export interface JourneyOnboardingProfile {
   schemaVersion: 1;
   completedAt: string;
+  /** Current net worth in whole dollars, used to anchor month zero. */
+  startingNetWorth?: number;
   demographics: OnboardingDemographics;
   workExperience: OnboardingWorkExperience;
 }

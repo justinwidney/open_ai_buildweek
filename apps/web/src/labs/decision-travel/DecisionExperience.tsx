@@ -11,13 +11,13 @@ import {
   getDecisionDeckPage,
   mapDecisionBranchesToDeck,
   shuffleDecisionDeck,
-  type DeckSort,
   type DecisionDeckItem,
 } from "./decisionDeckModel";
-import { ROUTE_DIRECTION_LABELS, type DecisionMap } from "./decisionMaps";
+import { ROUTE_DIRECTION_LABELS, type DecisionMap, type DecisionPathAnchor } from "./decisionMaps";
 import { isInertBranch, nodeEmoji } from "./journeyGraph";
 import { isLifestyleDecisionNode } from "./lifestyleDecisions";
-import { LifestyleYearPlanner } from "./planner/LifestyleYearPlanner";
+import { LifestyleYearPlanner, plannerStepsForAge } from "./planner/LifestyleYearPlanner";
+import { PLANNER_STEP_BLURBS, PLANNER_STEP_TITLES, type PlannerStepId } from "./planner/plannerModel";
 import { RoleThreeCard } from "./RoleThreeCard";
 import "./DecisionExperience.css";
 
@@ -29,6 +29,10 @@ interface DecisionExperienceProps {
   onChoose: (branch: DecisionBranch) => void;
   onDismiss?: () => void;
   onBackToMap?: () => void;
+  /** Which year instrument is open. Null means the map is offering them all. */
+  plannerStep?: PlannerStepId | null;
+  /** Supplying this switches a life-design year to the pick-one-from-the-map flow. */
+  onPickStep?: (step: PlannerStepId) => void;
 }
 
 function SignArtwork() {
@@ -54,9 +58,7 @@ function RoadDecisionSigns({ node, ctx, age, map, onChoose, onDismiss }: Decisio
   return (
     <section className="road-decision" aria-labelledby="road-decision-title">
       <header className="road-decision__prompt">
-        <span>A crossroads · age {age}</span>
         <h2 id="road-decision-title">{nodeEmoji(node)} {node.title}</h2>
-        <p>{node.prompt}</p>
         {onDismiss && <button type="button" onClick={onDismiss}>Maybe later</button>}
       </header>
       <div className="road-decision__sign-field">
@@ -94,7 +96,135 @@ function RoadDecisionSigns({ node, ctx, age, map, onChoose, onDismiss }: Decisio
   );
 }
 
-type ExplorerSort = DeckSort;
+/** Even fallback anchors, for the case a map carries fewer paths than there are signs. */
+function anchorAt(anchors: readonly DecisionPathAnchor[], index: number, count: number, id: string): DecisionPathAnchor {
+  return anchors[index] ?? { id, x: 50 + (index - (count - 1) / 2) * 24, y: 51, direction: "straight" };
+}
+
+interface SignFieldItem {
+  id: string;
+  eyebrow: string;
+  icon?: string;
+  label: string;
+  detail?: string;
+  onSelect: () => void;
+}
+
+/**
+ * A screen of choices standing on the map's own roads. Every non-branch screen
+ * in the journey is one of these, so travelling on always means taking a sign.
+ */
+function SignField({ title, items, map, hint }: {
+  title: string;
+  items: readonly SignFieldItem[];
+  map: DecisionMap;
+  hint: string;
+}) {
+  const anchors = map.paths ?? [];
+
+  return (
+    <section className="road-decision" aria-labelledby="road-decision-title">
+      <header className="road-decision__prompt">
+        <h2 id="road-decision-title">{title}</h2>
+      </header>
+      <div className="road-decision__sign-field">
+        {items.map((item, index) => {
+          const anchor = anchorAt(anchors, index, items.length, item.id);
+          const direction = anchor.direction;
+          const style = {
+            "--sign-x": `${anchor.x}%`,
+            "--sign-y": `${Math.max(20, anchor.y - 7)}%`,
+            "--sign-rotate": `${direction === "left" ? -3 : direction === "right" ? 3 : 0}deg`,
+            "--sign-delay": `${index * 70}ms`,
+          } as CSSProperties;
+
+          return (
+            <button
+              type="button"
+              className={`road-decision__sign is-${direction}`}
+              key={item.id}
+              onClick={item.onSelect}
+              style={style}
+              title={item.detail ?? item.label}
+            >
+              <SignArtwork />
+              <span className="road-sign__copy">
+                <small>{item.eyebrow}</small>
+                <strong>{item.icon && <span className="road-sign__icon" aria-hidden="true">{item.icon}</span>}{item.label}</strong>
+              </span>
+            </button>
+          );
+        })}
+      </div>
+      <p className="road-decision__hint">{hint}</p>
+    </section>
+  );
+}
+
+/**
+ * A life-design year as signs on the road: one per instrument the year asks
+ * for. Opening one runs it alone and settles the year, so the sign you take is
+ * the choice.
+ */
+function YearInstrumentSigns({ node, age, map, steps, onPick }: {
+  node: DecisionNode;
+  age: number;
+  map: DecisionMap;
+  steps: readonly PlannerStepId[];
+  onPick: (step: PlannerStepId) => void;
+}) {
+  return (
+    <SignField
+      title={`${nodeEmoji(node)} ${node.title}`}
+      map={map}
+      hint={`${steps.length} way${steps.length === 1 ? "" : "s"} to plan age ${age} · the sign you take settles the year`}
+      items={steps.map((step) => ({
+        id: step,
+        eyebrow: PLANNER_STEP_BLURBS[step],
+        label: PLANNER_STEP_TITLES[step],
+        detail: `${PLANNER_STEP_TITLES[step]} — ${PLANNER_STEP_BLURBS[step]}`,
+        onSelect: () => onPick(step),
+      }))}
+    />
+  );
+}
+
+/**
+ * The road between decisions. What used to be a "open to you now" list in the
+ * HUD stands here as signs, alongside the sign that travels on, so every screen
+ * is reached by taking a road rather than by reading a panel.
+ */
+export function JourneyCrossroads({ age, map, opportunities, onOpen, onTravel, travelLabel }: {
+  age: number;
+  map: DecisionMap;
+  opportunities: readonly DecisionNode[];
+  onOpen: (node: DecisionNode) => void;
+  onTravel?: () => void;
+  travelLabel: string;
+}) {
+  const items: SignFieldItem[] = opportunities.map((node) => ({
+    id: node.id,
+    eyebrow: "Open to you now",
+    icon: nodeEmoji(node),
+    label: node.title,
+    detail: node.prompt,
+    onSelect: () => onOpen(node),
+  }));
+
+  if (onTravel) {
+    items.push({ id: "travel-on", eyebrow: "The year ahead", label: travelLabel, detail: "Leave these and travel on", onSelect: onTravel });
+  }
+
+  return (
+    <SignField
+      title={`The road at age ${age}`}
+      map={map}
+      items={items}
+      hint={opportunities.length > 0 ? "Take a chance that is open, or travel on" : "Choose a floating sign"}
+    />
+  );
+}
+
 type ExplorerItem = DecisionDeckItem<DecisionBranch, DecisionChoiceDetails>;
 
 function money(value: number) {
@@ -172,8 +302,6 @@ function DecisionExplorer({ node, ctx, age, onChoose, onDismiss, onBackToMap }: 
   const isMajor = catalog[0]?.kind === "major";
   const isPet = catalog[0]?.kind === "pet";
   const [query, setQuery] = useState("");
-  const [category, setCategory] = useState("All");
-  const [sort, setSort] = useState<ExplorerSort>("featured");
   const [preparing, setPreparing] = useState<ExplorerItem | null>(null);
   const [page, setPage] = useState(0);
   const [shuffleOrder, setShuffleOrder] = useState<readonly string[]>([]);
@@ -187,10 +315,9 @@ function DecisionExplorer({ node, ctx, age, onChoose, onDismiss, onBackToMap }: 
     return [...items].sort((a, b) => (rank.get(a.branch.id) ?? items.length) - (rank.get(b.branch.id) ?? items.length));
   }, [items, shuffleOrder]);
 
-  const categories = useMemo(() => ["All", ...new Set(items.map(({ details }) => details.category))], [items]);
   const filtered = useMemo(
-    () => filterAndSortDecisionDeck(orderedItems, { query, category, sort }),
-    [category, orderedItems, query, sort],
+    () => filterAndSortDecisionDeck(orderedItems, { query, category: "All", sort: "featured" }),
+    [orderedItems, query],
   );
 
   const inactiveBranch = node.branches.find((branch) => isInertBranch(branch));
@@ -198,8 +325,8 @@ function DecisionExplorer({ node, ctx, age, onChoose, onDismiss, onBackToMap }: 
   const pageCount = deckPage.pageCount;
   const effectivePage = deckPage.pageIndex;
   const visibleItems = deckPage.items;
-  const resultName = isMajor ? "programs" : isPet ? "companions" : "starter jobs";
   const routeName = isMajor ? "College route" : isPet ? "Companion route" : "Work route";
+  const returnToMap = onBackToMap ?? onDismiss;
 
   useEffect(() => {
     setPage((current) => Math.min(current, pageCount - 1));
@@ -222,7 +349,6 @@ function DecisionExplorer({ node, ctx, age, onChoose, onDismiss, onBackToMap }: 
       nextOrder = first ? [...nextOrder.slice(1), first] : nextOrder;
     }
     setShuffleOrder(nextOrder);
-    setSort("featured");
     resetToFirstSet("shuffle");
   }
 
@@ -231,53 +357,26 @@ function DecisionExplorer({ node, ctx, age, onChoose, onDismiss, onBackToMap }: 
   }
 
   return (
-    <main className="decision-window-layer decision-window-layer--page">
-      <section className="decision-window" aria-labelledby="decision-window-title">
-        <header className="decision-window__header">
-          {onBackToMap && <button className="decision-window__back" type="button" onClick={onBackToMap}><span>←</span> Journey map</button>}
-          <div className="decision-window__mark" aria-hidden="true">{isMajor ? "A" : isPet ? "P" : "W"}</div>
-          <div>
+    <main className="decision-window-layer decision-window-layer--page decision-window-layer--deck">
+      <section className="decision-window decision-window--deck" aria-labelledby="decision-window-title">
+        <div className="decision-deck-page__topbar">
+          {returnToMap && <button className="decision-deck-page__back" type="button" onClick={returnToMap}><span>←</span> Return to journey map</button>}
+          <header className="decision-deck-page__heading">
             <span>{routeName} · age {age}</span>
             <h2 id="decision-window-title">{node.title}</h2>
-            <p>Browse the guild deck, then open a card to inspect and turn it.</p>
-          </div>
-          {onDismiss && <button className="decision-window__close" type="button" aria-label="Close chooser" onClick={onDismiss}>×</button>}
-        </header>
-
-        <div className="decision-window__notice">
-          <b>Planning estimates</b>
-          <span>{isPet ? "Costs are planning estimates; veterinary needs and local prices vary." : "Figures are illustrative simulation inputs, not school quotes or job offers."}</span>
+          </header>
+          {returnToMap && <span className="decision-deck-page__balance" aria-hidden="true" />}
         </div>
 
-        <div className="decision-window__toolbar">
-          <label className="decision-search">
-            <span aria-hidden="true">⌕</span>
-            <span className="sr-only">Search {isMajor ? "majors" : isPet ? "pets" : "jobs"}</span>
-            <input value={query} onChange={(event) => { setQuery(event.target.value); resetToFirstSet(); }} placeholder={`Search ${isMajor ? "majors, skills, or fields" : isPet ? "pets, care level, or housing needs" : "jobs, skills, or industries"}…`} autoFocus />
-          </label>
-          <label>
-            <span className="sr-only">Sort results</span>
-            <select value={sort} onChange={(event) => { setSort(event.target.value as ExplorerSort); resetToFirstSet(); }}>
-              <option value="featured">Recommended order</option>
-              {!isPet && <option value="salary">Highest starting pay</option>}
-              <option value="cost">Lowest cost</option>
-              <option value="difficulty">Easiest first</option>
-              <option value="category">Group by category</option>
-              <option value="title">A–Z</option>
-            </select>
-          </label>
-        </div>
+        <label className="decision-search decision-search--deck">
+          <span aria-hidden="true">⌕</span>
+          <span className="sr-only">Search {isMajor ? "majors" : isPet ? "pets" : "jobs"}</span>
+          <input value={query} onChange={(event) => { setQuery(event.target.value); resetToFirstSet(); }} placeholder={`Search ${isMajor ? "majors, skills, or fields" : isPet ? "pets, care level, or housing needs" : "jobs, skills, or industries"}…`} autoFocus />
+        </label>
 
-        <div className="decision-window__categories" aria-label="Filter by field">
-          {categories.map((name) => <button type="button" className={category === name ? "is-active" : ""} aria-pressed={category === name} onClick={() => { setCategory(name); resetToFirstSet(); }} key={name}>{name}</button>)}
-        </div>
+        <div className="sr-only" aria-live="polite">Set {filtered.length ? effectivePage + 1 : 0} of {filtered.length ? pageCount : 0} · showing {visibleItems.length} cards</div>
 
         <div className="decision-deck">
-          <div className="decision-deck__status">
-            <span><b>{filtered.length}</b> {resultName}</span>
-            <span aria-live="polite">Set {filtered.length ? effectivePage + 1 : 0} of {filtered.length ? pageCount : 0} · showing {visibleItems.length} cards</span>
-          </div>
-
           <div className="decision-deck__viewport">
             <button className="decision-deck__arrow is-left" type="button" onClick={() => changePage(effectivePage - 1)} disabled={effectivePage === 0 || !filtered.length} aria-label="Show previous set of cards">←</button>
             <div className={`decision-deck__cards is-${deckMotion.direction}`} key={`${deckMotion.key}-${effectivePage}-${pageSize}`}>
@@ -314,9 +413,10 @@ function DecisionExplorer({ node, ctx, age, onChoose, onDismiss, onBackToMap }: 
           </div>
 
           <div className="decision-deck__controls">
-            <button type="button" className="decision-deck__shuffle" onClick={shuffleDeck}><span aria-hidden="true">⤨</span> Shuffle deck</button>
+            <button type="button" className="decision-deck__shuffle" onClick={shuffleDeck}><span aria-hidden="true">⤨</span> Shuffle cards</button>
             {inactiveBranch && <button type="button" className="decision-deck__later" onClick={() => onChoose(inactiveBranch)}>{inactiveBranch.label}</button>}
           </div>
+
         </div>
       </section>
     </main>
@@ -334,7 +434,24 @@ export function JourneyPromptSign({ label, detail, onClick, placement = "center"
 
 export function DecisionExperience(props: DecisionExperienceProps) {
   if (isLifestyleDecisionNode(props.node.id)) {
-    return <LifestyleYearPlanner node={props.node} ctx={props.ctx} age={props.age} onChoose={props.onChoose} onBackToMap={props.onBackToMap} />;
+    // Without onPickStep the year still runs as one guided walk through every
+    // instrument (the Storybook + lab path).
+    if (!props.onPickStep) {
+      return <LifestyleYearPlanner node={props.node} ctx={props.ctx} age={props.age} onChoose={props.onChoose} onBackToMap={props.onBackToMap} />;
+    }
+    if (!props.plannerStep) {
+      return <YearInstrumentSigns node={props.node} age={props.age} map={props.map} steps={plannerStepsForAge(props.age)} onPick={props.onPickStep} />;
+    }
+    return (
+      <LifestyleYearPlanner
+        node={props.node}
+        ctx={props.ctx}
+        age={props.age}
+        onChoose={props.onChoose}
+        onBackToMap={props.onBackToMap}
+        soloStep={props.plannerStep}
+      />
+    );
   }
   return detailsForDecision(props.node.id) ? <DecisionExplorer {...props} /> : <RoadDecisionSigns {...props} />;
 }

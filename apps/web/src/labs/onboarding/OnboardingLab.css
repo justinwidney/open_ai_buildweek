@@ -12,6 +12,11 @@
   position: relative;
 }
 
+.onboarding-layout--kickoff { align-items: stretch; }
+.onboarding-shell--kickoff .onboarding-rail { justify-content: space-between; }
+.onboarding-form--kickoff { display: flex; flex: 1; flex-direction: column; justify-content: center; }
+.onboarding-field-grid--kickoff { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
 .onboarding-sky {
   /* Future art seam: switch this token to url("/onboarding/pre-journey-landscape.png") once the generated asset exists. */
   --onboarding-landscape-image: url("/world-background/sunrise-backwall-v2.webp");

@@ -13,6 +13,13 @@ export const PLANNER_STEP_TITLES: Record<PlannerStepId, string> = {
   timetable: "Balance the week",
 };
 
+/** One line per instrument, for the road signs that offer them on the map. */
+export const PLANNER_STEP_BLURBS: Record<PlannerStepId, string> = {
+  direction: "What this year is for",
+  budget: "Where the money goes",
+  timetable: "Where the hours go",
+};
+
 export const LIVING_OPTIONS = [
   { id: "family", label: "With family", housingTenure: "family" as HousingTenure, housing: 450, utilities: 110, moveCost: 250, note: "Best runway, shared rules" },
   { id: "campus", label: "Campus housing", housingTenure: "campus" as HousingTenure, housing: 1_050, utilities: 120, moveCost: 400, note: "Close to daily life, less control" },

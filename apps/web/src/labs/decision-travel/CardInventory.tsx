@@ -15,16 +15,6 @@ interface CardInventoryProps {
   onClose: () => void;
 }
 
-export function InventoryButton({ count, onClick }: { count: number; onClick: () => void }) {
-  return (
-    <button className="journey-inventory-button" type="button" onClick={onClick} aria-label={`Open inventory, ${count} card${count === 1 ? "" : "s"}`}>
-      <span aria-hidden="true">▣</span>
-      Inventory
-      {count > 0 && <b aria-hidden="true">{count}</b>}
-    </button>
-  );
-}
-
 export function CardInventory({ cards, onClose }: CardInventoryProps) {
   useEffect(() => {
     const closeOnEscape = (event: KeyboardEvent) => {

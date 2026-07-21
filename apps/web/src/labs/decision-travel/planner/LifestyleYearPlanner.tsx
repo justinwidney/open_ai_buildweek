@@ -32,6 +32,12 @@ interface LifestyleYearPlannerProps {
   onBackToMap?: () => void;
   /** Open straight to one instrument, for years that re-evaluate a single thing. */
   initialStep?: PlannerStepId;
+  /**
+   * Run this instrument alone: no step rail, and Save commits the year with the
+   * other instruments left at their defaults. Set when the player picked this
+   * one off the map instead of walking the whole plan.
+   */
+  soloStep?: PlannerStepId;
 }
 
 /**
@@ -45,9 +51,12 @@ export function plannerStepsForAge(age: number): readonly [PlannerStepId, ...Pla
   return age % 2 === 0 ? ["direction", "budget"] : ["direction", "timetable"];
 }
 
-export function LifestyleYearPlanner({ node, ctx, age, onChoose, onBackToMap, initialStep }: LifestyleYearPlannerProps) {
+export function LifestyleYearPlanner({ node, ctx, age, onChoose, onBackToMap, initialStep, soloStep }: LifestyleYearPlannerProps) {
   const focus = lifestyleFocusForAge(age);
-  const steps = useMemo(() => plannerStepsForAge(age), [age]);
+  const steps = useMemo<readonly [PlannerStepId, ...PlannerStepId[]]>(
+    () => soloStep ? [soloStep] : plannerStepsForAge(age),
+    [age, soloStep],
+  );
   const [activeStep, setActiveStep] = useState<PlannerStepId>(
     initialStep && steps.includes(initialStep) ? initialStep : steps[0],
   );

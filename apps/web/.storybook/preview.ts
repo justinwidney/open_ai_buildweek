@@ -1,4 +1,5 @@
 import type { Preview } from "@storybook/react-vite";
+import { MINIMAL_VIEWPORTS } from "storybook/viewport";
 
 // Loaded once for every story: the app reset, the shared token layer, and the
 // decision-travel chrome that the popup and road signs style themselves from.
@@ -16,6 +17,21 @@ const preview: Preview = {
     layout: "fullscreen",
     controls: { expanded: true },
     a11y: { test: "todo" },
+    viewport: {
+      options: {
+        ...MINIMAL_VIEWPORTS,
+        deckWide: {
+          name: "Decision deck · 5 cards",
+          styles: { width: "1440px", height: "900px" },
+          type: "desktop",
+        },
+        deckCompact: {
+          name: "Decision deck · 3 cards",
+          styles: { width: "820px", height: "900px" },
+          type: "tablet",
+        },
+      },
+    },
     options: {
       storySort: {
         order: ["Foundations", "Year planner", "Decisions", "*"],

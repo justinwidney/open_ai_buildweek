@@ -1,4 +1,4 @@
-import { useState, type FormEvent, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import "./AppShell.css";
 
 export type SkillPanelData = {
@@ -14,6 +14,8 @@ export type ShellTool = {
   id: string;
   label: string;
   icon: ReactNode;
+  /** Tools that open their own surface instead of a panel page. Defaults to true. */
+  opensPanel?: boolean;
 };
 
 export type AppShellProps = {
@@ -26,9 +28,7 @@ export type AppShellProps = {
   panelTitle?: string;
   defaultPanelOpen?: boolean;
   worldHud?: ReactNode;
-  onMenuClick?: () => void;
   onToolClick?: (tool: string) => void;
-  onPromptSubmit?: (prompt: string) => void;
   onActivitiesClick?: () => void;
 };
 
@@ -63,13 +63,13 @@ function ToolButton({
 }: {
   tool: ShellTool;
   active: boolean;
-  onClick: (tool: string) => void;
+  onClick: (tool: ShellTool) => void;
 }) {
   return (
     <button
       type="button"
       className={`shell-icon-button shell-tool--${tool.id}${active ? " is-active" : ""}`}
-      onClick={() => onClick(tool.id)}
+      onClick={() => onClick(tool)}
       aria-label={tool.label}
       aria-pressed={active}
       title={tool.label}
@@ -99,29 +99,16 @@ export function AppShell({
   panelTitle,
   defaultPanelOpen = false,
   worldHud,
-  onMenuClick,
   onToolClick,
-  onPromptSubmit,
   onActivitiesClick,
 }: AppShellProps) {
   const [isPanelOpen, setPanelOpen] = useState(defaultPanelOpen);
 
-  const handlePrompt = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const form = new FormData(event.currentTarget);
-    const prompt = String(form.get("prompt") ?? "").trim();
-    if (prompt) onPromptSubmit?.(prompt);
-    event.currentTarget.reset();
-  };
-
-  const handleToolClick = (tool: string) => {
-    setPanelOpen(true);
-    onToolClick?.(tool);
-  };
-
-  const handleMenuClick = () => {
-    setPanelOpen((open) => !open);
-    onMenuClick?.();
+  const handleToolClick = (tool: ShellTool) => {
+    if (tool.opensPanel !== false) {
+      setPanelOpen((open) => tool.id === activeTool ? !open : true);
+    }
+    onToolClick?.(tool.id);
   };
 
   return (
@@ -130,10 +117,7 @@ export function AppShell({
       <div className="app-shell__scrim" aria-hidden="true" />
 
       <header className="app-shell__brand">
-        <button type="button" className="shell-icon-button shell-menu-button" onClick={handleMenuClick} aria-label="Toggle information panel">
-          <span /><span /><span />
-        </button>
-        <div className="app-shell__wordmark"><strong>Control AI</strong><span>Life Pathfinder</span></div>
+        <div className="app-shell__wordmark"><strong>Conquer Your Path</strong></div>
       </header>
 
       <nav className="app-shell__tools" aria-label="Journey pages">
@@ -182,12 +166,6 @@ export function AppShell({
         )}
       </aside>
 
-      <form className="app-shell__prompt" onSubmit={handlePrompt}>
-        <span className="prompt-spark" aria-hidden="true">{"\u2733"}</span>
-        <label className="sr-only" htmlFor="world-prompt">Ask a question or jump to a page</label>
-        <input id="world-prompt" name="prompt" autoComplete="off" placeholder="Ask a question or jump to a page..." />
-        <button type="submit" aria-label="Submit question">?</button>
-      </form>
     </main>
   );
 }

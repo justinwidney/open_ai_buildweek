@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { CAREER_CHOICES, MAJOR_CHOICES, type DecisionChoiceDetails } from "../labs/decision-travel/decisionCatalog";
+import { CAREER_CHOICES, MAJOR_CHOICES, PET_CHOICES, type DecisionChoiceDetails } from "../labs/decision-travel/decisionCatalog";
 import "./foundations.css";
 
 /**
  * Every illustration in the deck, resolved through the same
- * `/role-cards/{roles|majors}/{id}.svg` path the catalog builds. A missing file
+ * `/role-cards/{roles|majors|pets}/{id}.svg` path the catalog builds. A missing file
  * shows here as a broken tile rather than as a suspended card at runtime.
  */
 function Gallery({ rows, caption }: { rows: readonly DecisionChoiceDetails[]; caption: string }) {
@@ -46,4 +46,8 @@ export const StarterRoles: Story = {
 
 export const CollegeMajors: Story = {
   render: () => <Gallery rows={MAJOR_CHOICES} caption="College majors" />,
+};
+
+export const PetCompanions: Story = {
+  render: () => <Gallery rows={PET_CHOICES} caption="Pet companions" />,
 };
