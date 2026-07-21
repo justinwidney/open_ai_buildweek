@@ -5,7 +5,7 @@
 // Usage: node capture.mjs
 // Env overrides: VITE_URL (default http://localhost:5173), SB_URL (default http://localhost:6006)
 import { chromium } from "playwright";
-import { execSync } from "node:child_process";
+import { spawnSync } from "node:child_process";
 import { mkdirSync, readdirSync, renameSync, rmSync, existsSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { pathToFileURL } from "node:url";
@@ -21,18 +21,20 @@ const OUT_DIR = join(HERE, "video");
 
 // name -> url. Duration is read from the matching audio/<name>.mp3 file (+2s buffer)
 // rather than hardcoded, so re-recording after editing narration.txt stays in sync.
+const requestedScreen = process.env.ONLY_SCREEN;
 const screens = [
   ["01-home", `${VITE}/`],
   ["02-onboarding", `${VITE}/?editStart=1`],
   ["03-journey", `${VITE}/?skipHome=1`],
-  ["04-cards", `${VITE}/?skipHome=1`],
+  ["04-cards", `${SLIDES}#cards`],
   ["05-codex", `${SLIDES}#codex`],
   ["06-gpt", `${SLIDES}#gpt`],
   ["07-closing", `${VITE}/`],
-];
+].filter(([name]) => !requestedScreen || name === requestedScreen);
 
 function audioDurationSeconds(mp3Path) {
-  const out = execSync(`ffmpeg -i "${mp3Path}" -hide_banner 2>&1 || true`).toString();
+  const probe = spawnSync("ffmpeg", ["-i", mp3Path, "-hide_banner"], { encoding: "utf8" });
+  const out = `${probe.stdout ?? ""}${probe.stderr ?? ""}`;
   const match = out.match(/Duration: (\d+):(\d+):([\d.]+)/);
   if (!match) throw new Error(`Could not read duration of ${mp3Path}`);
   const [, h, m, s] = match;
@@ -42,7 +44,12 @@ function audioDurationSeconds(mp3Path) {
 mkdirSync(OUT_DIR, { recursive: true });
 const browser = await chromium.launch();
 
-for (const [name, url] of screens) {
+// Optional SEGMENTS=01-home,02-onboarding filter, e.g. to re-capture a subset
+// (used while the live app is broken and only slide-based segments can run).
+const only = process.env.SEGMENTS?.split(",").map((s) => s.trim());
+const active = only ? screens.filter(([name]) => only.includes(name)) : screens;
+
+for (const [name, url] of active) {
   const mp3 = join(AUDIO_DIR, `${name}.mp3`);
   if (!existsSync(mp3)) throw new Error(`Missing ${mp3} — run generate-audio.sh first`);
   const seconds = audioDurationSeconds(mp3) + 2; // +2s buffer, trimmed off in mux.sh

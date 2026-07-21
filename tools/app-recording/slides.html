@@ -28,9 +28,36 @@
     .flow { display: flex; align-items: center; gap: 15px; margin-top: 30px; font-size: 22px; font-weight: 800; }
     .flow span { padding: 16px 20px; border-radius: 15px; background: rgba(102,157,187,.24); border: 1px solid rgba(255,255,255,.16); }
     .flow b { color: #efc97c; }
+    .card-stage { display: grid; grid-template-columns: .9fr 1.1fr; gap: 52px; align-items: center; }
+    .role-card { min-height: 650px; border: 5px solid #d7b66a; border-radius: 32px; padding: 26px; background: linear-gradient(160deg,#fff6d4,#bde6da 54%,#89b2cf); box-shadow: 0 35px 80px rgba(0,0,0,.45); transform: perspective(1300px) rotateY(8deg) rotateX(1deg); }
+    .role-card img { width: 100%; height: 455px; object-fit: cover; object-position: center; border-radius: 19px; border: 3px solid rgba(58,54,81,.45); }
+    .role-card h2 { margin: 18px 0 4px; color: #2a3550; font: 700 37px/1 Georgia, serif; }
+    .role-card p { margin: 0; color: #36455e; font-size: 20px; }
+    .chips { display: flex; flex-wrap: wrap; gap: 13px; margin-top: 28px; }
+    .chips span { padding: 12px 17px; border-radius: 999px; color: #f9f5df; background: rgba(91,151,183,.28); border: 1px solid rgba(255,255,255,.18); font-size: 20px; }
   </style>
 </head>
 <body>
+  <section class="slide" id="cards">
+    <div class="card-stage">
+      <div class="role-card">
+        <img src="http://127.0.0.1:5176/role-cards/college-major-sprite-medieval.png" alt="Illustrated college major card" />
+        <h2>Choose a college major</h2>
+        <p>Searchable collection · detailed commitment view</p>
+      </div>
+      <div>
+        <div class="eyebrow">Detailed decisions</div>
+        <h1>Compare the commitment, not just the label</h1>
+        <p class="lede">Each choice can expose cost, time, and long-term financial impact in an interactive card view.</p>
+        <div class="chips"><span>Estimated cost</span><span>Time requirement</span><span>Financial impact</span><span>Search + filter</span></div>
+        <div class="panel" style="margin-top:28px">
+          <h2>Performance boundary</h2>
+          <ul><li>React + CSS for the illustrated journey</li><li>Three.js loaded only when a 3D card opens</li></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="slide" id="codex">
     <div>
       <div class="eyebrow">How I built it</div>

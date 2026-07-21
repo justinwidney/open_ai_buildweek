@@ -16,7 +16,12 @@ get_dur() {
     awk '{printf "%.3f", $1*3600 + $2*60 + $3}'
 }
 
-names=(01-home 02-onboarding 03-journey 04-cards 05-codex 06-gpt 07-closing)
+if [[ -n "$SEGMENTS" ]]; then
+  IFS=',' read -ra names <<< "$SEGMENTS"
+else
+  names=(01-home 02-onboarding 03-journey 04-cards 05-codex 06-gpt 07-closing)
+fi
+OUT_NAME="${OUT_NAME:-app-tour.mp4}"
 
 listfile="$CLIPS/list.txt"
 > "$listfile"
@@ -44,5 +49,5 @@ for name in "${names[@]}"; do
   echo "file '$name.mp4'" >> "$listfile"
 done
 
-"$FFMPEG" -y -f concat -safe 0 -i "$listfile" -c copy "$HERE/app-tour.mp4" -loglevel error
-echo "FINAL: $HERE/app-tour.mp4"
+"$FFMPEG" -y -f concat -safe 0 -i "$listfile" -c copy "$HERE/$OUT_NAME" -loglevel error
+echo "FINAL: $HERE/$OUT_NAME"
