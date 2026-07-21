@@ -23,9 +23,6 @@ else
 fi
 OUT_NAME="${OUT_NAME:-app-tour.mp4}"
 
-listfile="$CLIPS/list.txt"
-> "$listfile"
-
 for name in "${names[@]}"; do
   vfile="$VID/$name.webm"
   afile="$AUD/$name.mp3"
@@ -43,11 +40,21 @@ for name in "${names[@]}"; do
     -map 0:v -map 1:a -c:v libx264 -pix_fmt yuv420p -profile:v high -r 30 \
     -c:a aac -b:a 192k -shortest "$cfile" -loglevel error
 
-  # Relative filename: concat resolves entries relative to list.txt's own
-  # directory, which sidesteps MSYS-path (/c/...) vs Windows-path (C:/...)
-  # mismatches with native ffmpeg.exe.
-  echo "file '$name.mp4'" >> "$listfile"
 done
 
-"$FFMPEG" -y -f concat -safe 0 -i "$listfile" -c copy "$HERE/$OUT_NAME" -loglevel error
+# Reset every segment's timestamps before concatenation. Copying Playwright's
+# timestamps directly can leave gaps that inflate the reported final runtime.
+inputs=()
+filter=""
+concat_inputs=""
+for i in "${!names[@]}"; do
+  inputs+=(-i "$CLIPS/${names[$i]}.mp4")
+  filter+="[$i:v]setpts=PTS-STARTPTS[v$i];[$i:a]asetpts=PTS-STARTPTS[a$i];"
+  concat_inputs+="[v$i][a$i]"
+done
+filter+="${concat_inputs}concat=n=${#names[@]}:v=1:a=1[outv][outa]"
+
+"$FFMPEG" -y "${inputs[@]}" -filter_complex "$filter" \
+  -map "[outv]" -map "[outa]" -c:v libx264 -pix_fmt yuv420p -profile:v high -r 30 \
+  -c:a aac -b:a 192k -movflags +faststart "$HERE/$OUT_NAME" -loglevel error
 echo "FINAL: $HERE/$OUT_NAME"

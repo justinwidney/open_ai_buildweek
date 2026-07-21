@@ -14,7 +14,10 @@ tools/svg_grouper/debug/home-preview/
 
 # Generated recording pipeline output (audio/video are regenerated, not source)
 tools/app-recording/node_modules/
+tools/app-recording/.pydeps/
+tools/app-recording/.venv/
 tools/app-recording/audio/
 tools/app-recording/video/
 tools/app-recording/clips/
 tools/app-recording/*.mp4
+tools/app-recording/final-contact-sheet.png
