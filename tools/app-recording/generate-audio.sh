@@ -8,7 +8,7 @@ VOICE="${1:-en-US-JennyNeural}"
 AUD="$HERE/audio"
 mkdir -p "$AUD"
 
-names=(01-home 02-onboarding 03-journey 04-design-tokens 05-year-planner 06-decision-cards 07-charter-cards)
+names=(01-home 02-onboarding 03-journey 04-cards 05-codex 06-gpt 07-closing)
 
 # Split narration.txt on "### " headers, in the same order as `names`.
 i=0

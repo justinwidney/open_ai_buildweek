@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Conquer Your Path — Build Story</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; }
+    body { font-family: Inter, ui-sans-serif, system-ui, sans-serif; color: #f9f5df; background: #101729; }
+    .slide { position: absolute; inset: 0; display: none; padding: 92px 112px; background:
+      radial-gradient(circle at 80% 10%, rgba(246,183,92,.25), transparent 30%),
+      radial-gradient(circle at 12% 90%, rgba(91,151,183,.27), transparent 34%),
+      linear-gradient(135deg, #182742 0%, #291f42 55%, #12233d 100%); }
+    .slide:target { display: grid; }
+    body:not(:has(.slide:target)) #codex { display: grid; }
+    .eyebrow { color: #efc97c; text-transform: uppercase; letter-spacing: .18em; font-size: 22px; font-weight: 800; }
+    h1 { margin: 12px 0 16px; font: 700 64px/1.02 Georgia, serif; max-width: 1100px; text-shadow: 0 4px 18px rgba(0,0,0,.4); }
+    .lede { margin: 0 0 42px; color: #d7e3ef; font-size: 28px; line-height: 1.45; max-width: 1220px; }
+    .grid { display: grid; grid-template-columns: 1.08fr .92fr; gap: 34px; min-height: 0; }
+    .panel { border: 1px solid rgba(255,255,255,.16); border-radius: 24px; padding: 28px 30px; background: rgba(10,16,30,.68); box-shadow: 0 22px 55px rgba(0,0,0,.25); }
+    .panel h2 { margin: 0 0 20px; color: #f5d899; font-size: 27px; }
+    ul { margin: 0; padding-left: 25px; display: grid; gap: 17px; color: #e4edf5; font-size: 24px; line-height: 1.35; }
+    pre { margin: 0; white-space: pre-wrap; color: #d8e8f5; font: 20px/1.48 Consolas, monospace; }
+    .stat { display: grid; grid-template-columns: 180px 1fr; align-items: baseline; gap: 18px; margin: 20px 0; }
+    .stat strong { color: #efc97c; font: 700 52px/1 Georgia, serif; }
+    .stat span { color: #d7e3ef; font-size: 23px; }
+    .flow { display: flex; align-items: center; gap: 15px; margin-top: 30px; font-size: 22px; font-weight: 800; }
+    .flow span { padding: 16px 20px; border-radius: 15px; background: rgba(102,157,187,.24); border: 1px solid rgba(255,255,255,.16); }
+    .flow b { color: #efc97c; }
+  </style>
+</head>
+<body>
+  <section class="slide" id="codex">
+    <div>
+      <div class="eyebrow">How I built it</div>
+      <h1>Codex as the development workspace</h1>
+      <p class="lede">Repository inspection, focused implementation, verification, and performance work all stayed in one agentic loop.</p>
+      <div class="grid">
+        <div class="panel">
+          <h2>Work completed with Codex</h2>
+          <ul>
+            <li>Edited the React and TypeScript experience</li>
+            <li>Ran type checks and production builds</li>
+            <li>Diagnosed UI, simulation, and bundle issues</li>
+            <li>Preloaded scenes and made transitions atomic</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h2>Measured optimization</h2>
+          <div class="stat"><strong>94.7%</strong><span>smaller illustrated route assets</span></div>
+          <div class="stat"><strong>34</strong><span>route backgrounds converted to WebP</span></div>
+          <div class="stat"><strong>lazy</strong><span>Three.js loaded only for interactive cards</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" id="gpt">
+    <div>
+      <div class="eyebrow">Reasoning and coding model</div>
+      <h1>GPT-5.6 turned product intent into a working system</h1>
+      <p class="lede">The model helped connect narrative life choices to deterministic simulation rules and clear financial consequences.</p>
+      <div class="grid">
+        <div class="panel">
+          <h2>Decision architecture</h2>
+          <pre>life event
+  → decision branch
+  → monthly cash-flow effects
+  → accounts, debt, investments
+  → net-worth trajectory</pre>
+          <div class="flow"><span>Idea</span><b>→</b><span>Architecture</span><b>→</b><span>Tested code</span></div>
+        </div>
+        <div class="panel">
+          <h2>Where higher reasoning mattered</h2>
+          <ul>
+            <li>Simulation rules and state transitions</li>
+            <li>Performance bottlenecks and loading behavior</li>
+            <li>Separating lightweight UI from 3D card views</li>
+            <li>Final interaction and presentation polish</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

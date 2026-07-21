@@ -16,7 +16,7 @@ get_dur() {
     awk '{printf "%.3f", $1*3600 + $2*60 + $3}'
 }
 
-names=(01-home 02-onboarding 03-journey 04-design-tokens 05-year-planner 06-decision-cards 07-charter-cards)
+names=(01-home 02-onboarding 03-journey 04-cards 05-codex 06-gpt 07-closing)
 
 listfile="$CLIPS/list.txt"
 > "$listfile"

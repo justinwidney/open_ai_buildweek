@@ -8,12 +8,13 @@ import { chromium } from "playwright";
 import { execSync } from "node:child_process";
 import { mkdirSync, readdirSync, renameSync, rmSync, existsSync } from "node:fs";
 import { join, dirname } from "node:path";
+import { pathToFileURL } from "node:url";
 import { fileURLToPath } from "node:url";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const VIEWPORT = { width: 1920, height: 1080 };
 const VITE = process.env.VITE_URL ?? "http://localhost:5173";
-const SB = process.env.SB_URL ?? "http://localhost:6006";
+const SLIDES = pathToFileURL(join(HERE, "slides.html")).href;
 
 const AUDIO_DIR = join(HERE, "audio");
 const OUT_DIR = join(HERE, "video");
@@ -24,10 +25,10 @@ const screens = [
   ["01-home", `${VITE}/`],
   ["02-onboarding", `${VITE}/?editStart=1`],
   ["03-journey", `${VITE}/?skipHome=1`],
-  ["04-design-tokens", `${SB}/iframe.html?id=foundations-design-tokens--palette&viewMode=story`],
-  ["05-year-planner", `${SB}/iframe.html?id=year-planner-screens--direction&viewMode=story`],
-  ["06-decision-cards", `${SB}/iframe.html?id=decisions-card-decks--jobs-desktop-five-cards&viewMode=story`],
-  ["07-charter-cards", `${SB}/iframe.html?id=cards-charter-card--starter-role&viewMode=story`],
+  ["04-cards", `${VITE}/?skipHome=1`],
+  ["05-codex", `${SLIDES}#codex`],
+  ["06-gpt", `${SLIDES}#gpt`],
+  ["07-closing", `${VITE}/`],
 ];
 
 function audioDurationSeconds(mp3Path) {
