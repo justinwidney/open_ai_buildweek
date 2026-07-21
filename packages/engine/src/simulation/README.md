@@ -27,14 +27,13 @@ goes instead of collecting them in memory), and
 `tick()` appends `decisionDeltas` onto the returned snapshot's `decisions`
 array as an audit trail, but it does **not** translate "decision X was
 chosen" into concrete state changes (adding an income source, buying a
-house, changing a job). That translation is the caller's job when it
-constructs a new starting `LifeStateSnapshot` at a fork point — see the
-branching test in `index.test.ts` for the pattern: take the parent's
-snapshot at the fork month, replace whatever domain state the decision
-actually changes, and call `runSimulation` from there. A general
-decision-effects system (mapping an arbitrary decision to an arbitrary
-state patch) is a bigger, separate design worth its own pass once the
-frontend's actual decision vocabulary is known.
+house, changing a job). The existing `events/` interpreter performs that
+translation for its typed mutation vocabulary and catalog builders. The
+caller resolves the parent snapshot, applies the selected event, creates the
+fork, and runs it forward. The planned crossroads work below expands that
+existing seam with versioned option definitions, validation, richer state,
+scheduled effects, and preview/commit orchestration; it does not move decision
+interpretation into `tick()`.
 
 ## Other documented simplifications
 
@@ -58,3 +57,71 @@ frontend's actual decision vocabulary is known.
   across repeated invocations with the same seed — the golden-master test.
 
 Depends on: every other folder in `engine/src/`.
+
+## Detailed crossroads contract (planned)
+
+The engine needs one domain-level contract for every crossroads; the UI may
+render it as a small confirmation or a large searchable popup, but rendering
+must not change the financial result.
+
+- `minor` decisions are low-complexity, normally reversible, and may use a
+  compact confirmation with one projection summary.
+- `major` decisions (education/career, rent-or-buy, marriage, children,
+  relocation, retirement) require an expanded experience with assumptions,
+  eligibility warnings, multiple options, and side-by-side projections.
+- Classification is catalog metadata, not a frontend heuristic. It includes a
+  reason, required comparison metrics, and whether explicit confirmation is
+  required.
+
+The intended lifecycle is `open -> preview -> compare -> commit | cancel`:
+
+1. **Open** resolves the snapshot, catalog version, and option eligibility at
+   the decision's effective month.
+2. **Preview** forks an ephemeral branch per option and applies its event
+   effects without changing the active run.
+3. **Compare** evaluates every option over the same horizon, reference-data
+   version, assumptions, and seeded uncertainty streams.
+4. **Commit** records the chosen option and its input values, applies the
+   versioned event once, and creates the durable branch. Cancel discards all
+   previews.
+
+A preview response needs stable option/scenario ids; immediate cash required;
+monthly income, tax, housing, insurance, debt, and discretionary-flow deltas;
+asset/debt balances; net-worth and goal effects; uncertainty ranges; warnings;
+and line-item explanations linking each number to an assumption or source.
+Preview results are advisory snapshots, never hidden mutations.
+
+## State evolution and branches (planned)
+
+`LifeStateSnapshot` should eventually carry or reference all state needed to
+resume a life: household, location, education, employment and pay schedule,
+housing tenure/property, insurance, taxes, recurring schedules, active goals,
+pending events, catalog/reference-data versions, and RNG stream state. Each
+entity needs stable identity plus `effectiveFromMonth`/`effectiveToMonth` so a
+job, lease, mortgage, or benefit starts and stops exactly once.
+
+A durable branch records `parentRunId`, `forkMonth`, `decisionId`,
+`optionId`, normalized user inputs, engine/schema version, data-bundle version,
+seed policy, and the applied event ids. The shared prefix remains immutable.
+Replaying the branch from that record must reproduce every snapshot and detail
+line. Scheduled future effects (a school graduation, annual bonus, mortgage
+renewal) live in state/event schedules rather than UI timers.
+
+`TickDetail` is the explanation ledger. It should expand from per-entity totals
+to opening balance + named inflows/outflows + growth/interest/tax adjustments =
+closing balance, with formula/assumption/source ids. Aggregating those lines
+must exactly equal the snapshot totals shown in a monthly projection.
+
+## Additional acceptance criteria
+
+- Opening, previewing, comparing, or cancelling a decision never alters its
+  source run; committing the same idempotency key twice creates one fork/effect.
+- All options in one comparison share the baseline, horizon, data versions,
+  and aligned random streams; differences therefore reflect the choice rather
+  than unrelated random draws.
+- A replay from the branch manifest is byte-identical, including scheduled
+  event outcomes and explanation lines.
+- Every monthly total can be reconciled to detail lines and every line exposes
+  its formula inputs and provenance.
+- Tests cover at least career/school and rent/buy major decisions, one minor
+  decision, cancel, invalid/ineligible inputs, delayed effects, and fork replay.

@@ -15,6 +15,7 @@
   "dependencies": {
     "@control-ai/db": "workspace:*",
     "@control-ai/engine": "workspace:*",
+    "@control-ai/shared": "workspace:*",
     "piscina": "^5.3.0"
   },
   "devDependencies": {

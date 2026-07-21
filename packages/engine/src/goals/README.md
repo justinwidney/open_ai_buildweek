@@ -46,3 +46,34 @@ withdrawal rate), `collegeFund` (529 balances), `homeEquity`, and `debtFree`
   terminal snapshots meeting the goal.
 
 Depends on: `simulation/`, `physical-assets/`, `forecast/` (percentile), `money/`, `types/`.
+
+## Crossroads integration (planned)
+
+Major-decision previews should report effects on all active goals, not only net
+worth. For each option and goal the engine should return the baseline and
+option target-month value, shortfall/surplus delta, projected completion month,
+and probability of success when forecast paths are available. Results must say
+whether values are nominal or real and which inflation/withdrawal assumptions
+were used.
+
+Goals also need lifecycle state: draft/active/paused/completed/abandoned,
+created/effective months, ownership (person or household), contribution source,
+priority, and a versioned target history. A later target edit must not rewrite
+earlier evaluations. Dependencies and conflicts should be explicit (for
+example, a down-payment goal funding a home event, or two goals competing for
+the same monthly surplus).
+
+For long horizons, show uncertainty rather than a false single completion
+date: percentile target values, on-track probability, and the assumptions or
+events driving the spread. Goal evaluation remains pure; allocation and
+trade-off policy belongs in a separately testable planner rather than being
+hidden in the metric calculation.
+
+## Additional acceptance criteria
+
+- Baseline and option goal impacts use the same target version, effective
+  month, horizon, reference-data bundle, and aligned forecast paths.
+- A target revision creates a new version and historical progress remains
+  reproducible under the old one.
+- Tests cover goal funding by a committed event, paused goals, competing-goal
+  disclosures, real/nominal presentation, and deterministic goal comparisons.

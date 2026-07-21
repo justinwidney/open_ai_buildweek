@@ -1,0 +1,61 @@
+{
+  "schema_version": 2,
+  "base": {
+    "svg": "semantic-base.svg",
+    "manifest": "semantic-base.json"
+  },
+  "references": {
+    "near-left": "../references/reference_fork_near_left.png",
+    "near-right": "../references/reference_fork_near_right.png"
+  },
+  "variants": [
+    {
+      "id": "near-left",
+      "svg": "near-left.svg",
+      "manifest": "near-left.semantic.json",
+      "forks": 1,
+      "junctions": 1,
+      "reference": "../references/reference_fork_near_left.png"
+    },
+    {
+      "id": "near-right",
+      "svg": "near-right.svg",
+      "manifest": "near-right.semantic.json",
+      "forks": 1,
+      "junctions": 1,
+      "reference": "../references/reference_fork_near_right.png"
+    },
+    {
+      "id": "near-both",
+      "svg": "near-both.svg",
+      "manifest": "near-both.semantic.json",
+      "forks": 2,
+      "junctions": 1,
+      "reference": null
+    },
+    {
+      "id": "middle-left",
+      "svg": "middle-left.svg",
+      "manifest": "middle-left.semantic.json",
+      "forks": 1,
+      "junctions": 1,
+      "reference": null
+    },
+    {
+      "id": "middle-right",
+      "svg": "middle-right.svg",
+      "manifest": "middle-right.semantic.json",
+      "forks": 1,
+      "junctions": 1,
+      "reference": null
+    },
+    {
+      "id": "series",
+      "svg": "series.svg",
+      "manifest": "series.semantic.json",
+      "forks": 3,
+      "junctions": 3,
+      "reference": null
+    }
+  ]
+}

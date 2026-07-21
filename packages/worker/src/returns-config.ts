@@ -1,34 +1,15 @@
-import {
-  createFixedReturnsStrategy,
-  createHistoricalBacktestStrategy,
-  createMonteCarloReturnsStrategy,
-  referenceData2026,
-  type ReturnsStrategy,
-} from "@control-ai/engine";
-
 /**
- * A `ReturnsStrategy` isn't serializable (it closes over functions) and
- * can't cross a `worker_threads` message boundary, so a job payload
- * carries this plain-data config instead — the worker thread reconstructs
- * the real strategy from it via `buildReturnsStrategy`, using the same
- * `@control-ai/engine` factories the main thread would use directly.
+ * `ReturnsStrategyConfig` and `buildReturnsStrategy` now live in
+ * `@control-ai/shared/sim`, re-exported here so existing importers and this
+ * package's job payload keep working unchanged.
+ *
+ * They moved because this package depends on `piscina` and `worker_threads`,
+ * making it unimportable from the browser and from Convex — yet
+ * @control-ai/db, @control-ai/convex and the web app all *persist* this exact
+ * shape, so owning the type here forced every one of them to store the column
+ * as `unknown` / `v.any()`. Why the type exists at all is unchanged: a live
+ * `ReturnsStrategy` closes over functions, so it can neither cross a worker
+ * message boundary nor be written to a database; this plain-data config
+ * travels, and the worker thread rehydrates it on the far side.
  */
-export type ReturnsStrategyConfig =
-  | { kind: "fixed"; annualRatesByAssetClass: Record<string, number> }
-  | { kind: "monte-carlo"; distributionsByAssetClass: Record<string, { annualMeanReturn: number; annualVolatility: number }> }
-  | { kind: "historical-backtest"; assetClassIds: readonly string[]; startYear?: number };
-
-export function buildReturnsStrategy(config: ReturnsStrategyConfig): ReturnsStrategy {
-  switch (config.kind) {
-    case "fixed":
-      return createFixedReturnsStrategy(config.annualRatesByAssetClass);
-    case "monte-carlo":
-      return createMonteCarloReturnsStrategy(config.distributionsByAssetClass);
-    case "historical-backtest": {
-      const datasetsByAssetClass = Object.fromEntries(
-        config.assetClassIds.filter((id) => id in referenceData2026.historicalReturns).map((id) => [id, referenceData2026.historicalReturns[id]!]),
-      );
-      return createHistoricalBacktestStrategy({ datasetsByAssetClass, startYear: config.startYear });
-    }
-  }
-}
+export { buildReturnsStrategy, type ReturnsStrategyConfig } from "@control-ai/shared/sim";

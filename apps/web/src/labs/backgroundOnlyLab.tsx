@@ -7,16 +7,18 @@ import {
   LayeredParallaxBackground,
   type LayeredParallaxBackgroundHandle,
 } from "../world/background/layers/LayeredParallaxBackground";
+import { ProceduralRouteWorld, type RouteDirection } from "../world/background/route";
 import "./backgroundOnlyLab.css";
 
-const referenceUrl = new URL("../../../../finished/ChatGPT Image Jul 20, 2026, 10_11_35 AM.png", import.meta.url).href;
-const SVG_ASSET_MODULES = import.meta.glob<string>("../../../../tools/svg/sprites_svg/*.svg", {
+const referenceUrl = new URL("../../../../finished/v2/ChatGPT Image Jul 20, 2026, 06_03_43 PM.png", import.meta.url).href;
+const SVG_ASSET_MODULES = import.meta.glob<string>("../../../../tools/svg/sprites_svg/**/*.svg", {
   eager: true,
   import: "default",
   query: "?url",
 });
 const STREAM_SLOT_COUNT = 26;
 const DEFAULT_SEED = 42027;
+const ROUTE_DECISION_COUNT = 5;
 
 type SpriteDepth = "far" | "mixed" | "mid" | "near" | "surface" | "foreground";
 type SpritePlacement = "horizon" | "sky" | "world" | "edge" | "foreground";
@@ -100,6 +102,11 @@ const SVG_LIBRARY: readonly SvgSprite[] = Object.entries(SVG_ASSET_MODULES).map(
   };
 }).sort((left, right) => left.id.localeCompare(right.id));
 const SVG_BY_ID = new Map(SVG_LIBRARY.map((sprite) => [sprite.id, sprite]));
+const ROUTE_ISLAND_URLS = [SVG_BY_ID.get("sprite_030")?.url, SVG_BY_ID.get("sprite_033")?.url]
+  .filter((url): url is string => Boolean(url));
+const ROUTE_GROUND_SHELF_URLS = ["sprite_064", "sprite_065", "sprite_071", "sprite_072"]
+  .map((id) => SVG_BY_ID.get(id)?.url)
+  .filter((url): url is string => Boolean(url));
 
 function createRandom(seed: number) {
   let state = seed >>> 0;
@@ -156,6 +163,13 @@ function smoothstep(edge0: number, edge1: number, value: number) {
 
 function mix(start: number, end: number, progress: number) {
   return start + (end - start) * progress;
+}
+
+function nextChapterSeed(seed: number, chapter: number) {
+  let value = (seed ^ Math.imul(chapter + 1, 0x9e3779b9)) >>> 0;
+  value = Math.imul(value ^ value >>> 16, 0x21f0aaad);
+  value = Math.imul(value ^ value >>> 15, 0x735a2d97);
+  return (value ^ value >>> 15) >>> 0;
 }
 
 function widthForSprite(sprite: SvgSprite) {
@@ -233,6 +247,7 @@ function BackgroundOnlyLab() {
   const runtimeSlotsRef = useRef<Array<{ spriteId: string; side: -1 | 1; lane: number; occluding: boolean }>>([]);
   const [showBackwall, setShowBackwall] = useState(true);
   const [showSvgStream, setShowSvgStream] = useState(true);
+  const [showRouteWorld, setShowRouteWorld] = useState(true);
   const [enabledGroups, setEnabledGroups] = useState<Record<string, boolean>>({ ...DEFAULT_GROUP_VISIBILITY });
   const [worldSeed, setWorldSeed] = useState(DEFAULT_SEED);
   const [recycledCount, setRecycledCount] = useState(0);
@@ -253,6 +268,9 @@ function BackgroundOnlyLab() {
   const [continuousScroll, setContinuousScroll] = useState(true);
   const [forwardSpeed, setForwardSpeed] = useState(.08);
   const [occlusionChance, setOcclusionChance] = useState(.34);
+  const [routeChoices, setRouteChoices] = useState<RouteDirection[]>([]);
+  const [routeChapter, setRouteChapter] = useState(1);
+  const [routeArrivals, setRouteArrivals] = useState(0);
 
   const activePool = useMemo(
     () => SVG_LIBRARY.filter((sprite) => enabledGroups[sprite.group.id]),
@@ -370,10 +388,25 @@ function BackgroundOnlyLab() {
     return () => window.cancelAnimationFrame(animationFrame);
   }, [activePool, continuousScroll, depthSpread, forwardSpeed, occlusionChance, showLabels, showSvgStream, spriteOpacity, spriteSaturation, spriteWarmth, streamSlots, worldSeed]);
 
-  const chooseSector = (direction: -1 | 0 | 1) => {
+  const reachRouteDestination = () => {
+    setWorldSeed((current) => nextChapterSeed(current, routeChapter));
+    setRouteChapter((current) => current + 1);
+    setRouteArrivals((current) => current + 1);
+    setRouteChoices([]);
+    setRecycledCount(0);
+    recycledCountRef.current = 0;
+    runtimeSignatureRef.current = "";
+    forwardPhaseRef.current = 0;
+    backgroundRef.current?.reset();
+    setSector(0);
+  };
+  const chooseSector = (direction: RouteDirection) => {
+    if (routeChoices.length >= ROUTE_DECISION_COUNT) return;
     backgroundRef.current?.reset();
     if (direction !== 0) backgroundRef.current?.setSector(direction);
     setSector(direction);
+    const nextChoices = [...routeChoices, direction];
+    setRouteChoices(nextChoices);
   };
   const toggleGroup = (id: string) => setEnabledGroups((current) => ({ ...current, [id]: !current[id] }));
   const randomizeWorld = () => {
@@ -384,10 +417,13 @@ function BackgroundOnlyLab() {
     recycledCountRef.current = 0;
     runtimeSignatureRef.current = "";
     forwardPhaseRef.current = 0;
+    setRouteChoices([]);
+    setRouteChapter((current) => current + 1);
   };
   const reset = () => {
     setShowBackwall(true);
     setShowSvgStream(true);
+    setShowRouteWorld(true);
     setEnabledGroups({ ...DEFAULT_GROUP_VISIBILITY });
     setWorldSeed(DEFAULT_SEED);
     setRecycledCount(0);
@@ -403,8 +439,12 @@ function BackgroundOnlyLab() {
     setOcclusionChance(.34);
     setShowLabels(false);
     setShowRoutes(true);
+    setRouteChoices([]);
+    setRouteChapter(1);
+    setRouteArrivals(0);
     forwardPhaseRef.current = 0;
-    chooseSector(0);
+    backgroundRef.current?.reset();
+    setSector(0);
   };
   const className = `background-only-composition${showBackwall ? "" : " hide-backwall"} hide-horizon hide-islands hide-foreground hide-cloud hide-island hide-floater`;
   const enabledGroupCount = GROUPS.filter((group) => enabledGroups[group.id]).length;
@@ -423,6 +463,17 @@ function BackgroundOnlyLab() {
         ref={backgroundRef}
         visibleSpriteIds={[]}
         infiniteHorizon={false}
+      />
+      <ProceduralRouteWorld
+        chapter={routeChapter}
+        choices={routeChoices}
+        destinationReady={routeChoices.length >= ROUTE_DECISION_COUNT}
+        groundShelfSpriteUrls={ROUTE_GROUND_SHELF_URLS}
+        islandSpriteUrls={ROUTE_ISLAND_URLS}
+        motionEnabled={continuousScroll}
+        onReachDestination={reachRouteDestination}
+        seed={worldSeed}
+        visible={showRouteWorld}
       />
       <div className="background-only-stream" aria-hidden="true">
         {streamSlots.map((slot, index) => <div
@@ -447,7 +498,7 @@ function BackgroundOnlyLab() {
         <i data-route="left" /><i data-route="center" /><i data-route="right" /><span />
       </div>
       {showReference && <div className="background-only-divider" style={{ left: `${wipe}%` }} aria-hidden="true"><span>reference</span><span>rebuild</span></div>}
-      <div className="lab-status">Seed {worldSeed} · {activePool.length} labeled SVGs · {streamSlots.length} live · {occludingCount} view-crossing clouds</div>
+      <div className="lab-status">Chapter {routeChapter} · {routeChoices.length}/{ROUTE_DECISION_COUNT} route choices · seed {worldSeed} · {enabledGroupCount} groups · {activePool.length} labeled SVGs · {streamSlots.length} live · {occludingCount} crossing</div>
     </div>
     <aside className={`lab-panel background-only-panel${panelCollapsed ? " is-collapsed" : ""}`}>
       <button
@@ -459,10 +510,11 @@ function BackgroundOnlyLab() {
         type="button"
       >{panelCollapsed ? "›" : "‹"}</button>
       <div className="background-only-panel__content">
-        <p className="lab-panel__lead">Every recycled slot selects a labeled SVG by group weight, spawns it at depth, grows it toward the camera, then replaces it with a different library asset.</p>
-        <div className="lab-seam">Source: tools/svg/sprites_svg/*.svg<br />Catalog: curated group → depth → placement → obstruction policy<br />New uncataloged files enter the conservative far-depth review group</div>
+        <p className="lab-panel__lead">The center route is one connected procedural SVG from the player edge to a clickable town. Independent labeled SVGs recycle around it as clouds, landmarks, and floating islands.</p>
+        <div className="lab-seam">Route: one solid land ribbon + inset road + reset town<br />Scenery: curated group → depth → placement → obstruction policy<br />Five route choices unlock the town; click it to generate the next seeded world</div>
         <fieldset className="background-only-layers"><legend>Scene</legend>
           <label className="lab-check"><input type="checkbox" checked={showBackwall} onChange={(event) => setShowBackwall(event.currentTarget.checked)} /><span>Sunrise backwall</span></label>
+          <label className="lab-check"><input type="checkbox" checked={showRouteWorld} onChange={(event) => setShowRouteWorld(event.currentTarget.checked)} /><span>Solid route + water</span></label>
           <label className="lab-check"><input type="checkbox" checked={showSvgStream} onChange={(event) => setShowSvgStream(event.currentTarget.checked)} /><span>Procedural SVG stream</span></label>
         </fieldset>
         <fieldset className="background-only-groups"><legend>SVG inclusion groups</legend>
@@ -490,7 +542,7 @@ function BackgroundOnlyLab() {
         <label className="lab-check"><input type="checkbox" checked={showRoutes} onChange={(event) => setShowRoutes(event.currentTarget.checked)} /><span>Route corridors</span></label>
         <label className="lab-check"><input type="checkbox" checked={showGrid} onChange={(event) => setShowGrid(event.currentTarget.checked)} /><span>Composition grid</span></label>
         <div className="lab-buttons"><button className={`lab-button${sector < 0 ? " is-active" : ""}`} onClick={() => chooseSector(-1)}>45° left</button><button className={`lab-button${sector === 0 ? " is-active" : ""}`} onClick={() => chooseSector(0)}>Straight</button><button className={`lab-button${sector > 0 ? " is-active" : ""}`} onClick={() => chooseSector(1)}>45° right</button><button className="lab-button lab-button--primary" onClick={randomizeWorld}>New random world</button><button className="lab-button" onClick={reset}>Reset catalog</button></div>
-        <div className="lab-readout"><div><span>Library</span><b>{SVG_LIBRARY.length}</b></div><div><span>Groups on</span><b>{enabledGroupCount}</b></div><div><span>Recycled</span><b>{recycledCount}</b></div></div>
+        <div className="lab-readout"><div><span>Library</span><b>{SVG_LIBRARY.length}</b></div><div><span>Arrivals</span><b>{routeArrivals}</b></div><div><span>Recycled</span><b>{recycledCount}</b></div></div>
       </div>
     </aside>
   </main>;

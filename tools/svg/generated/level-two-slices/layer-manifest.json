@@ -1,0 +1,198 @@
+{
+  "schemaVersion": 1,
+  "source": "../reference_06_03_continuous_road.svg",
+  "sourceSize": { "width": 1200, "height": 694 },
+  "base": {
+    "enabled": true,
+    "assetId": "reference_06_03_clean_background",
+    "cropTop": 0,
+    "cropBottom": 1,
+    "depth": 0
+  },
+  "depthPlates": [
+    {
+      "id": "far-castle",
+      "enabled": true,
+      "assetId": "reference_06_03_continuous_road",
+      "maskAssetId": "mask_far_castle",
+      "cropTop": 0,
+      "cropBottom": 1,
+      "depth": 0.75,
+      "renderOrder": 22,
+      "parallax": 0.08
+    },
+    {
+      "id": "middle-route",
+      "enabled": true,
+      "assetId": "reference_06_03_continuous_road",
+      "maskAssetId": "mask_middle_route",
+      "cropTop": 0,
+      "cropBottom": 1,
+      "depth": -0.55,
+      "renderOrder": 23,
+      "parallax": 0.16
+    },
+    {
+      "id": "near-route",
+      "enabled": true,
+      "assetId": "reference_06_03_continuous_road",
+      "maskAssetId": "mask_near_route",
+      "cropTop": 0,
+      "cropBottom": 1,
+      "depth": -1.2,
+      "renderOrder": 24,
+      "parallax": 0.28
+    },
+    {
+      "id": "foreground-ledges",
+      "enabled": true,
+      "assetId": "reference_06_03_continuous_road",
+      "maskAssetId": "mask_foreground_ledges",
+      "cropTop": 0,
+      "cropBottom": 1,
+      "depth": -1.8,
+      "renderOrder": 25,
+      "parallax": 0.38
+    }
+  ],
+  "planes": [
+    {
+      "id": "water-flow-left",
+      "enabled": true,
+      "assetId": "water_surface_flow",
+      "kind": "water-flow",
+      "x": 320,
+      "y": 430,
+      "width": 720,
+      "height": 240,
+      "depth": -0.2,
+      "renderOrder": 21,
+      "phase": 0.4,
+      "parallax": 0.08
+    },
+    {
+      "id": "water-flow-right",
+      "enabled": true,
+      "assetId": "water_surface_flow",
+      "kind": "water-flow",
+      "x": 900,
+      "y": 500,
+      "width": 720,
+      "height": 240,
+      "depth": -0.45,
+      "renderOrder": 21,
+      "phase": 2.6,
+      "parallax": 0.11
+    },
+    {
+      "id": "side-island-left",
+      "enabled": true,
+      "assetId": "sprite_033",
+      "kind": "side-island",
+      "x": 95,
+      "y": 560,
+      "width": 235,
+      "height": 276,
+      "depth": -2.15,
+      "renderOrder": 26,
+      "phase": 1.3,
+      "parallax": 0.48
+    },
+    {
+      "id": "cloud-left",
+      "enabled": true,
+      "assetId": "animated_cloud_bank",
+      "kind": "animated-cloud",
+      "x": 205,
+      "y": 108,
+      "width": 430,
+      "height": 249,
+      "depth": -1.1,
+      "renderOrder": 27,
+      "phase": 0.2,
+      "parallax": 0.4
+    },
+    {
+      "id": "cloud-right",
+      "enabled": true,
+      "assetId": "animated_cloud_bank",
+      "kind": "animated-cloud",
+      "x": 1010,
+      "y": 112,
+      "width": 370,
+      "height": 214,
+      "depth": -0.8,
+      "renderOrder": 27,
+      "phase": 2.4,
+      "parallax": 0.32
+    },
+    {
+      "id": "waterfall-far-left",
+      "enabled": true,
+      "assetId": "animated_waterfall",
+      "kind": "animated-waterfall",
+      "x": 492,
+      "y": 304,
+      "width": 58,
+      "height": 88,
+      "depth": -0.35,
+      "renderOrder": 28,
+      "phase": 0.1,
+      "parallax": 0.24
+    },
+    {
+      "id": "waterfall-middle-right",
+      "enabled": true,
+      "assetId": "animated_waterfall",
+      "kind": "animated-waterfall",
+      "x": 813,
+      "y": 368,
+      "width": 72,
+      "height": 108,
+      "depth": -0.72,
+      "renderOrder": 28,
+      "phase": 1.4,
+      "parallax": 0.34
+    },
+    {
+      "id": "waterfall-near-left",
+      "enabled": true,
+      "assetId": "animated_waterfall",
+      "kind": "animated-waterfall",
+      "x": 468,
+      "y": 472,
+      "width": 84,
+      "height": 126,
+      "depth": -1.15,
+      "renderOrder": 28,
+      "phase": 2.8,
+      "parallax": 0.45
+    },
+    {
+      "id": "waterfall-near-right",
+      "enabled": true,
+      "assetId": "animated_waterfall",
+      "kind": "animated-waterfall",
+      "x": 884,
+      "y": 524,
+      "width": 94,
+      "height": 142,
+      "depth": -1.45,
+      "renderOrder": 28,
+      "phase": 4.2,
+      "parallax": 0.52
+    }
+  ],
+  "flags": [
+    { "id": "flag-center", "enabled": true, "x": 617, "y": 28, "width": 23, "height": 38, "phase": 0.2 },
+    { "id": "flag-left", "enabled": true, "x": 538, "y": 72, "width": 20, "height": 34, "phase": 1.8 },
+    { "id": "flag-right", "enabled": true, "x": 688, "y": 78, "width": 20, "height": 34, "phase": 3.1 }
+  ],
+  "travel": {
+    "cameraPushStops": [0, 2.1, 4.6, 7.4, 10.8, 14.2]
+  },
+  "semanticSeparation": {
+    "cleanBaseEnabled": true,
+    "description": "The clean sky/water base contains no land or clouds. Masks retain only the castle, connected road island, and lower foreground ledges; disconnected rear islands are no longer rendered."
+  }
+}

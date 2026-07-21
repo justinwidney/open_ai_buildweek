@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@control-ai/engine": "workspace:*",
+    "@control-ai/shared": "workspace:*",
     "drizzle-orm": "^0.45.2",
     "pg": "^8.22.0"
   },

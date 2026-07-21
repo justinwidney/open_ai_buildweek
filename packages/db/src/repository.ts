@@ -1,5 +1,6 @@
 import { and, eq } from "drizzle-orm";
 import type { MonthKey, RunSimulationResult, TaxBasisState } from "@control-ai/engine";
+import { isValidBalance, isValidFlow, type ReturnsStrategyConfig, type RootSeed, type RunStatus, type TypedBalanceRecord, type TypedFlowLineItem } from "@control-ai/shared/sim";
 import type { Database } from "./client.js";
 import { balanceSnapshots, decisions, flowLineItems, runMonths, runs } from "./schema.js";
 
@@ -8,10 +9,17 @@ export interface SaveRunParams {
   parentRunId?: string | null;
   forkMonth?: number | null;
   label: string;
-  /** Initial decisions/config a run was seeded with — opaque to this layer, interpreted by whatever reconstructs a LifeStateSnapshot from it. */
-  rootSeed: unknown;
-  /** Strategy kind + params + rng seed, so the exact same run can be recomputed later. */
-  returnsStrategy: unknown;
+  forkDecisionLabel?: string | null;
+  /**
+   * The static entity configs this run replays from. Typed as `RootSeed`
+   * rather than `unknown`: paired with `buildInitialSnapshot` it is what
+   * makes a persisted run resumable at all, since the fact tables below store
+   * aggregate *results* and never an income's growth rate or a debt's term.
+   */
+  rootSeed: RootSeed;
+  /** Strategy kind + params, so the exact same run can be recomputed later. */
+  returnsStrategy: ReturnsStrategyConfig;
+  ownerId?: string | null;
 }
 
 export async function saveRun(db: Database, params: SaveRunParams): Promise<void> {
@@ -20,10 +28,18 @@ export async function saveRun(db: Database, params: SaveRunParams): Promise<void
     parentRunId: params.parentRunId ?? null,
     forkMonth: params.forkMonth ?? null,
     label: params.label,
+    forkDecisionLabel: params.forkDecisionLabel ?? null,
     rootSeed: params.rootSeed,
     returnsStrategy: params.returnsStrategy,
     status: "draft",
+    ageYearsAtStart: params.rootSeed.ageYearsAtStart ?? null,
+    ownerId: params.ownerId ?? null,
   });
+}
+
+/** Moves a run through its lifecycle. Typed against the shared `RunStatus`, so an unknown status can't reach the column. */
+export async function updateRunStatus(db: Database, runId: string, status: RunStatus): Promise<void> {
+  await db.update(runs).set({ status, updatedAt: new Date() }).where(eq(runs.id, runId));
 }
 
 export interface AppendMonthsOptions {
@@ -40,6 +56,33 @@ export interface AppendMonthsOptions {
    * rows are unaffected either way.
    */
   includeFirstSnapshotHeader?: boolean;
+}
+
+/**
+ * The engine types a flow's `domain`/`viewKey` as plain `string` on purpose —
+ * a new domain must not require an engine change. The database is where that
+ * openness has to close: the Cube data model slices on exactly these values,
+ * so a row carrying an unrecognized key is not a smaller problem than a
+ * missing row, it is a *worse* one — it inflates no total and matches no
+ * filter while looking perfectly healthy in the table. Checking here converts
+ * that silent corruption into an immediate, named failure at the write site.
+ * Extending the engine's vocabulary means extending `@control-ai/shared/sim`
+ * and the Cube model in the same change, which is the intent.
+ */
+function narrowFlow(flow: { domain: string; viewKey: string }): Pick<TypedFlowLineItem, "domain" | "viewKey"> {
+  if (!isValidFlow(flow.domain, flow.viewKey)) {
+    throw new Error(`Unknown flow "${flow.domain}/${flow.viewKey}" — add it to FLOW_VIEW_KEYS_BY_DOMAIN in @control-ai/shared/sim and to the Cube model before persisting it.`);
+  }
+  return flow as Pick<TypedFlowLineItem, "domain" | "viewKey">;
+}
+
+function narrowBalance(balance: { domain: string; metricKey: string }): Pick<TypedBalanceRecord, "domain" | "metricKey"> {
+  if (!isValidBalance(balance.domain, balance.metricKey)) {
+    throw new Error(
+      `Unknown balance "${balance.domain}/${balance.metricKey}" — add it to BALANCE_METRIC_KEYS_BY_DOMAIN in @control-ai/shared/sim and to the Cube model before persisting it.`,
+    );
+  }
+  return balance as Pick<TypedBalanceRecord, "domain" | "metricKey">;
 }
 
 /**
@@ -69,10 +112,9 @@ export async function appendMonths(db: Database, runId: string, result: RunSimul
     d.flows.map((f) => ({
       runId,
       month: d.month,
-      domain: f.domain,
+      ...narrowFlow(f),
       entityId: f.entityId,
       entityLabel: f.entityLabel,
-      viewKey: f.viewKey,
       amountCents: f.amountCents,
     })),
   );
@@ -82,9 +124,8 @@ export async function appendMonths(db: Database, runId: string, result: RunSimul
     d.balances.map((b) => ({
       runId,
       month: d.month,
-      domain: b.domain,
+      ...narrowBalance(b),
       entityId: b.entityId,
-      metricKey: b.metricKey,
       amountCents: b.amountCents,
     })),
   );
@@ -112,20 +153,13 @@ export interface RunRef {
   forkMonth: MonthKey | null;
 }
 
-export interface PersistedFlow {
-  domain: string;
-  entityId: string;
-  entityLabel: string;
-  viewKey: string;
-  amountCents: number;
-}
-
-export interface PersistedBalance {
-  domain: string;
-  entityId: string;
-  metricKey: string;
-  amountCents: number;
-}
+/**
+ * Previously declared here as structural copies with `domain: string`. They
+ * are the shared vocabulary-narrowed records now, so a reader of a persisted
+ * flow gets the same closed union the Convex and localStorage backends serve.
+ */
+export type PersistedFlow = TypedFlowLineItem;
+export type PersistedBalance = TypedBalanceRecord;
 
 /**
  * A database-shaped projection of one month, not a full reconstructed

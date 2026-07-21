@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "description": "Watercolor route recipes. Tokens are processed from foreground to castle.",
+  "seed": 6032026,
+  "base_master": "generated/straight_grouped.svg",
+  "base_manifest": "generated/straight_groups.json",
+  "style_masters": [
+    {
+      "id": "straight",
+      "svg": "generated/straight_grouped.svg",
+      "manifest": "generated/straight_groups.json"
+    },
+    {
+      "id": "near_left",
+      "svg": "generated/near_left_grouped.svg",
+      "manifest": "generated/near_left_groups.json"
+    },
+    {
+      "id": "near_right",
+      "svg": "generated/near_right_grouped.svg",
+      "manifest": "generated/near_right_groups.json"
+    }
+  ],
+  "variants": [
+    {
+      "id": "01_straight",
+      "label": "Straight route",
+      "path": ["straight", "straight", "straight"]
+    },
+    {
+      "id": "02_curve_left",
+      "label": "Left-curving route",
+      "path": ["straight", "left", "straight"]
+    },
+    {
+      "id": "03_curve_right",
+      "label": "Right-curving route",
+      "path": ["straight", "right", "straight"]
+    },
+    {
+      "id": "04_s_curve",
+      "label": "Alternating S route",
+      "path": ["left", "right", "left", "straight"]
+    },
+    {
+      "id": "05_fork_left",
+      "label": "Left fork near start",
+      "path": [
+        {"type": "fork", "branches": ["left"], "take": "straight"},
+        "straight",
+        "right"
+      ]
+    },
+    {
+      "id": "06_fork_right",
+      "label": "Right fork near start",
+      "path": [
+        {"type": "fork", "branches": ["right"], "take": "straight"},
+        "straight",
+        "left"
+      ]
+    },
+    {
+      "id": "07_fork_both",
+      "label": "Three-way fork near start",
+      "path": [
+        {"type": "fork", "branches": ["left", "right"], "take": "straight"},
+        "straight",
+        "straight"
+      ]
+    },
+    {
+      "id": "08_left_then_right_forks",
+      "label": "Left fork followed by right fork",
+      "path": [
+        {"type": "fork", "branches": ["left"], "take": "straight"},
+        "left",
+        {"type": "fork", "branches": ["right"], "take": "straight"},
+        "right"
+      ]
+    },
+    {
+      "id": "09_right_then_left_forks",
+      "label": "Right fork followed by left fork",
+      "path": [
+        {"type": "fork", "branches": ["right"], "take": "straight"},
+        "right",
+        {"type": "fork", "branches": ["left"], "take": "straight"},
+        "left"
+      ]
+    },
+    {
+      "id": "10_fork_series",
+      "label": "Series of alternating forks",
+      "path": [
+        {"type": "fork", "branches": ["left"], "take": "straight"},
+        {"type": "fork", "branches": ["right"], "take": "left"},
+        {"type": "fork", "branches": ["left", "right"], "take": "right"},
+        "straight"
+      ]
+    }
+  ]
+}

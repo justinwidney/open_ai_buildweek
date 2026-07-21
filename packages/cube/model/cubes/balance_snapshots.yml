@@ -28,15 +28,21 @@ cubes:
         sql: month
         type: number
 
+      # Canonical vocabulary from @control-ai/shared/sim (BALANCE_DOMAINS /
+      # BALANCE_METRIC_KEYS_BY_DOMAIN); test/model.test.mjs fails on drift.
       - name: domain
         sql: domain
         type: string
-        description: debt | financialAsset | portfolio | physicalAsset.
+        description: "Values: debt | financialAsset | portfolio | physicalAsset."
 
       - name: metric_key
         sql: metric_key
         type: string
-        description: e.g. remainingBalance, balance, costBasis, value.
+        description: >-
+          Values: remainingBalance (debt) | balance (financialAsset, portfolio) |
+          costBasis (portfolio) | value (physicalAsset).
+          `portfolio` reports both balance and costBasis, so filter to one before
+          totalling or a holding is counted twice.
 
       - name: entity_id
         sql: entity_id

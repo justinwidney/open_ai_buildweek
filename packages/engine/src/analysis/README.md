@@ -45,3 +45,41 @@ deliberate — it needs the caller's returns strategy, reference data, and RNG.
   that flip on-track status.
 
 Depends on: `goals/`, `simulation/`, `money/`, `types/`.
+
+## Popup-facing scenario comparison (planned)
+
+`analysis/` should turn raw paths and forecast distributions into a stable,
+UI-neutral comparison model. For each option it should provide:
+
+- immediate cash and affordability/eligibility status;
+- month-by-month and annualized deltas by named category (gross pay, taxes,
+  housing, insurance, debt service, discretionary cash, assets, liabilities,
+  net worth, and active goals);
+- break-even month, worst cash month, maximum divergence, terminal delta, and
+  goal success deltas;
+- uncertainty intervals and paired-path probabilities such as “option A ends
+  ahead of baseline”; and
+- explanation records containing formula inputs, assumption/source ids, and
+  the event or entity that caused each delta.
+
+Comparison calculations operate on stable metric/category ids; display labels,
+currency formatting, search ranking, and popup layout stay outside the engine.
+Missing or non-comparable data is explicit, never coerced to zero. Analysis
+also reports material caveats (short horizon, stale reference data, low path
+count, unsupported tax jurisdiction) so the popup can show them beside the
+claim they qualify.
+
+Attribution distinguishes known contractual cash flows, model assumptions,
+and sampled uncertainty. It must not imply causal certainty merely because two
+branches diverge; single-decision counterfactuals and paired forecast paths are
+identified as model-based estimates.
+
+## Additional acceptance criteria
+
+- Every headline comparison reconciles to monthly detail categories and links
+  to at least one explanation record.
+- Scenario ordering does not change values; ties use a stable documented rule.
+- Paired-path statistics use aligned seeds and reject incompatible scenario
+  manifests rather than comparing them silently.
+- Tests cover a career pay-cadence comparison, rent/buy break-even analysis,
+  a scenario with missing jurisdiction data, and nominal versus real metrics.

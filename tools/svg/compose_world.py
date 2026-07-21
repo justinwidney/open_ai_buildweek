@@ -53,7 +53,7 @@ def main():
     W, H = args.width, args.height
 
     sprites = []
-    for p in sorted(glob.glob(os.path.join(args.svg_dir, "*.svg"))):
+    for p in sorted(glob.glob(os.path.join(args.svg_dir, "**", "*.svg"), recursive=True)):
         inner, w, h = load_sprite(p)
         name = os.path.splitext(os.path.basename(p))[0]
         sprites.append({"id": name, "inner": inner, "w": w, "h": h,

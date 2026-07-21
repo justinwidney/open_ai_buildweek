@@ -1,0 +1,85 @@
+.procedural-route-world {
+  --castle-x: 50%;
+  --castle-y: 35%;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  position: absolute;
+  transition: opacity .25s ease;
+  z-index: 8;
+}
+
+.procedural-route-world.is-hidden { opacity: 0; }
+.procedural-route-world.is-hidden .procedural-route-world__castle { pointer-events: none; }
+.procedural-route-world__scene { display: block; height: 100%; inset: 0; position: absolute; width: 100%; }
+.procedural-route-world__water { mix-blend-mode: multiply; }
+.procedural-route-world__waves path { fill: none; stroke: rgba(231,251,250,.62); stroke-dasharray: 22 18 80 24; stroke-linecap: round; stroke-width: 5; }
+.procedural-route-world.is-moving .procedural-route-world__waves path { animation: procedural-water-flow 9s linear infinite; }
+.procedural-route-world__waves path:nth-child(2) { animation-delay: -3.7s; opacity: .68; stroke-dasharray: 34 26 100 32; }
+.procedural-route-world__waves path:nth-child(3) { animation-delay: -7.1s; opacity: .8; }
+.procedural-route-world__waves path:nth-child(4) { animation-delay: -1.9s; opacity: .56; stroke-width: 7; }
+
+.procedural-route-world__island { transform-box: fill-box; transform-origin: center; }
+.procedural-route-world.is-moving .procedural-route-world__island { animation: procedural-island-drift 7.5s ease-in-out infinite alternate; }
+.procedural-route-world__island:nth-child(2n) { animation-delay: -4.1s; }
+.procedural-route-world__island:nth-child(3n) { animation-delay: -6.4s; }
+.procedural-route-world__island image { filter: saturate(.92) drop-shadow(0 12px 12px rgba(24,58,78,.25)); }
+.procedural-route-world__branch { opacity: .48; transition: opacity .22s ease; }
+.procedural-route-world__branch.is-selected { opacity: 1; }
+.procedural-route-world__branch.is-passed { opacity: .16; }
+.procedural-route-world__branch-cliff { fill: url(#route-cliff); stroke: #536f82; stroke-linejoin: round; stroke-width: 6; }
+.procedural-route-world__branch-land { fill: url(#route-land); stroke: #698653; stroke-linejoin: round; stroke-width: 7; }
+.procedural-route-world__branch-road { fill: url(#route-road); opacity: .82; stroke: rgba(163,126,68,.68); stroke-linejoin: round; stroke-width: 3; transform: scale(.7); transform-box: fill-box; transform-origin: center; }
+.procedural-route-world__branch-shelf { filter: saturate(.9) drop-shadow(0 12px 11px rgba(24,58,78,.24)); pointer-events: none; }
+
+.procedural-route-world__cliff { fill: url(#route-cliff); stroke: #526d7f; stroke-linejoin: round; stroke-width: 8; }
+.procedural-route-world__land { fill: url(#route-land); stroke: #698653; stroke-linejoin: round; stroke-width: 10; }
+.procedural-route-world__road { fill: url(#route-road); opacity: .98; stroke: rgba(173,139,77,.72); stroke-linejoin: round; stroke-width: 4; }
+.procedural-route-world__route-stitch { fill: none; opacity: .45; stroke: #fff0bd; stroke-dasharray: 6 24; stroke-linecap: round; stroke-width: 6; }
+.procedural-route-world__stop ellipse { fill: rgba(47,73,78,.28); }
+.procedural-route-world__stop circle { fill: #c6d78d; stroke: #718c58; stroke-width: 7; }
+.procedural-route-world__stop text { fill: #526344; font: 800 22px/1 system-ui,sans-serif; }
+.procedural-route-world__stop.is-complete circle { fill: #f0d68d; stroke: #96713f; }
+.procedural-route-world__stop.is-complete text { fill: #6c4f2d; }
+.procedural-route-world__rocks circle { fill: #71828a; stroke: #52656d; stroke-width: 3; }
+
+.procedural-route-world__castle {
+  background: none;
+  border: 0;
+  color: #344556;
+  cursor: pointer;
+  filter: drop-shadow(0 9px 10px rgba(27,56,74,.28));
+  height: clamp(70px, 13vh, 140px);
+  left: var(--castle-x);
+  padding: 0;
+  pointer-events: auto;
+  position: absolute;
+  top: var(--castle-y);
+  transform: translate(-50%, -88%);
+  transition: filter .18s ease, transform .18s ease;
+  width: clamp(92px, 13vw, 190px);
+  z-index: 55;
+}
+.procedural-route-world__castle:hover,
+.procedural-route-world__castle:focus-visible { filter: drop-shadow(0 0 18px rgba(255,239,168,.9)); outline: none; transform: translate(-50%, -91%) scale(1.05); }
+.procedural-route-world__castle:disabled { cursor: default; }
+.procedural-route-world__castle:disabled:hover { filter: drop-shadow(0 9px 10px rgba(27,56,74,.28)); transform: translate(-50%, -88%); }
+.procedural-route-world__castle svg { display: block; height: 100%; overflow: visible; width: 100%; }
+.procedural-route-world__castle span { background: rgba(247,231,186,.88); border: 1px solid rgba(71,74,61,.45); border-radius: 999px; bottom: -5px; font: 700 clamp(7px, .72vw, 10px)/1 system-ui,sans-serif; left: 50%; letter-spacing: .07em; opacity: 0; padding: 5px 7px; position: absolute; text-transform: uppercase; transform: translateX(-50%); transition: opacity .16s ease; white-space: nowrap; }
+.procedural-route-world__castle:hover span,
+.procedural-route-world__castle:focus-visible span { opacity: 1; }
+.procedural-route-world__castle:disabled span { opacity: 0; }
+.castle-shadow { fill: #718a58; }
+.castle-body { fill: #ecdfbd; stroke: #637584; stroke-linejoin: round; stroke-width: 5; }
+.castle-roof { fill: #5d86ae; stroke: #456c91; stroke-linejoin: round; stroke-width: 4; }
+.castle-door { fill: #806b57; }
+.castle-window { fill: #76b8d3; }
+.castle-flag { fill: #f2c66f; stroke: #846d4d; stroke-linecap: round; stroke-linejoin: round; stroke-width: 3; }
+
+@keyframes procedural-water-flow { to { stroke-dashoffset: -220; } }
+@keyframes procedural-island-drift { from { translate: 0 -3px; } to { translate: 0 5px; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .procedural-route-world__waves path,
+  .procedural-route-world__island { animation: none !important; }
+}

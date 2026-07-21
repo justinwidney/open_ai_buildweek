@@ -1,0 +1,2685 @@
+{
+  "source": "reference_06_03_continuous_road.svg",
+  "canvas": [
+    1200,
+    694
+  ],
+  "background": [
+    {
+      "id": "bg_00_sky",
+      "label": "sky",
+      "fill": "#6DB1CD",
+      "visible_px": 28936
+    },
+    {
+      "id": "bg_01_sky",
+      "label": "sky",
+      "fill": "#65AECD",
+      "visible_px": 126400
+    },
+    {
+      "id": "bg_02_vegetation",
+      "label": "vegetation",
+      "fill": "#706D4F",
+      "visible_px": 660
+    }
+  ],
+  "objects": [
+    {
+      "id": "obj_00_cloud",
+      "label": "cloud",
+      "bbox": [
+        0,
+        0,
+        1200,
+        180
+      ],
+      "visible_px": 120669,
+      "paths": 17,
+      "parts_in_svg": 4,
+      "subgroups": []
+    },
+    {
+      "id": "obj_01_main_island",
+      "label": "main_island",
+      "bbox": [
+        0,
+        15,
+        1040,
+        694
+      ],
+      "visible_px": 380543,
+      "paths": 776,
+      "parts_in_svg": 52,
+      "subgroups": [
+        {
+          "id": "obj_01_main_island__terrain_00",
+          "label": "terrain_00",
+          "bbox": [
+            598,
+            115,
+            835,
+            535
+          ],
+          "paths": 28,
+          "parts_in_svg": 7,
+          "top_colors": [
+            "#867D5A",
+            "#877A4C",
+            "#88805E",
+            "#897F49",
+            "#8C8152",
+            "#8F866F"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__terrain_01",
+          "label": "terrain_01",
+          "bbox": [
+            613,
+            299,
+            983,
+            694
+          ],
+          "paths": 70,
+          "parts_in_svg": 8,
+          "top_colors": [
+            "#857B4C",
+            "#857B4D",
+            "#877D4A",
+            "#887D49",
+            "#88805F",
+            "#8A7E47"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__terrain_02",
+          "label": "terrain_02",
+          "bbox": [
+            0,
+            233,
+            692,
+            694
+          ],
+          "paths": 117,
+          "parts_in_svg": 10,
+          "top_colors": [
+            "#86733C",
+            "#897332",
+            "#897A4A",
+            "#89846C",
+            "#8B7C68",
+            "#8B8048"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__vegetation_03",
+          "label": "vegetation_03",
+          "bbox": [
+            532,
+            87,
+            885,
+            274
+          ],
+          "paths": 5,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#4B503F",
+            "#5B5B3F",
+            "#67685A",
+            "#716F4D",
+            "#807C5F"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__terrain_04",
+          "label": "terrain_04",
+          "bbox": [
+            242,
+            72,
+            458,
+            236
+          ],
+          "paths": 12,
+          "parts_in_svg": 3,
+          "top_colors": [
+            "#8A7E5F",
+            "#92896F",
+            "#93927E",
+            "#988F7D",
+            "#9B9684",
+            "#9E9576"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__road_05",
+          "label": "road_05",
+          "bbox": [
+            407,
+            145,
+            754,
+            694
+          ],
+          "paths": 13,
+          "parts_in_svg": 4,
+          "top_colors": [
+            "#BAAA83",
+            "#BBA76D",
+            "#BBA968",
+            "#BDAA69",
+            "#C1AB72",
+            "#C1AC6C"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__vegetation_06",
+          "label": "vegetation_06",
+          "bbox": [
+            412,
+            111,
+            614,
+            271
+          ],
+          "paths": 16,
+          "parts_in_svg": 4,
+          "top_colors": [
+            "#49492E",
+            "#5A583D",
+            "#5B5533",
+            "#5E5E3E",
+            "#666142",
+            "#6A6649"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__rock_07",
+          "label": "rock_07",
+          "bbox": [
+            567,
+            33,
+            776,
+            186
+          ],
+          "paths": 6,
+          "parts_in_svg": 4,
+          "top_colors": [
+            "#505958",
+            "#7A7978",
+            "#7F7E7E",
+            "#8B8886",
+            "#928C86",
+            "#A9A296"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__terrain_08",
+          "label": "terrain_08",
+          "bbox": [
+            786,
+            91,
+            939,
+            192
+          ],
+          "paths": 6,
+          "parts_in_svg": 3,
+          "top_colors": [
+            "#9B916D",
+            "#9B9678",
+            "#A08D5D",
+            "#A89D71",
+            "#B09E6E",
+            "#B4A57C"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__vegetation_09",
+          "label": "vegetation_09",
+          "bbox": [
+            631,
+            317,
+            760,
+            424
+          ],
+          "paths": 7,
+          "parts_in_svg": 3,
+          "top_colors": [
+            "#4A4F3C",
+            "#54563C",
+            "#5C5B38",
+            "#726D42",
+            "#736F4B",
+            "#83794C"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__vegetation_10",
+          "label": "vegetation_10",
+          "bbox": [
+            9,
+            100,
+            124,
+            184
+          ],
+          "paths": 6,
+          "parts_in_svg": 3,
+          "top_colors": [
+            "#646147",
+            "#676856",
+            "#6B6B5B",
+            "#6F6751",
+            "#726F52",
+            "#847B5B"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__vegetation_11",
+          "label": "vegetation_11",
+          "bbox": [
+            360,
+            478,
+            569,
+            665
+          ],
+          "paths": 27,
+          "parts_in_svg": 4,
+          "top_colors": [
+            "#3C4336",
+            "#3D4538",
+            "#444D41",
+            "#474C3B",
+            "#474D3D",
+            "#4B5039"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__vegetation_12",
+          "label": "vegetation_12",
+          "bbox": [
+            814,
+            257,
+            889,
+            363
+          ],
+          "paths": 5,
+          "parts_in_svg": 3,
+          "top_colors": [
+            "#63634B",
+            "#666753",
+            "#727155",
+            "#7D826B",
+            "#807A6D"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__vegetation_13",
+          "label": "vegetation_13",
+          "bbox": [
+            636,
+            446,
+            886,
+            694
+          ],
+          "paths": 34,
+          "parts_in_svg": 4,
+          "top_colors": [
+            "#494D38",
+            "#4C503C",
+            "#4E4F36",
+            "#515547",
+            "#555539",
+            "#565941"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__rock_14",
+          "label": "rock_14",
+          "bbox": [
+            435,
+            217,
+            522,
+            307
+          ],
+          "paths": 4,
+          "parts_in_svg": 3,
+          "top_colors": [
+            "#616163",
+            "#85888D",
+            "#968D87",
+            "#9B9B96"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__vegetation_15",
+          "label": "vegetation_15",
+          "bbox": [
+            167,
+            541,
+            352,
+            694
+          ],
+          "paths": 5,
+          "parts_in_svg": 4,
+          "top_colors": [
+            "#696255",
+            "#6F6453",
+            "#766B5E",
+            "#776D52",
+            "#7C715C"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__rock_16",
+          "label": "rock_16",
+          "bbox": [
+            738,
+            70,
+            1028,
+            275
+          ],
+          "paths": 28,
+          "parts_in_svg": 6,
+          "top_colors": [
+            "#5C5D5C",
+            "#5E5F5A",
+            "#5E6159",
+            "#606459",
+            "#61666E",
+            "#65675B"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__vegetation_17",
+          "label": "vegetation_17",
+          "bbox": [
+            628,
+            115,
+            836,
+            224
+          ],
+          "paths": 19,
+          "parts_in_svg": 4,
+          "top_colors": [
+            "#3E4029",
+            "#484E3B",
+            "#4B4B35",
+            "#4F4F35",
+            "#575842",
+            "#5A583D"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__accent_18",
+          "label": "accent_18",
+          "bbox": [
+            428,
+            137,
+            833,
+            550
+          ],
+          "paths": 6,
+          "parts_in_svg": 3,
+          "top_colors": [
+            "#726962",
+            "#887C71",
+            "#96887C",
+            "#978C82",
+            "#996F46",
+            "#AFA295"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__blue_19",
+          "label": "blue_19",
+          "bbox": [
+            859,
+            475,
+            940,
+            578
+          ],
+          "paths": 3,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#565F6B",
+            "#667484",
+            "#687687"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__rock_20",
+          "label": "rock_20",
+          "bbox": [
+            124,
+            82,
+            260,
+            215
+          ],
+          "paths": 14,
+          "parts_in_svg": 5,
+          "top_colors": [
+            "#656A72",
+            "#6B6C6F",
+            "#6F7268",
+            "#747673",
+            "#767C85",
+            "#7B7771"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__rock_21",
+          "label": "rock_21",
+          "bbox": [
+            357,
+            90,
+            475,
+            224
+          ],
+          "paths": 5,
+          "parts_in_svg": 3,
+          "top_colors": [
+            "#6D6E69",
+            "#747469",
+            "#7A7B7D",
+            "#7C8188",
+            "#ABB4AB"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__terrain_22",
+          "label": "terrain_22",
+          "bbox": [
+            0,
+            121,
+            131,
+            203
+          ],
+          "paths": 6,
+          "parts_in_svg": 3,
+          "top_colors": [
+            "#9F9481",
+            "#A0967F",
+            "#A19D88",
+            "#ACA489",
+            "#BBA060",
+            "#C9B06E"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__rock_23",
+          "label": "rock_23",
+          "bbox": [
+            40,
+            513,
+            391,
+            694
+          ],
+          "paths": 4,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#6C6E6B",
+            "#7D7B70",
+            "#888078",
+            "#9D9D9C"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__sand_24",
+          "label": "sand_24",
+          "bbox": [
+            37,
+            102,
+            201,
+            209
+          ],
+          "paths": 3,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#B8B1A0",
+            "#BAAD89",
+            "#C8B17A"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__vegetation_25",
+          "label": "vegetation_25",
+          "bbox": [
+            903,
+            244,
+            977,
+            312
+          ],
+          "paths": 4,
+          "parts_in_svg": 3,
+          "top_colors": [
+            "#5D5C46",
+            "#6D6C50",
+            "#767266",
+            "#909378"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__vegetation_26",
+          "label": "vegetation_26",
+          "bbox": [
+            0,
+            512,
+            137,
+            694
+          ],
+          "paths": 6,
+          "parts_in_svg": 3,
+          "top_colors": [
+            "#5B593C",
+            "#706745",
+            "#767049",
+            "#7C744D",
+            "#7D6D31",
+            "#7D713D"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__vegetation_27",
+          "label": "vegetation_27",
+          "bbox": [
+            729,
+            384,
+            847,
+            448
+          ],
+          "paths": 7,
+          "parts_in_svg": 3,
+          "top_colors": [
+            "#50543D",
+            "#576052",
+            "#64664F",
+            "#6E6842",
+            "#756F48",
+            "#7F8167"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__blue_28",
+          "label": "blue_28",
+          "bbox": [
+            121,
+            176,
+            253,
+            233
+          ],
+          "paths": 5,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#6C7480",
+            "#798BA0",
+            "#8597AB",
+            "#99B0C5",
+            "#A8B8C8"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__terrain_29",
+          "label": "terrain_29",
+          "bbox": [
+            424,
+            132,
+            622,
+            302
+          ],
+          "paths": 22,
+          "parts_in_svg": 3,
+          "top_colors": [
+            "#8A7E58",
+            "#8C8045",
+            "#8C825E",
+            "#8E834A",
+            "#958856",
+            "#968B52"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__vegetation_30",
+          "label": "vegetation_30",
+          "bbox": [
+            678,
+            306,
+            758,
+            358
+          ],
+          "paths": 3,
+          "parts_in_svg": 3,
+          "top_colors": [
+            "#656252",
+            "#66623C",
+            "#726F63"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__rock_31",
+          "label": "rock_31",
+          "bbox": [
+            546,
+            244,
+            658,
+            347
+          ],
+          "paths": 4,
+          "parts_in_svg": 3,
+          "top_colors": [
+            "#63615D",
+            "#656869",
+            "#6B6A61",
+            "#6F6F63"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__rock_33",
+          "label": "rock_33",
+          "bbox": [
+            512,
+            427,
+            581,
+            496
+          ],
+          "paths": 5,
+          "parts_in_svg": 3,
+          "top_colors": [
+            "#646460",
+            "#66635E",
+            "#716E68",
+            "#798383",
+            "#868A81"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__castle_roofs_34",
+          "label": "castle_roofs_34",
+          "bbox": [
+            530,
+            15,
+            749,
+            150
+          ],
+          "paths": 13,
+          "parts_in_svg": 3,
+          "top_colors": [
+            "#2D548C",
+            "#2D568E",
+            "#3F5D8B",
+            "#416388",
+            "#41699A",
+            "#446184"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__rock_35",
+          "label": "rock_35",
+          "bbox": [
+            674,
+            494,
+            880,
+            585
+          ],
+          "paths": 5,
+          "parts_in_svg": 3,
+          "top_colors": [
+            "#666A6C",
+            "#6A645F",
+            "#797972",
+            "#7E7E72",
+            "#928B87"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__vegetation_36",
+          "label": "vegetation_36",
+          "bbox": [
+            830,
+            393,
+            980,
+            506
+          ],
+          "paths": 11,
+          "parts_in_svg": 3,
+          "top_colors": [
+            "#555A49",
+            "#5B5E4A",
+            "#606154",
+            "#646143",
+            "#6F6B53",
+            "#6F6D52"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__vegetation_37",
+          "label": "vegetation_37",
+          "bbox": [
+            785,
+            132,
+            936,
+            228
+          ],
+          "paths": 5,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#616153",
+            "#666752",
+            "#766F4C",
+            "#797865",
+            "#7F7465"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__vegetation_38",
+          "label": "vegetation_38",
+          "bbox": [
+            135,
+            91,
+            204,
+            144
+          ],
+          "paths": 4,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#646757",
+            "#74715A",
+            "#756E54",
+            "#837C64"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__terrain_39",
+          "label": "terrain_39",
+          "bbox": [
+            944,
+            59,
+            1040,
+            202
+          ],
+          "paths": 7,
+          "parts_in_svg": 3,
+          "top_colors": [
+            "#908672",
+            "#91866C",
+            "#9F9A80",
+            "#A39169",
+            "#A6966C",
+            "#A6A387"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__rock_40",
+          "label": "rock_40",
+          "bbox": [
+            463,
+            519,
+            571,
+            647
+          ],
+          "paths": 4,
+          "parts_in_svg": 3,
+          "top_colors": [
+            "#5B5E57",
+            "#5F5F5D",
+            "#74716B",
+            "#9A9589"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__sand_41",
+          "label": "sand_41",
+          "bbox": [
+            260,
+            526,
+            361,
+            674
+          ],
+          "paths": 4,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#B9A088",
+            "#C1B07E",
+            "#C3B085",
+            "#DBBD90"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__blue_42",
+          "label": "blue_42",
+          "bbox": [
+            433,
+            420,
+            542,
+            503
+          ],
+          "paths": 4,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#5B6470",
+            "#626C7A",
+            "#748AA0",
+            "#95B8D7"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__blue_43",
+          "label": "blue_43",
+          "bbox": [
+            516,
+            278,
+            575,
+            325
+          ],
+          "paths": 3,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#646E7A",
+            "#707986",
+            "#7C8895"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__rock_44",
+          "label": "rock_44",
+          "bbox": [
+            921,
+            460,
+            974,
+            571
+          ],
+          "paths": 5,
+          "parts_in_svg": 1,
+          "top_colors": [
+            "#8B8C92",
+            "#8E8989",
+            "#99918B",
+            "#AAAEB4",
+            "#B0A49A"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__rock_45",
+          "label": "rock_45",
+          "bbox": [
+            823,
+            269,
+            980,
+            366
+          ],
+          "paths": 6,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#636357",
+            "#79776F",
+            "#7B726D",
+            "#8D887B",
+            "#96989E",
+            "#98979C"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__terrain_46",
+          "label": "terrain_46",
+          "bbox": [
+            652,
+            96,
+            754,
+            187
+          ],
+          "paths": 5,
+          "parts_in_svg": 3,
+          "top_colors": [
+            "#857D70",
+            "#8C806D",
+            "#A2978A",
+            "#A3978A",
+            "#B0A498"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__rock_47",
+          "label": "rock_47",
+          "bbox": [
+            537,
+            17,
+            614,
+            68
+          ],
+          "paths": 3,
+          "parts_in_svg": 1,
+          "top_colors": [
+            "#8A908B",
+            "#92999D",
+            "#AFAC9E"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__terrain_48",
+          "label": "terrain_48",
+          "bbox": [
+            398,
+            82,
+            559,
+            166
+          ],
+          "paths": 5,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#8C8153",
+            "#8C8365",
+            "#99917C",
+            "#ACA791",
+            "#AFA392"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__rock_49",
+          "label": "rock_49",
+          "bbox": [
+            737,
+            612,
+            885,
+            687
+          ],
+          "paths": 5,
+          "parts_in_svg": 3,
+          "top_colors": [
+            "#6D6B5F",
+            "#778080",
+            "#7A746E",
+            "#7F8184",
+            "#B7AFA3"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__rock_50",
+          "label": "rock_50",
+          "bbox": [
+            417,
+            405,
+            502,
+            463
+          ],
+          "paths": 5,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#5D616A",
+            "#64666C",
+            "#6B6F76",
+            "#85807E",
+            "#A29E9C"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__blue_51",
+          "label": "blue_51",
+          "bbox": [
+            768,
+            316,
+            848,
+            389
+          ],
+          "paths": 4,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#474B52",
+            "#575F6A",
+            "#5F6772",
+            "#738AA1"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__terrain_52",
+          "label": "terrain_52",
+          "bbox": [
+            445,
+            472,
+            514,
+            540
+          ],
+          "paths": 3,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#8A8762",
+            "#8C845A",
+            "#978F60"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__terrain_53",
+          "label": "terrain_53",
+          "bbox": [
+            792,
+            267,
+            984,
+            307
+          ],
+          "paths": 4,
+          "parts_in_svg": 3,
+          "top_colors": [
+            "#978A60",
+            "#9C9069",
+            "#A4935C",
+            "#B09E61"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__vegetation_54",
+          "label": "vegetation_54",
+          "bbox": [
+            436,
+            326,
+            639,
+            493
+          ],
+          "paths": 18,
+          "parts_in_svg": 3,
+          "top_colors": [
+            "#464C40",
+            "#4D503C",
+            "#4E523C",
+            "#58583C",
+            "#5B5E47",
+            "#616455"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__vegetation_55",
+          "label": "vegetation_55",
+          "bbox": [
+            151,
+            522,
+            272,
+            558
+          ],
+          "paths": 4,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#625D40",
+            "#6C6539",
+            "#7E7557",
+            "#84795B"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__vegetation_56",
+          "label": "vegetation_56",
+          "bbox": [
+            280,
+            78,
+            387,
+            206
+          ],
+          "paths": 5,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#64644C",
+            "#736D5C",
+            "#756F61",
+            "#7A7456",
+            "#7A796A"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__rock_57",
+          "label": "rock_57",
+          "bbox": [
+            442,
+            95,
+            507,
+            140
+          ],
+          "paths": 3,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#7D7876",
+            "#ACA79C",
+            "#B0B2B1"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__rock_58",
+          "label": "rock_58",
+          "bbox": [
+            714,
+            320,
+            802,
+            427
+          ],
+          "paths": 9,
+          "parts_in_svg": 4,
+          "top_colors": [
+            "#59595C",
+            "#5F5C57",
+            "#646C6E",
+            "#6B6A6B",
+            "#6E7063",
+            "#706E6A"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__vegetation_60",
+          "label": "vegetation_60",
+          "bbox": [
+            232,
+            71,
+            287,
+            190
+          ],
+          "paths": 4,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#626251",
+            "#706F5A",
+            "#7C7A63",
+            "#817765"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__vegetation_61",
+          "label": "vegetation_61",
+          "bbox": [
+            655,
+            602,
+            884,
+            694
+          ],
+          "paths": 3,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#7B744B",
+            "#7E7848",
+            "#817862"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__terrain_62",
+          "label": "terrain_62",
+          "bbox": [
+            123,
+            90,
+            198,
+            166
+          ],
+          "paths": 4,
+          "parts_in_svg": 3,
+          "top_colors": [
+            "#97907E",
+            "#9A8F72",
+            "#B0A583",
+            "#B6A174"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__vegetation_63",
+          "label": "vegetation_63",
+          "bbox": [
+            778,
+            69,
+            847,
+            115
+          ],
+          "paths": 3,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#666551",
+            "#7E765A",
+            "#80826F"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__terrain_64",
+          "label": "terrain_64",
+          "bbox": [
+            793,
+            65,
+            850,
+            129
+          ],
+          "paths": 3,
+          "parts_in_svg": 3,
+          "top_colors": [
+            "#8A8668",
+            "#958A6E",
+            "#A89C85"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__vegetation_65",
+          "label": "vegetation_65",
+          "bbox": [
+            392,
+            660,
+            538,
+            694
+          ],
+          "paths": 5,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#65674D",
+            "#69684A",
+            "#6E6D54",
+            "#746F49",
+            "#7C7457"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__rock_66",
+          "label": "rock_66",
+          "bbox": [
+            14,
+            112,
+            152,
+            199
+          ],
+          "paths": 7,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#676A74",
+            "#6D6E6B",
+            "#74767A",
+            "#766F68",
+            "#848175",
+            "#8C9497"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__sand_67",
+          "label": "sand_67",
+          "bbox": [
+            779,
+            273,
+            954,
+            326
+          ],
+          "paths": 3,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#B8A975",
+            "#C1AC88",
+            "#E2C38D"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__vegetation_68",
+          "label": "vegetation_68",
+          "bbox": [
+            954,
+            66,
+            1037,
+            197
+          ],
+          "paths": 3,
+          "parts_in_svg": 1,
+          "top_colors": [
+            "#6E6D5B",
+            "#756F5D",
+            "#787864"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__vegetation_69",
+          "label": "vegetation_69",
+          "bbox": [
+            736,
+            252,
+            809,
+            315
+          ],
+          "paths": 4,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#595B40",
+            "#646142",
+            "#646242",
+            "#6C6B54"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__vegetation_70",
+          "label": "vegetation_70",
+          "bbox": [
+            122,
+            149,
+            180,
+            197
+          ],
+          "paths": 3,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#5F6152",
+            "#81764A",
+            "#837C71"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__rock_71",
+          "label": "rock_71",
+          "bbox": [
+            840,
+            431,
+            925,
+            517
+          ],
+          "paths": 5,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#656E71",
+            "#686A6F",
+            "#747A78",
+            "#787674",
+            "#838081"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__rock_72",
+          "label": "rock_72",
+          "bbox": [
+            252,
+            107,
+            349,
+            204
+          ],
+          "paths": 7,
+          "parts_in_svg": 3,
+          "top_colors": [
+            "#62656B",
+            "#666969",
+            "#6C6862",
+            "#747475",
+            "#82868E",
+            "#9F9A99"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__blue_73",
+          "label": "blue_73",
+          "bbox": [
+            822,
+            204,
+            948,
+            340
+          ],
+          "paths": 4,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#5B626C",
+            "#6F7884",
+            "#8092AA",
+            "#A5B6CA"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__sand_74",
+          "label": "sand_74",
+          "bbox": [
+            335,
+            145,
+            465,
+            213
+          ],
+          "paths": 3,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#B9AB86",
+            "#C0AB79",
+            "#C6AD6E"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__blue_75",
+          "label": "blue_75",
+          "bbox": [
+            286,
+            158,
+            353,
+            225
+          ],
+          "paths": 4,
+          "parts_in_svg": 3,
+          "top_colors": [
+            "#6E7C91",
+            "#788597",
+            "#8395AE",
+            "#86A0BA"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__rock_76",
+          "label": "rock_76",
+          "bbox": [
+            507,
+            112,
+            612,
+            175
+          ],
+          "paths": 3,
+          "parts_in_svg": 1,
+          "top_colors": [
+            "#616359",
+            "#70797D",
+            "#A39C8F"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__sand_77",
+          "label": "sand_77",
+          "bbox": [
+            802,
+            62,
+            1034,
+            150
+          ],
+          "paths": 5,
+          "parts_in_svg": 3,
+          "top_colors": [
+            "#B8A672",
+            "#C2B187",
+            "#C4B59B",
+            "#C6B282",
+            "#C8B183"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__sand_78",
+          "label": "sand_78",
+          "bbox": [
+            177,
+            515,
+            253,
+            631
+          ],
+          "paths": 3,
+          "parts_in_svg": 1,
+          "top_colors": [
+            "#B9A690",
+            "#C8AE73",
+            "#D7B77A"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__sand_79",
+          "label": "sand_79",
+          "bbox": [
+            239,
+            76,
+            328,
+            178
+          ],
+          "paths": 3,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#BDAE90",
+            "#BEB188",
+            "#C3AC80"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__sand_80",
+          "label": "sand_80",
+          "bbox": [
+            446,
+            95,
+            521,
+            178
+          ],
+          "paths": 3,
+          "parts_in_svg": 1,
+          "top_colors": [
+            "#BAA474",
+            "#BAA88E",
+            "#CAB492"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__sand_81",
+          "label": "sand_81",
+          "bbox": [
+            658,
+            585,
+            836,
+            691
+          ],
+          "paths": 5,
+          "parts_in_svg": 1,
+          "top_colors": [
+            "#C3B19C",
+            "#C4B096",
+            "#C6AF7A",
+            "#C6B29B",
+            "#CBB98C"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__sand_82",
+          "label": "sand_82",
+          "bbox": [
+            573,
+            77,
+            750,
+            235
+          ],
+          "paths": 7,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#BBA98E",
+            "#BFAC77",
+            "#C4B16D",
+            "#C9B38D",
+            "#CAB497",
+            "#CBB897"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__vegetation_83",
+          "label": "vegetation_83",
+          "bbox": [
+            403,
+            88,
+            480,
+            172
+          ],
+          "paths": 3,
+          "parts_in_svg": 1,
+          "top_colors": [
+            "#5E5F4B",
+            "#6B6850",
+            "#747057"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__accent_84",
+          "label": "accent_84",
+          "bbox": [
+            216,
+            612,
+            315,
+            694
+          ],
+          "paths": 3,
+          "parts_in_svg": 1,
+          "top_colors": [
+            "#978B7F",
+            "#A59485",
+            "#AA937C"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__vegetation_85",
+          "label": "vegetation_85",
+          "bbox": [
+            495,
+            620,
+            602,
+            660
+          ],
+          "paths": 3,
+          "parts_in_svg": 1,
+          "top_colors": [
+            "#505446",
+            "#7A715B",
+            "#7F7558"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__sand_86",
+          "label": "sand_86",
+          "bbox": [
+            713,
+            422,
+            879,
+            482
+          ],
+          "paths": 4,
+          "parts_in_svg": 1,
+          "top_colors": [
+            "#B9A482",
+            "#C0B6A1",
+            "#C6B16E",
+            "#CBB68A"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__sand_87",
+          "label": "sand_87",
+          "bbox": [
+            0,
+            505,
+            111,
+            649
+          ],
+          "paths": 3,
+          "parts_in_svg": 1,
+          "top_colors": [
+            "#BBAB9A",
+            "#C9AD7A",
+            "#D5B689"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__vegetation_88",
+          "label": "vegetation_88",
+          "bbox": [
+            564,
+            252,
+            679,
+            335
+          ],
+          "paths": 6,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#606251",
+            "#64654A",
+            "#656446",
+            "#6E6A49",
+            "#6E6E54",
+            "#78735D"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__terrain_89",
+          "label": "terrain_89",
+          "bbox": [
+            194,
+            95,
+            259,
+            190
+          ],
+          "paths": 3,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#A2977E",
+            "#A6A07C",
+            "#B49D61"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__sand_90",
+          "label": "sand_90",
+          "bbox": [
+            392,
+            537,
+            554,
+            686
+          ],
+          "paths": 5,
+          "parts_in_svg": 1,
+          "top_colors": [
+            "#C2B199",
+            "#C6B4A0",
+            "#C7B498",
+            "#C8AF70",
+            "#CFB37A"
+          ]
+        },
+        {
+          "id": "obj_01_main_island__blue_91",
+          "label": "blue_91",
+          "bbox": [
+            353,
+            174,
+            420,
+            228
+          ],
+          "paths": 3,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#5E646F",
+            "#798DA5",
+            "#90A4BD"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "obj_02_island",
+      "label": "island",
+      "bbox": [
+        905,
+        303,
+        1200,
+        694
+      ],
+      "visible_px": 64691,
+      "paths": 131,
+      "parts_in_svg": 4,
+      "subgroups": []
+    },
+    {
+      "id": "obj_03_water",
+      "label": "water",
+      "bbox": [
+        856,
+        416,
+        1187,
+        694
+      ],
+      "visible_px": 24350,
+      "paths": 7,
+      "parts_in_svg": 3,
+      "subgroups": []
+    },
+    {
+      "id": "obj_04_cloud",
+      "label": "cloud",
+      "bbox": [
+        838,
+        155,
+        1200,
+        288
+      ],
+      "visible_px": 20550,
+      "paths": 4,
+      "parts_in_svg": 1,
+      "subgroups": []
+    },
+    {
+      "id": "obj_05_island",
+      "label": "island",
+      "bbox": [
+        1045,
+        60,
+        1173,
+        151
+      ],
+      "visible_px": 4635,
+      "paths": 15,
+      "parts_in_svg": 3,
+      "subgroups": []
+    },
+    {
+      "id": "obj_06_cloud",
+      "label": "cloud",
+      "bbox": [
+        0,
+        164,
+        132,
+        238
+      ],
+      "visible_px": 4242,
+      "paths": 2,
+      "parts_in_svg": 2,
+      "subgroups": []
+    },
+    {
+      "id": "obj_07_water",
+      "label": "water",
+      "bbox": [
+        801,
+        212,
+        920,
+        285
+      ],
+      "visible_px": 3395,
+      "paths": 5,
+      "parts_in_svg": 2,
+      "subgroups": []
+    },
+    {
+      "id": "obj_08_water",
+      "label": "water",
+      "bbox": [
+        840,
+        484,
+        898,
+        587
+      ],
+      "visible_px": 2182,
+      "paths": 4,
+      "parts_in_svg": 3,
+      "subgroups": []
+    },
+    {
+      "id": "obj_09_waterfall",
+      "label": "waterfall",
+      "bbox": [
+        604,
+        65,
+        633,
+        109
+      ],
+      "visible_px": 978,
+      "paths": 2,
+      "parts_in_svg": 2,
+      "subgroups": []
+    },
+    {
+      "id": "obj_10_island",
+      "label": "island",
+      "bbox": [
+        1090,
+        100,
+        1200,
+        187
+      ],
+      "visible_px": 4096,
+      "paths": 11,
+      "parts_in_svg": 2,
+      "subgroups": []
+    },
+    {
+      "id": "obj_11_water",
+      "label": "water",
+      "bbox": [
+        939,
+        177,
+        1005,
+        233
+      ],
+      "visible_px": 1751,
+      "paths": 1,
+      "parts_in_svg": 1,
+      "subgroups": []
+    },
+    {
+      "id": "obj_12_cloud",
+      "label": "cloud",
+      "bbox": [
+        0,
+        396,
+        151,
+        445
+      ],
+      "visible_px": 3716,
+      "paths": 2,
+      "parts_in_svg": 1,
+      "subgroups": []
+    },
+    {
+      "id": "obj_13_water",
+      "label": "water",
+      "bbox": [
+        754,
+        322,
+        825,
+        409
+      ],
+      "visible_px": 2416,
+      "paths": 5,
+      "parts_in_svg": 3,
+      "subgroups": []
+    },
+    {
+      "id": "obj_14_cloud",
+      "label": "cloud",
+      "bbox": [
+        78,
+        375,
+        211,
+        405
+      ],
+      "visible_px": 1859,
+      "paths": 2,
+      "parts_in_svg": 1,
+      "subgroups": []
+    },
+    {
+      "id": "obj_15_cloud",
+      "label": "cloud",
+      "bbox": [
+        409,
+        444,
+        486,
+        512
+      ],
+      "visible_px": 1447,
+      "paths": 1,
+      "parts_in_svg": 1,
+      "subgroups": []
+    },
+    {
+      "id": "obj_16_cloud",
+      "label": "cloud",
+      "bbox": [
+        282,
+        259,
+        384,
+        287
+      ],
+      "visible_px": 1505,
+      "paths": 1,
+      "parts_in_svg": 1,
+      "subgroups": []
+    },
+    {
+      "id": "obj_17_water",
+      "label": "water",
+      "bbox": [
+        860,
+        294,
+        962,
+        369
+      ],
+      "visible_px": 3610,
+      "paths": 3,
+      "parts_in_svg": 2,
+      "subgroups": []
+    },
+    {
+      "id": "obj_18_water",
+      "label": "water",
+      "bbox": [
+        0,
+        153,
+        53,
+        217
+      ],
+      "visible_px": 1193,
+      "paths": 1,
+      "parts_in_svg": 1,
+      "subgroups": []
+    },
+    {
+      "id": "obj_19_water",
+      "label": "water",
+      "bbox": [
+        474,
+        231,
+        532,
+        347
+      ],
+      "visible_px": 2095,
+      "paths": 3,
+      "parts_in_svg": 2,
+      "subgroups": []
+    },
+    {
+      "id": "obj_20_cloud",
+      "label": "cloud",
+      "bbox": [
+        234,
+        178,
+        317,
+        221
+      ],
+      "visible_px": 1280,
+      "paths": 3,
+      "parts_in_svg": 2,
+      "subgroups": []
+    },
+    {
+      "id": "obj_21_waterfall",
+      "label": "waterfall",
+      "bbox": [
+        866,
+        500,
+        927,
+        600
+      ],
+      "visible_px": 1623,
+      "paths": 3,
+      "parts_in_svg": 2,
+      "subgroups": []
+    },
+    {
+      "id": "obj_22_cloud",
+      "label": "cloud",
+      "bbox": [
+        305,
+        184,
+        400,
+        240
+      ],
+      "visible_px": 1866,
+      "paths": 3,
+      "parts_in_svg": 2,
+      "subgroups": []
+    },
+    {
+      "id": "obj_23_cloud",
+      "label": "cloud",
+      "bbox": [
+        201,
+        106,
+        248,
+        161
+      ],
+      "visible_px": 1017,
+      "paths": 1,
+      "parts_in_svg": 1,
+      "subgroups": []
+    },
+    {
+      "id": "obj_24_waterfall",
+      "label": "waterfall",
+      "bbox": [
+        646,
+        101,
+        670,
+        145
+      ],
+      "visible_px": 717,
+      "paths": 1,
+      "parts_in_svg": 1,
+      "subgroups": []
+    },
+    {
+      "id": "obj_25_cloud",
+      "label": "cloud",
+      "bbox": [
+        994,
+        440,
+        1043,
+        466
+      ],
+      "visible_px": 505,
+      "paths": 1,
+      "parts_in_svg": 1,
+      "subgroups": []
+    },
+    {
+      "id": "obj_26_cloud",
+      "label": "cloud",
+      "bbox": [
+        803,
+        348,
+        868,
+        423
+      ],
+      "visible_px": 1091,
+      "paths": 2,
+      "parts_in_svg": 2,
+      "subgroups": []
+    },
+    {
+      "id": "obj_27_water",
+      "label": "water",
+      "bbox": [
+        468,
+        404,
+        498,
+        505
+      ],
+      "visible_px": 1321,
+      "paths": 3,
+      "parts_in_svg": 1,
+      "subgroups": []
+    },
+    {
+      "id": "obj_28_water",
+      "label": "water",
+      "bbox": [
+        357,
+        280,
+        432,
+        313
+      ],
+      "visible_px": 900,
+      "paths": 2,
+      "parts_in_svg": 1,
+      "subgroups": []
+    },
+    {
+      "id": "obj_29_cloud",
+      "label": "cloud",
+      "bbox": [
+        578,
+        108,
+        636,
+        155
+      ],
+      "visible_px": 1037,
+      "paths": 3,
+      "parts_in_svg": 2,
+      "subgroups": []
+    },
+    {
+      "id": "obj_30_cloud",
+      "label": "cloud",
+      "bbox": [
+        920,
+        307,
+        982,
+        351
+      ],
+      "visible_px": 714,
+      "paths": 2,
+      "parts_in_svg": 2,
+      "subgroups": []
+    },
+    {
+      "id": "obj_31_terrain",
+      "label": "terrain",
+      "bbox": [
+        1051,
+        34,
+        1092,
+        58
+      ],
+      "visible_px": 611,
+      "paths": 1,
+      "parts_in_svg": 1,
+      "subgroups": []
+    },
+    {
+      "id": "obj_32_cloud",
+      "label": "cloud",
+      "bbox": [
+        1098,
+        418,
+        1192,
+        481
+      ],
+      "visible_px": 1119,
+      "paths": 3,
+      "parts_in_svg": 1,
+      "subgroups": []
+    },
+    {
+      "id": "obj_33_cloud",
+      "label": "cloud",
+      "bbox": [
+        259,
+        118,
+        299,
+        154
+      ],
+      "visible_px": 571,
+      "paths": 2,
+      "parts_in_svg": 2,
+      "subgroups": []
+    },
+    {
+      "id": "obj_34_water",
+      "label": "water",
+      "bbox": [
+        507,
+        443,
+        522,
+        501
+      ],
+      "visible_px": 389,
+      "paths": 1,
+      "parts_in_svg": 1,
+      "subgroups": []
+    },
+    {
+      "id": "obj_35_rock",
+      "label": "rock",
+      "bbox": [
+        1042,
+        164,
+        1073,
+        181
+      ],
+      "visible_px": 306,
+      "paths": 1,
+      "parts_in_svg": 1,
+      "subgroups": []
+    },
+    {
+      "id": "obj_36_cloud",
+      "label": "cloud",
+      "bbox": [
+        1119,
+        316,
+        1200,
+        330
+      ],
+      "visible_px": 601,
+      "paths": 1,
+      "parts_in_svg": 1,
+      "subgroups": []
+    },
+    {
+      "id": "obj_37_water",
+      "label": "water",
+      "bbox": [
+        273,
+        272,
+        350,
+        297
+      ],
+      "visible_px": 598,
+      "paths": 1,
+      "parts_in_svg": 1,
+      "subgroups": []
+    },
+    {
+      "id": "obj_38_cloud",
+      "label": "cloud",
+      "bbox": [
+        954,
+        137,
+        994,
+        178
+      ],
+      "visible_px": 530,
+      "paths": 1,
+      "parts_in_svg": 1,
+      "subgroups": []
+    },
+    {
+      "id": "obj_39_water",
+      "label": "water",
+      "bbox": [
+        1076,
+        100,
+        1094,
+        125
+      ],
+      "visible_px": 208,
+      "paths": 1,
+      "parts_in_svg": 1,
+      "subgroups": []
+    },
+    {
+      "id": "obj_40_cloud",
+      "label": "cloud",
+      "bbox": [
+        0,
+        298,
+        66,
+        315
+      ],
+      "visible_px": 483,
+      "paths": 1,
+      "parts_in_svg": 1,
+      "subgroups": []
+    },
+    {
+      "id": "obj_41_cloud",
+      "label": "cloud",
+      "bbox": [
+        1001,
+        293,
+        1058,
+        318
+      ],
+      "visible_px": 458,
+      "paths": 1,
+      "parts_in_svg": 1,
+      "subgroups": []
+    },
+    {
+      "id": "obj_42_water",
+      "label": "water",
+      "bbox": [
+        334,
+        530,
+        401,
+        548
+      ],
+      "visible_px": 483,
+      "paths": 1,
+      "parts_in_svg": 1,
+      "subgroups": []
+    },
+    {
+      "id": "obj_43_water",
+      "label": "water",
+      "bbox": [
+        103,
+        263,
+        166,
+        286
+      ],
+      "visible_px": 457,
+      "paths": 1,
+      "parts_in_svg": 1,
+      "subgroups": []
+    },
+    {
+      "id": "obj_44_waterfall",
+      "label": "waterfall",
+      "bbox": [
+        471,
+        275,
+        502,
+        332
+      ],
+      "visible_px": 474,
+      "paths": 1,
+      "parts_in_svg": 1,
+      "subgroups": []
+    },
+    {
+      "id": "obj_45_water",
+      "label": "water",
+      "bbox": [
+        955,
+        249,
+        1017,
+        265
+      ],
+      "visible_px": 408,
+      "paths": 1,
+      "parts_in_svg": 1,
+      "subgroups": []
+    },
+    {
+      "id": "obj_46_cloud",
+      "label": "cloud",
+      "bbox": [
+        802,
+        312,
+        836,
+        345
+      ],
+      "visible_px": 253,
+      "paths": 1,
+      "parts_in_svg": 1,
+      "subgroups": []
+    },
+    {
+      "id": "obj_47_water",
+      "label": "water",
+      "bbox": [
+        379,
+        547,
+        421,
+        568
+      ],
+      "visible_px": 374,
+      "paths": 1,
+      "parts_in_svg": 1,
+      "subgroups": []
+    },
+    {
+      "id": "obj_48_water",
+      "label": "water",
+      "bbox": [
+        1160,
+        404,
+        1194,
+        427
+      ],
+      "visible_px": 361,
+      "paths": 1,
+      "parts_in_svg": 1,
+      "subgroups": []
+    },
+    {
+      "id": "obj_49_water",
+      "label": "water",
+      "bbox": [
+        190,
+        372,
+        252,
+        386
+      ],
+      "visible_px": 388,
+      "paths": 1,
+      "parts_in_svg": 1,
+      "subgroups": []
+    },
+    {
+      "id": "obj_50_water",
+      "label": "water",
+      "bbox": [
+        198,
+        391,
+        259,
+        412
+      ],
+      "visible_px": 405,
+      "paths": 1,
+      "parts_in_svg": 1,
+      "subgroups": []
+    },
+    {
+      "id": "obj_51_water",
+      "label": "water",
+      "bbox": [
+        459,
+        609,
+        489,
+        631
+      ],
+      "visible_px": 301,
+      "paths": 1,
+      "parts_in_svg": 1,
+      "subgroups": []
+    },
+    {
+      "id": "obj_52_terrain",
+      "label": "terrain",
+      "bbox": [
+        1032,
+        60,
+        1064,
+        85
+      ],
+      "visible_px": 352,
+      "paths": 1,
+      "parts_in_svg": 1,
+      "subgroups": []
+    },
+    {
+      "id": "obj_53_water",
+      "label": "water",
+      "bbox": [
+        309,
+        146,
+        329,
+        177
+      ],
+      "visible_px": 307,
+      "paths": 1,
+      "parts_in_svg": 1,
+      "subgroups": []
+    },
+    {
+      "id": "obj_54_water",
+      "label": "water",
+      "bbox": [
+        428,
+        312,
+        478,
+        323
+      ],
+      "visible_px": 320,
+      "paths": 1,
+      "parts_in_svg": 1,
+      "subgroups": []
+    },
+    {
+      "id": "obj_55_water",
+      "label": "water",
+      "bbox": [
+        1072,
+        276,
+        1120,
+        292
+      ],
+      "visible_px": 320,
+      "paths": 1,
+      "parts_in_svg": 1,
+      "subgroups": []
+    },
+    {
+      "id": "obj_56_water",
+      "label": "water",
+      "bbox": [
+        35,
+        290,
+        80,
+        309
+      ],
+      "visible_px": 293,
+      "paths": 1,
+      "parts_in_svg": 1,
+      "subgroups": []
+    },
+    {
+      "id": "obj_57_water",
+      "label": "water",
+      "bbox": [
+        403,
+        261,
+        456,
+        277
+      ],
+      "visible_px": 284,
+      "paths": 1,
+      "parts_in_svg": 1,
+      "subgroups": []
+    },
+    {
+      "id": "obj_58_water",
+      "label": "water",
+      "bbox": [
+        335,
+        509,
+        379,
+        523
+      ],
+      "visible_px": 262,
+      "paths": 1,
+      "parts_in_svg": 1,
+      "subgroups": []
+    },
+    {
+      "id": "obj_59_water",
+      "label": "water",
+      "bbox": [
+        48,
+        390,
+        92,
+        408
+      ],
+      "visible_px": 286,
+      "paths": 1,
+      "parts_in_svg": 1,
+      "subgroups": []
+    },
+    {
+      "id": "obj_60_cloud",
+      "label": "cloud",
+      "bbox": [
+        1030,
+        172,
+        1070,
+        188
+      ],
+      "visible_px": 258,
+      "paths": 1,
+      "parts_in_svg": 1,
+      "subgroups": []
+    },
+    {
+      "id": "obj_61_cloud",
+      "label": "cloud",
+      "bbox": [
+        145,
+        195,
+        170,
+        218
+      ],
+      "visible_px": 263,
+      "paths": 1,
+      "parts_in_svg": 1,
+      "subgroups": []
+    },
+    {
+      "id": "obj_62_water",
+      "label": "water",
+      "bbox": [
+        204,
+        494,
+        249,
+        506
+      ],
+      "visible_px": 270,
+      "paths": 1,
+      "parts_in_svg": 1,
+      "subgroups": []
+    },
+    {
+      "id": "obj_63_waterfall",
+      "label": "waterfall",
+      "bbox": [
+        725,
+        139,
+        739,
+        171
+      ],
+      "visible_px": 259,
+      "paths": 1,
+      "parts_in_svg": 1,
+      "subgroups": []
+    },
+    {
+      "id": "obj_64_water",
+      "label": "water",
+      "bbox": [
+        980,
+        141,
+        997,
+        173
+      ],
+      "visible_px": 236,
+      "paths": 1,
+      "parts_in_svg": 1,
+      "subgroups": []
+    },
+    {
+      "id": "obj_65_water",
+      "label": "water",
+      "bbox": [
+        448,
+        502,
+        469,
+        532
+      ],
+      "visible_px": 248,
+      "paths": 1,
+      "parts_in_svg": 1,
+      "subgroups": []
+    },
+    {
+      "id": "obj_66_waterfall",
+      "label": "waterfall",
+      "bbox": [
+        469,
+        112,
+        490,
+        141
+      ],
+      "visible_px": 246,
+      "paths": 1,
+      "parts_in_svg": 1,
+      "subgroups": []
+    },
+    {
+      "id": "obj_67_water",
+      "label": "water",
+      "bbox": [
+        271,
+        509,
+        313,
+        525
+      ],
+      "visible_px": 243,
+      "paths": 1,
+      "parts_in_svg": 1,
+      "subgroups": []
+    },
+    {
+      "id": "obj_68_waterfall",
+      "label": "waterfall",
+      "bbox": [
+        1043,
+        405,
+        1058,
+        435
+      ],
+      "visible_px": 242,
+      "paths": 1,
+      "parts_in_svg": 1,
+      "subgroups": []
+    },
+    {
+      "id": "obj_69_rock",
+      "label": "rock",
+      "bbox": [
+        913,
+        100,
+        934,
+        119
+      ],
+      "visible_px": 205,
+      "paths": 1,
+      "parts_in_svg": 1,
+      "subgroups": []
+    }
+  ]
+}

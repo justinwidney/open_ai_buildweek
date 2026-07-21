@@ -3,14 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Convex backend (schema + functions) persisting simulation scenarios, months, decisions, and goals for the pathway simulator.",
+  "description": "Convex backend (schema + functions) persisting simulation runs, months, decisions, and goals for the pathway simulator.",
   "scripts": {
     "dev": "convex dev",
     "deploy": "convex deploy",
-    "codegen": "convex codegen"
+    "codegen": "convex codegen",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
     "@control-ai/engine": "workspace:*",
+    "@control-ai/shared": "workspace:*",
     "convex": "^1.17.0"
   }
 }

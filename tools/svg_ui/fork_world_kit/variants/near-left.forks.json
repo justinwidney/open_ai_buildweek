@@ -1,0 +1,405 @@
+{
+  "variant": "near-left",
+  "forks": [
+    {
+      "schema_version": 2,
+      "fork_id": "fork-near-left-01-left",
+      "feature": "fork",
+      "side": "left",
+      "attach": [
+        0.489,
+        0.76
+      ],
+      "exit": [
+        -0.06,
+        0.48
+      ],
+      "spline": [
+        [
+          0.511,
+          0.76
+        ],
+        [
+          0.489,
+          0.76
+        ],
+        [
+          0.4929,
+          0.7424
+        ],
+        [
+          0.4915,
+          0.7284
+        ],
+        [
+          0.4846,
+          0.7153
+        ],
+        [
+          0.4725,
+          0.703
+        ],
+        [
+          0.4555,
+          0.691
+        ],
+        [
+          0.434,
+          0.6795
+        ],
+        [
+          0.4086,
+          0.6682
+        ],
+        [
+          0.3798,
+          0.6572
+        ],
+        [
+          0.3483,
+          0.6464
+        ],
+        [
+          0.315,
+          0.6357
+        ],
+        [
+          0.2805,
+          0.6252
+        ],
+        [
+          0.2455,
+          0.6149
+        ],
+        [
+          0.2106,
+          0.6047
+        ],
+        [
+          0.1766,
+          0.5946
+        ],
+        [
+          0.1437,
+          0.5846
+        ],
+        [
+          0.1125,
+          0.5747
+        ],
+        [
+          0.0833,
+          0.5649
+        ],
+        [
+          0.0563,
+          0.5552
+        ],
+        [
+          0.0316,
+          0.5455
+        ],
+        [
+          0.0095,
+          0.536
+        ],
+        [
+          -0.01,
+          0.5265
+        ],
+        [
+          -0.0266,
+          0.5171
+        ],
+        [
+          -0.0402,
+          0.5077
+        ],
+        [
+          -0.0506,
+          0.4984
+        ],
+        [
+          -0.0573,
+          0.4892
+        ],
+        [
+          -0.06,
+          0.48
+        ]
+      ],
+      "bbox": {
+        "pixels": [
+          -96.6,
+          317.5,
+          661.7,
+          609.6
+        ],
+        "normalized": [
+          -0.0805,
+          0.4574,
+          0.5514,
+          0.8784
+        ]
+      },
+      "parts": {
+        "land": {
+          "selector": "#fork-near-left-01-left-land",
+          "bbox": {
+            "pixels": [
+              -96.6,
+              318.7,
+              661.7,
+              609.6
+            ],
+            "normalized": [
+              -0.0805,
+              0.4593,
+              0.5514,
+              0.8784
+            ]
+          },
+          "elements": [
+            "fork-near-left-01-left-land-base-01",
+            "fork-near-left-01-left-land-inner-01",
+            "fork-near-left-01-left-land-patch-01",
+            "fork-near-left-01-left-land-patch-02",
+            "fork-near-left-01-left-land-patch-03",
+            "fork-near-left-01-left-land-patch-04",
+            "fork-near-left-01-left-land-patch-05",
+            "fork-near-left-01-left-land-patch-06",
+            "fork-near-left-01-left-land-patch-07",
+            "fork-near-left-01-left-land-patch-08",
+            "fork-near-left-01-left-land-patch-09",
+            "fork-near-left-01-left-land-patch-10"
+          ]
+        },
+        "underside": {
+          "selector": "#fork-near-left-01-left-underside",
+          "bbox": {
+            "pixels": [
+              -54.1,
+              377.2,
+              631.3,
+              589.7
+            ],
+            "normalized": [
+              -0.0451,
+              0.5436,
+              0.5261,
+              0.8497
+            ]
+          },
+          "elements": [
+            "fork-near-left-01-left-rock-base-01",
+            "fork-near-left-01-left-rock-detail-01",
+            "fork-near-left-01-left-rock-base-02",
+            "fork-near-left-01-left-rock-detail-02",
+            "fork-near-left-01-left-rock-base-03",
+            "fork-near-left-01-left-rock-detail-03",
+            "fork-near-left-01-left-rock-base-04",
+            "fork-near-left-01-left-rock-detail-04",
+            "fork-near-left-01-left-rock-base-05",
+            "fork-near-left-01-left-rock-detail-05",
+            "fork-near-left-01-left-rock-base-06",
+            "fork-near-left-01-left-rock-detail-06"
+          ]
+        },
+        "road": {
+          "selector": "#fork-near-left-01-left-road",
+          "bbox": {
+            "pixels": [
+              -92.0,
+              317.5,
+              645.4,
+              587.8
+            ],
+            "normalized": [
+              -0.0766,
+              0.4574,
+              0.5378,
+              0.847
+            ]
+          },
+          "elements": [
+            "fork-near-left-01-left-road-edge-01",
+            "fork-near-left-01-left-road-base-01",
+            "fork-near-left-01-left-road-highlight-01",
+            "fork-near-left-01-left-road-speckle-01",
+            "fork-near-left-01-left-road-speckle-02",
+            "fork-near-left-01-left-road-speckle-03",
+            "fork-near-left-01-left-road-speckle-04",
+            "fork-near-left-01-left-road-speckle-05",
+            "fork-near-left-01-left-road-speckle-06",
+            "fork-near-left-01-left-road-speckle-07",
+            "fork-near-left-01-left-road-speckle-08",
+            "fork-near-left-01-left-road-speckle-09",
+            "fork-near-left-01-left-road-speckle-10",
+            "fork-near-left-01-left-road-speckle-11",
+            "fork-near-left-01-left-road-speckle-12",
+            "fork-near-left-01-left-road-speckle-13",
+            "fork-near-left-01-left-road-speckle-14",
+            "fork-near-left-01-left-road-speckle-15",
+            "fork-near-left-01-left-road-speckle-16",
+            "fork-near-left-01-left-road-speckle-17",
+            "fork-near-left-01-left-road-speckle-18",
+            "fork-near-left-01-left-road-speckle-19",
+            "fork-near-left-01-left-road-speckle-20",
+            "fork-near-left-01-left-road-speckle-21",
+            "fork-near-left-01-left-road-speckle-22",
+            "fork-near-left-01-left-road-speckle-23",
+            "fork-near-left-01-left-road-speckle-24"
+          ]
+        },
+        "vegetation": {
+          "selector": "#fork-near-left-01-left-vegetation",
+          "bbox": {
+            "pixels": [
+              -3.9,
+              354.6,
+              14.7,
+              379.3
+            ],
+            "normalized": [
+              -0.0032,
+              0.5109,
+              0.0122,
+              0.5466
+            ]
+          },
+          "elements": [
+            "fork-near-left-01-left-tree-base-01",
+            "fork-near-left-01-left-tree-highlight-01"
+          ]
+        }
+      },
+      "suggested_slice": 5,
+      "graph_edge": {
+        "id": "route-fork-near-left-01-left",
+        "role": "branch-left",
+        "pts": [
+          [
+            0.511,
+            0.76
+          ],
+          [
+            0.489,
+            0.76
+          ],
+          [
+            0.4929,
+            0.7424
+          ],
+          [
+            0.4915,
+            0.7284
+          ],
+          [
+            0.4846,
+            0.7153
+          ],
+          [
+            0.4725,
+            0.703
+          ],
+          [
+            0.4555,
+            0.691
+          ],
+          [
+            0.434,
+            0.6795
+          ],
+          [
+            0.4086,
+            0.6682
+          ],
+          [
+            0.3798,
+            0.6572
+          ],
+          [
+            0.3483,
+            0.6464
+          ],
+          [
+            0.315,
+            0.6357
+          ],
+          [
+            0.2805,
+            0.6252
+          ],
+          [
+            0.2455,
+            0.6149
+          ],
+          [
+            0.2106,
+            0.6047
+          ],
+          [
+            0.1766,
+            0.5946
+          ],
+          [
+            0.1437,
+            0.5846
+          ],
+          [
+            0.1125,
+            0.5747
+          ],
+          [
+            0.0833,
+            0.5649
+          ],
+          [
+            0.0563,
+            0.5552
+          ],
+          [
+            0.0316,
+            0.5455
+          ],
+          [
+            0.0095,
+            0.536
+          ],
+          [
+            -0.01,
+            0.5265
+          ],
+          [
+            -0.0266,
+            0.5171
+          ],
+          [
+            -0.0402,
+            0.5077
+          ],
+          [
+            -0.0506,
+            0.4984
+          ],
+          [
+            -0.0573,
+            0.4892
+          ],
+          [
+            -0.06,
+            0.48
+          ]
+        ],
+        "exit": "scene-near-left-01-left.html"
+      },
+      "selectors": {
+        "fork": "#fork-near-left-01-left",
+        "road": "#fork-near-left-01-left-road",
+        "land": "#fork-near-left-01-left-land",
+        "underside": "#fork-near-left-01-left-underside",
+        "vegetation": "#fork-near-left-01-left-vegetation"
+      }
+    }
+  ]
+}

@@ -7,6 +7,7 @@ import type { DebtState } from "../debts/index.js";
 import type { FinancialAssetState } from "../assets/index.js";
 import type { PortfolioState } from "../portfolio/index.js";
 import type { PhysicalAssetState } from "../physical-assets/index.js";
+import type { DecisionImportance, StableId, VersionedReference } from "../contracts/index.js";
 
 /**
  * A decision is open-ended by design (`domain` is a plain string, not a
@@ -19,11 +20,17 @@ import type { PhysicalAssetState } from "../physical-assets/index.js";
  * the `LifeStateSnapshot` at a fork point. See simulation/README.md.
  */
 export interface Decision {
-  id: string;
+  id: StableId;
   domain: string;
   optionId: string;
   label: string;
   effectiveFromMonth: MonthKey;
+  /** Pins the selected option to the definition version used for preview and replay. */
+  optionRef?: VersionedReference;
+  /** Persisted classification lets every UI choose the same compact/expanded treatment. */
+  importance?: DecisionImportance;
+  /** Links the committed audit record to its preview/compare lifecycle. */
+  sessionId?: StableId;
 }
 export type DecisionSet = readonly Decision[];
 

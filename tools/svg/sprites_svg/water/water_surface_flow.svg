@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="240" viewBox="0 0 720 240">
+  <defs>
+    <linearGradient id="sea-wash" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#bce5ed" stop-opacity=".18"/>
+      <stop offset=".48" stop-color="#53b9d0" stop-opacity=".54"/>
+      <stop offset="1" stop-color="#258faf" stop-opacity=".18"/>
+    </linearGradient>
+    <filter id="watercolor-edge" x="-8%" y="-15%" width="116%" height="130%">
+      <feTurbulence type="fractalNoise" baseFrequency=".012 .055" numOctaves="2" seed="17" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="9" xChannelSelector="R" yChannelSelector="B"/>
+    </filter>
+  </defs>
+  <path d="M-28 54 C67 9 147 79 236 42 S410 19 503 55 646 77 752 32 L752 204 C653 230 572 177 474 211 357 251 267 187 165 217 83 241 20 211-28 225Z" fill="url(#sea-wash)" filter="url(#watercolor-edge)"/>
+  <g fill="none" stroke-linecap="round">
+    <path d="M-8 79 C66 50 112 102 189 74 S325 49 398 82 535 105 608 75 690 67 738 83" stroke="#ecfbf8" stroke-width="7" stroke-dasharray="54 28" opacity=".72">
+      <animate attributeName="stroke-dashoffset" from="0" to="-164" dur="8s" repeatCount="indefinite"/>
+    </path>
+    <path d="M-35 132 C41 101 103 154 181 127 S330 99 407 137 546 164 618 128 704 118 760 143" stroke="#247fa8" stroke-width="10" stroke-dasharray="72 35" opacity=".28">
+      <animate attributeName="stroke-dashoffset" from="0" to="214" dur="12s" repeatCount="indefinite"/>
+    </path>
+    <path d="M-18 179 C57 151 119 198 199 174 S337 151 424 184 559 207 637 176 709 168 744 178" stroke="#f8ffff" stroke-width="5" stroke-dasharray="38 30" opacity=".64">
+      <animate attributeName="stroke-dashoffset" from="0" to="-136" dur="6.5s" repeatCount="indefinite"/>
+    </path>
+  </g>
+</svg>

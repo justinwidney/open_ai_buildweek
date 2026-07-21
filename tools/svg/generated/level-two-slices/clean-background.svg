@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="694" viewBox="0 0 1200 694">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#72a9dc"/>
+      <stop offset=".58" stop-color="#b9d7e8"/>
+      <stop offset="1" stop-color="#dce8e7"/>
+    </linearGradient>
+    <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#78c8dc"/>
+      <stop offset=".42" stop-color="#4db3d2"/>
+      <stop offset="1" stop-color="#319bc2"/>
+    </linearGradient>
+    <radialGradient id="sun-halo">
+      <stop offset="0" stop-color="#fff2a8" stop-opacity=".62"/>
+      <stop offset="1" stop-color="#fff2a8" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="paper" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".012" numOctaves="3" seed="43" result="grain"/>
+      <feColorMatrix in="grain" values="1 0 0 0 .1  0 1 0 0 .16  0 0 1 0 .19  0 0 0 .13 0" result="wash"/>
+      <feBlend in="SourceGraphic" in2="wash" mode="soft-light"/>
+    </filter>
+    <filter id="soft" x="-15%" y="-30%" width="130%" height="160%">
+      <feGaussianBlur stdDeviation="5"/>
+    </filter>
+  </defs>
+  <g filter="url(#paper)">
+    <rect width="1200" height="270" fill="url(#sky)"/>
+    <rect y="220" width="1200" height="474" fill="url(#sea)"/>
+    <path d="M0 215 C180 194 315 229 470 212 S790 195 1200 218 L1200 270 L0 270Z" fill="#dbe8e7" opacity=".54" filter="url(#soft)"/>
+    <path d="M0 255 C185 238 336 266 520 246 S880 241 1200 258" fill="none" stroke="#e8f4f2" stroke-width="18" opacity=".28" filter="url(#soft)"/>
+    <circle cx="1070" cy="56" r="72" fill="url(#sun-halo)"/>
+    <circle cx="1070" cy="56" r="28" fill="#ffd364" opacity=".96"/>
+    <g stroke="#ffd364" stroke-width="4" stroke-linecap="round" opacity=".9">
+      <path d="M1070 9 V0"/><path d="M1070 103 V116"/>
+      <path d="M1023 56 H1008"/><path d="M1117 56 H1132"/>
+      <path d="M1037 23 L1026 12"/><path d="M1103 89 L1114 100"/>
+      <path d="M1103 23 L1114 12"/><path d="M1037 89 L1026 100"/>
+    </g>
+    <g fill="none" stroke-linecap="round">
+      <path d="M-20 330 C105 294 207 345 324 313 S550 292 678 326 930 355 1225 309" stroke="#d9f4f5" stroke-width="7" stroke-dasharray="54 34" opacity=".42"/>
+      <path d="M-30 405 C116 365 237 430 374 391 S641 365 786 407 1015 439 1230 394" stroke="#217fa8" stroke-width="9" stroke-dasharray="78 48" opacity=".2"/>
+      <path d="M-15 500 C116 466 244 526 374 492 S628 470 776 510 1027 539 1220 498" stroke="#e9fbfa" stroke-width="6" stroke-dasharray="45 38" opacity=".4"/>
+      <path d="M-25 610 C118 570 262 632 416 594 S735 572 884 615 1064 632 1225 602" stroke="#1f83aa" stroke-width="10" stroke-dasharray="84 56" opacity=".18"/>
+    </g>
+  </g>
+</svg>

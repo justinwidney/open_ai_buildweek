@@ -18,6 +18,24 @@ const viewsDir = join(here, "..", "model", "views");
 // `jobs` is intentionally worker-internal and not modeled as a cube.
 const DB_TABLES = new Set(["runs", "run_months", "decisions", "flow_line_items", "balance_snapshots"]);
 
+// The canonical vocabulary lives in @control-ai/shared/sim. This package is
+// YAML plus a CommonJS config with no build step and no TypeScript, so it
+// cannot import those constants — it reads them out of the source text
+// instead. That is deliberately crude, and it is still the only mechanism
+// that catches the failure that matters here: a `view_key` added in the
+// engine and the shared package but never documented in this model, leaving
+// whoever writes the next query filtering on a value they cannot discover.
+const sharedVocabularyPath = join(here, "..", "..", "shared", "src", "sim", "vocabulary.ts");
+const sharedStatusPath = join(here, "..", "..", "shared", "src", "sim", "status.ts");
+
+/** Pulls the string literals out of an `export const NAME = [...] as const;` declaration. */
+function readConstTuple(sourcePath, name) {
+  const source = readFileSync(sourcePath, "utf8");
+  const declaration = new RegExp(`export const ${name} = \\[([\\s\\S]*?)\\] as const;`).exec(source);
+  assert.ok(declaration, `${name} not found in ${sourcePath} — was it renamed?`);
+  return [...declaration[1].matchAll(/"([^"]+)"/g)].map((m) => m[1]);
+}
+
 function readModelFiles(dir) {
   return readdirSync(dir)
     .filter((f) => f.endsWith(".yml") || f.endsWith(".yaml"))
@@ -68,5 +86,46 @@ describe("cube model structure", () => {
       .map((f) => f.text)
       .join("\n");
     assert.match(viewText, /name:\s*life_projection/);
+  });
+});
+
+describe("cube model documents the shared vocabulary", () => {
+  const textOf = (file) => readFileSync(join(cubesDir, file), "utf8");
+
+  it("flow_line_items lists every flow domain", () => {
+    const text = textOf("flow_line_items.yml");
+    for (const domain of readConstTuple(sharedVocabularyPath, "FLOW_DOMAINS")) {
+      assert.ok(text.includes(domain), `flow_line_items.yml does not document the "${domain}" domain from FLOW_DOMAINS`);
+    }
+  });
+
+  it("flow_line_items lists every view key, for all three domains", () => {
+    const text = textOf("flow_line_items.yml");
+    const keys = [
+      ...readConstTuple(sharedVocabularyPath, "INCOME_VIEW_KEYS"),
+      ...readConstTuple(sharedVocabularyPath, "EXPENSE_VIEW_KEYS"),
+      ...readConstTuple(sharedVocabularyPath, "DEBT_VIEW_KEYS"),
+    ];
+    assert.ok(keys.length >= 15, "expected the full view-key vocabulary to be parsed");
+    for (const key of keys) {
+      assert.ok(text.includes(key), `flow_line_items.yml does not document the "${key}" view key — a query filtering on it would find nothing`);
+    }
+  });
+
+  it("balance_snapshots lists every balance domain and metric key", () => {
+    const text = textOf("balance_snapshots.yml");
+    for (const domain of readConstTuple(sharedVocabularyPath, "BALANCE_DOMAINS")) {
+      assert.ok(text.includes(domain), `balance_snapshots.yml does not document the "${domain}" domain`);
+    }
+    for (const metric of readConstTuple(sharedVocabularyPath, "BALANCE_METRIC_KEYS")) {
+      assert.ok(text.includes(metric), `balance_snapshots.yml does not document the "${metric}" metric key`);
+    }
+  });
+
+  it("runs lists every run status", () => {
+    const text = textOf("runs.yml");
+    for (const status of readConstTuple(sharedStatusPath, "RUN_STATUSES")) {
+      assert.ok(text.includes(status), `runs.yml does not document the "${status}" status from RUN_STATUSES`);
+    }
   });
 });

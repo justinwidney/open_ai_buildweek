@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="694" viewBox="0 0 1200 694">
+  <defs><filter id="soft" x="-3%" y="-3%" width="106%" height="106%"><feGaussianBlur stdDeviation="4"/></filter></defs>
+  <rect width="1200" height="694" fill="#000"/>
+  <path d="M0 505 L198 505 301 521 352 563 359 616 331 694 0 694Z" fill="#fff" filter="url(#soft)"/>
+  <path d="M955 500 L1041 469 1200 446 1200 694 895 694 912 626 929 567Z" fill="#fff" filter="url(#soft)"/>
+</svg>

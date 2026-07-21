@@ -1,11 +1,20 @@
 import type { Cents } from "../money/index.js";
 import type { FilingStatus } from "../types/tax-basis.js";
+import type { SourceProvenance } from "../contracts/index.js";
 
 /** Every researched dataset carries where it came from and when, so it can be refreshed deliberately later. */
-export interface Provenance {
+export interface Provenance extends Pick<SourceProvenance, "asOf"> {
   source: string;
   url: string;
-  asOf: string; // ISO date the figure was current as of, not the date we happened to look it up
+  /** Enriched catalog-grade provenance fields; optional for legacy research datasets. */
+  sourceId?: SourceProvenance["sourceId"];
+  publisher?: SourceProvenance["publisher"];
+  retrievedAt?: SourceProvenance["retrievedAt"];
+  geography?: SourceProvenance["geography"];
+  currency?: SourceProvenance["currency"];
+  methodology?: SourceProvenance["methodology"];
+  quality?: SourceProvenance["quality"];
+  license?: SourceProvenance["license"];
 }
 
 export interface Bracket {

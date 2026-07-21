@@ -1,25 +1,8 @@
-/** Cross-platform contracts. An engine package can replace the static loader later. */
-export type PathAngle = 0 | 45 | -45;
-
-export interface WorldPlatform {
-  id: string;
-  title: string;
-  subtitle: string;
-  position: readonly [number, number, number];
-  radius: number;
-  kind: "start" | "skill" | "milestone";
-}
-
-export interface WorldPath {
-  id: string;
-  label: string;
-  angle: PathAngle;
-  platforms: readonly WorldPlatform[];
-}
-
-export interface WorldDefinition {
-  id: string;
-  name: string;
-  accent: string;
-  paths: readonly WorldPath[];
-}
+/**
+ * Back-compatible root entry: the 3D world contracts, which is all this
+ * package held before the simulation contracts arrived. Prefer the explicit
+ * subpaths in new code — `@control-ai/shared/world` and
+ * `@control-ai/shared/sim` — so a world-only consumer never pulls the
+ * simulation contracts (and their `@control-ai/engine` types) into its graph.
+ */
+export * from "./world/index.js";

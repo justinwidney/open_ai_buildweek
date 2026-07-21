@@ -46,6 +46,7 @@ trim—rectangular crops are never sprite boundaries.
 | H. Additive detail forge | `/labs/platform-detail.html` | `src/labs/platformDetailLab.ts` | Every platform detail can be independently enabled, placed, scaled, rotated, and judged with texture removed | `content/forward/decorations.ts`, `signage.ts`, and `WorldTuning.detailsEnabled` | Lab ready; main controls promoted |
 | I. Sprite depth grid | `/labs/sprite-grid.html` | `src/labs/spriteGridLab.ts` | Reference and Sobel-edge overlays; left/center/right views; per-sprite depth, offset, scale, opacity, saturation, and warmth output | `LayeredParallaxBackground.tsx` calibration props | Lab ready; global calibration promoted |
 | J. Procedural SVG background | `/labs/background-only.html` | `src/labs/backgroundOnlyLab.tsx` | Curated SVG groups; weighted seeded generation; recyclable depth slots; optional cloud obstruction; zero WebGL canvases | `tools/svg/catalog.json` and DOM parallax layer | Local procedural lab ready; main toggle promoted |
+| K. Level 2 integrated route | `/labs/level-two-world.html` | `src/labs/levelTwoWorldLab.tsx` + `src/labs/levelTwoThreeRuntime.ts` | One WebGL scene; five explicit moves along a connected watercolor island spine; continuous sand road; water below tapered cliffs; passed-segment retirement; exact parallel clone; curated SVG scenery | Travel and upside-down samplers + procedural route component | Integrated lab ready for visual tuning |
 
 ## Level-of-detail tiers
 

@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "source_image": "../../svg/generated/reference_06_03_continuous_road.png",
+  "normalized_canvas": [1200, 694],
+  "vector_canvas": [1200, 694],
+  "socket_contract": {
+    "B0": {"edge": "bottom", "center": 0.5, "direction": "vertical", "road_width": 0.16},
+    "T0": {"edge": "top", "center": 0.5, "direction": "vertical", "road_width": 0.035},
+    "L0": {"edge": "left", "center": 0.56, "direction": "horizontal", "road_width": 0.028},
+    "R0": {"edge": "right", "center": 0.56, "direction": "horizontal", "road_width": 0.028},
+    "L1": {"edge": "left", "center": 0.51, "direction": "horizontal", "road_width": 0.013},
+    "R1": {"edge": "right", "center": 0.51, "direction": "horizontal", "road_width": 0.013},
+    "L2": {"edge": "left", "center": 0.375, "direction": "horizontal", "road_width": 0.016},
+    "R2": {"edge": "right", "center": 0.375, "direction": "horizontal", "road_width": 0.016}
+  },
+  "shared_constraints": [
+    "Preserve the original castle, floating-island world, watercolor storybook style, palette, camera, perspective, and wide framing.",
+    "Every road must be a continuous warm cream dirt path supported by a broad grassy floating-island landmass with visible rock cliffs, trees, shrubs, and waterfalls.",
+    "A road meeting a side socket must reach the canvas edge exactly at that socket, be perpendicular to the edge for its final 8 percent, and remain unobstructed.",
+    "Do not create beige decorative patches that can be mistaken for roads. No bridges made only of road surface and no unsupported floating road ribbons.",
+    "No text, labels, arrows, signs, characters, vehicles, UI, borders, or watermark."
+  ],
+  "variants": [
+    {"id": "01_straight", "label": "Straight main route", "sockets": ["B0", "T0"], "topology": "Keep one continuous main road from B0 to the castle at T0, with a natural near-straight perspective route and no forks."},
+    {"id": "02_curve_left", "label": "Left sweep", "sockets": ["B0", "T0"], "topology": "Keep one continuous main road from B0 to T0; make it sweep broadly left in the foreground and ease back to the castle."},
+    {"id": "03_curve_right", "label": "Right sweep", "sockets": ["B0", "T0"], "topology": "Keep one continuous main road from B0 to T0; make it sweep broadly right in the foreground and ease back to the castle."},
+    {"id": "04_s_left_right", "label": "Left-right S curve", "sockets": ["B0", "T0"], "topology": "Keep one main road from B0 to T0 with a readable S curve: first left, then right, then into the castle."},
+    {"id": "05_s_right_left", "label": "Right-left S curve", "sockets": ["B0", "T0"], "topology": "Keep one main road from B0 to T0 with a readable reverse S curve: first right, then left, then into the castle."},
+    {"id": "06_near_exit_left", "label": "Near left exit", "sockets": ["B0", "T0", "L0"], "topology": "Add one unmistakable Y junction in the near foreground. The main road continues to T0; a supported left branch reaches L0 and exits the canvas."},
+    {"id": "07_near_exit_right", "label": "Near right exit", "sockets": ["B0", "T0", "R0"], "topology": "Add one unmistakable Y junction in the near foreground. The main road continues to T0; a supported right branch reaches R0 and exits the canvas."},
+    {"id": "08_near_exits_both", "label": "Near exits both sides", "sockets": ["B0", "T0", "L0", "R0"], "topology": "Create a clear four-way hub in the near foreground: B0 enters, the main road continues to T0, and supported branches exit through both L0 and R0."},
+    {"id": "09_mid_exit_left", "label": "Middle left exit", "sockets": ["B0", "T0", "L1"], "topology": "Add one Y junction halfway to the castle. The main road continues to T0; a supported branch curves left to L1."},
+    {"id": "10_mid_exit_right", "label": "Middle right exit", "sockets": ["B0", "T0", "R1"], "topology": "Add one Y junction halfway to the castle. The main road continues to T0; a supported branch curves right to R1."},
+    {"id": "11_far_exit_left", "label": "Far left exit", "sockets": ["B0", "T0", "L2"], "topology": "Add one small but unmistakable distant Y junction near the castle approach. Keep the main road to T0 and route a supported left branch to L2."},
+    {"id": "12_far_exit_right", "label": "Far right exit", "sockets": ["B0", "T0", "R2"], "topology": "Add one small but unmistakable distant Y junction near the castle approach. Keep the main road to T0 and route a supported right branch to R2."},
+    {"id": "13_near_loop_left", "label": "Near left loop", "sockets": ["B0", "T0"], "topology": "Split the road near B0 into a left scenic branch and a main branch; reconnect them cleanly before the midpoint, forming one grounded teardrop loop."},
+    {"id": "14_near_loop_right", "label": "Near right loop", "sockets": ["B0", "T0"], "topology": "Split the road near B0 into a right scenic branch and a main branch; reconnect them cleanly before the midpoint, forming one grounded teardrop loop."},
+    {"id": "15_mid_loop_left", "label": "Middle left loop", "sockets": ["B0", "T0"], "topology": "At mid-distance split off a left route and reconnect it farther toward the castle, forming a clear compact loop on one coherent island."},
+    {"id": "16_mid_loop_right", "label": "Middle right loop", "sockets": ["B0", "T0"], "topology": "At mid-distance split off a right route and reconnect it farther toward the castle, forming a clear compact loop on one coherent island."},
+    {"id": "17_diamond_rejoin", "label": "Diamond split and rejoin", "sockets": ["B0", "T0"], "topology": "Split the main road into equally readable left and right alternatives around a central rocky grove, then merge both routes back into one road to T0."},
+    {"id": "18_two_loops", "label": "Two sequential loops", "sockets": ["B0", "T0"], "topology": "Create two natural sequential split-and-rejoin choices: a broad left loop in the foreground followed by a smaller right loop in the middle distance."},
+    {"id": "19_left_ingress_merge", "label": "Left ingress merges", "sockets": ["B0", "T0", "L0"], "topology": "A supported road enters from L0 and merges smoothly into the B0-to-T0 main road at a clear near-foreground Y junction."},
+    {"id": "20_right_ingress_merge", "label": "Right ingress merges", "sockets": ["B0", "T0", "R0"], "topology": "A supported road enters from R0 and merges smoothly into the B0-to-T0 main road at a clear near-foreground Y junction."},
+    {"id": "21_left_to_right_crossroute", "label": "Left-right cross route", "sockets": ["B0", "T0", "L0", "R0"], "topology": "A supported L0-to-R0 route crosses and joins the main B0-to-T0 road at one clear central four-way intersection."},
+    {"id": "22_near_left_far_right", "label": "Near-left and far-right exits", "sockets": ["B0", "T0", "L0", "R2"], "topology": "Place two distinct junctions: a near left branch exits at L0, then a distant right branch exits at R2; keep the main route continuous to T0."},
+    {"id": "23_far_crossroute", "file_stem": "23_near_right_far_left", "label": "Far left-right cross route", "sockets": ["B0", "T0", "L2", "R2"], "topology": "A distant supported L2-to-R2 cross-route meets the main B0-to-T0 road before the castle."},
+    {"id": "24_three_stage_network", "label": "Cross route plus distant loop", "sockets": ["B0", "T0", "L0", "R0"], "topology": "A supported L0-to-R0 cross-route meets the main road, followed by one small split-and-rejoin loop before T0."},
+    {"id": "25_full_connector_hub", "label": "Mid connector hub with rejoin", "sockets": ["B0", "T0", "L1", "R1"], "topology": "A broad mid-distance hub serves L1 and R1 while an internal right alternative rejoins the B0-to-T0 main road before the castle."}
+  ]
+}

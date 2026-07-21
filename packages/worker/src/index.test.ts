@@ -5,18 +5,8 @@ import type Piscina from "piscina";
 import { PGlite } from "@electric-sql/pglite";
 import { migrate } from "drizzle-orm/pglite/migrator";
 import { eq } from "drizzle-orm";
-import {
-  cents,
-  initialDebtState,
-  initialFinancialAssetState,
-  initialHoldingState,
-  initialTaxBasis,
-  type ExpenseState,
-  type IncomeState,
-  type LifeStateSnapshot,
-  type PhysicalAssetState,
-} from "@control-ai/engine";
-import { computeNetWorthCents } from "@control-ai/engine";
+import { cents, type LifeStateSnapshot } from "@control-ai/engine";
+import { buildInitialSnapshot as buildFromSeed, type RootSeed } from "@control-ai/shared/sim";
 import { createPgliteDb, getSnapshotAt, saveRun, schema, type Database } from "@control-ai/db";
 import { branchRun, createPool, extendRun, type ReturnsStrategyConfig } from "./index.js";
 
@@ -24,37 +14,23 @@ import { branchRun, createPool, extendRun, type ReturnsStrategyConfig } from "./
 // runs against @control-ai/db's schema.
 const migrationsFolder = fileURLToPath(new URL("../../db/drizzle", import.meta.url));
 
-function buildInitialSnapshot(runId: string): LifeStateSnapshot {
-  const income: IncomeState = {
-    config: { id: "job-1", label: "Engineer", baseMonthlyGrossCents: cents(8_000), annualGrowthRate: 0.03, stateCode: "TX", pretaxDeferralRate: 0.06, startMonth: 0 },
-  };
-  const expense: ExpenseState = {
-    config: { id: "rent", label: "Rent", category: "fixed", baseMonthlyAmountCents: cents(1_800), annualInflationRate: 0.03, startMonth: 0 },
-  };
-  const debt = initialDebtState({ id: "mortgage", label: "Mortgage", originalPrincipalCents: cents(400_000), annualRate: 0.0655, termMonths: 360, startMonth: 0, monthlyEscrowCents: cents(400) });
-  const cash = initialFinancialAssetState({ id: "checking", label: "Checking", annualInterestRate: 0.005 }, cents(10_000));
-  const holding = initialHoldingState({ id: "brokerage", label: "Brokerage", assetClassId: "equity" }, cents(5_000));
-  const house: PhysicalAssetState = {
-    config: { id: "house", label: "Home", purchasePriceCents: cents(400_000), purchaseMonth: 0, annualValueChangeRate: 0.03, monthlyUpkeepCents: cents(300), linkedDebtId: "mortgage" },
-  };
-  const taxBasis = initialTaxBasis(2026, "single");
-  const netWorthCents = computeNetWorthCents({ financialAssets: [cash], portfolio: { holdings: [holding] }, physicalAssets: [house], debts: [debt], month: 0 });
+/** The run these tests extend and branch, as the `RootSeed` actually written to `root_seed`. */
+const TEST_SEED: RootSeed = {
+  version: 1,
+  startCalendarYear: 2026,
+  filingStatus: "single",
+  ageYearsAtStart: 30,
+  incomes: [{ id: "job-1", label: "Engineer", baseMonthlyGrossCents: cents(8_000), annualGrowthRate: 0.03, stateCode: "TX", pretaxDeferralRate: 0.06, startMonth: 0 }],
+  expenses: [{ id: "rent", label: "Rent", category: "fixed", baseMonthlyAmountCents: cents(1_800), annualInflationRate: 0.03, startMonth: 0 }],
+  debts: [{ id: "mortgage", label: "Mortgage", originalPrincipalCents: cents(400_000), annualRate: 0.0655, termMonths: 360, startMonth: 0, monthlyEscrowCents: cents(400) }],
+  financialAssets: [{ config: { id: "checking", label: "Checking", annualInterestRate: 0.005 }, openingBalanceCents: cents(10_000) }],
+  holdings: [{ config: { id: "brokerage", label: "Brokerage", assetClassId: "equity" }, openingBalanceCents: cents(5_000) }],
+  physicalAssets: [{ id: "house", label: "Home", purchasePriceCents: cents(400_000), purchaseMonth: 0, annualValueChangeRate: 0.03, monthlyUpkeepCents: cents(300), linkedDebtId: "mortgage" }],
+  rngSeed: "worker-test-seed",
+};
 
-  return {
-    runId,
-    month: 0,
-    parentSnapshotRef: null,
-    decisions: [],
-    incomes: [income],
-    expenses: [expense],
-    debts: [debt],
-    financialAssets: [cash],
-    portfolio: { holdings: [holding] },
-    physicalAssets: [house],
-    taxBasis,
-    netWorthCents,
-    extensions: {},
-  };
+function buildInitialSnapshot(runId: string): LifeStateSnapshot {
+  return buildFromSeed(runId, TEST_SEED);
 }
 
 const returnsStrategyConfig: ReturnsStrategyConfig = { kind: "fixed", annualRatesByAssetClass: { equity: 0.07 } };
@@ -96,7 +72,7 @@ describe("@control-ai/worker", () => {
 
     it("extendRun computes in bounded chunks and persists every chunk", async () => {
       const initial = buildInitialSnapshot("extend-1");
-      await saveRun(db, { id: "extend-1", label: "Extend test", rootSeed: {}, returnsStrategy: returnsStrategyConfig });
+      await saveRun(db, { id: "extend-1", label: "Extend test", rootSeed: TEST_SEED, returnsStrategy: returnsStrategyConfig });
 
       // 10-month chunks over a 30-month horizon => 3 dispatches to the pool.
       const final = await extendRun(pool, db, { runId: "extend-1", fromSnapshot: initial, toMonth: 30, returnsStrategyConfig, seed: "extend-seed", chunkMonths: 10 });
@@ -112,7 +88,7 @@ describe("@control-ai/worker", () => {
 
     it("branchRun creates a branch and only computes/persists months after the fork", async () => {
       const initial = buildInitialSnapshot("branch-parent");
-      await saveRun(db, { id: "branch-parent", label: "Parent", rootSeed: {}, returnsStrategy: returnsStrategyConfig });
+      await saveRun(db, { id: "branch-parent", label: "Parent", rootSeed: TEST_SEED, returnsStrategy: returnsStrategyConfig });
       const parentFinal = await extendRun(pool, db, { runId: "branch-parent", fromSnapshot: initial, toMonth: 24, returnsStrategyConfig, seed: "parent-seed", chunkMonths: 24 });
       assert.equal(parentFinal.month, 24);
 

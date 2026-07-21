@@ -2,10 +2,20 @@
   "name": "@control-ai/shared",
   "version": "0.1.0",
   "private": true,
+  "description": "Cross-package contracts. ./world = 3D world geometry; ./life-sim = portable domain value contracts; ./sim = persistence contracts for simulation backends.",
   "type": "module",
-  "exports": { ".": "./src/index.ts" },
+  "exports": {
+    ".": "./src/index.ts",
+    "./world": "./src/world/index.ts",
+    "./life-sim": "./src/life-sim/index.ts",
+    "./sim": "./src/sim/index.ts"
+  },
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "tsx --test \"src/**/*.test.ts\""
+  },
+  "dependencies": {
+    "@control-ai/engine": "workspace:*"
   }
 }

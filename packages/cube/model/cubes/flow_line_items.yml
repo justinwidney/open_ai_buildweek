@@ -27,17 +27,29 @@ cubes:
         sql: month
         type: number
 
+      # The value sets below are the canonical vocabulary from
+      # @control-ai/shared/sim (FLOW_DOMAINS / FLOW_VIEW_KEYS_BY_DOMAIN), and
+      # test/model.test.mjs fails if they drift from it. They are listed in
+      # full rather than abbreviated because these strings are what a query
+      # filters on — an out-of-date list here sends someone hunting for a
+      # measure that silently matches nothing.
       - name: domain
         sql: domain
         type: string
-        description: income | expense | debt.
+        description: "Values: income | expense | debt."
 
       - name: view_key
         sql: view_key
         type: string
         description: >-
-          The named view of the amount, e.g. income's gross/takeHome/afterTax,
-          expense's outOfPocket, debt's principalPortion/interestPortion.
+          The named view of the amount.
+          Values (income): gross | afterPayrollDeductions | afterTax | taxFree |
+          socialSecurityWage | takeHome | federalTax | stateTax | fica.
+          Values (expense): total | outOfPocket.
+          Values (debt): totalPayment | principalPortion | interestPortion | escrowPortion.
+          Note that income's `gross` and `takeHome` overlap by design (takeHome is
+          net of tax and deferrals), so summing across every view key double-counts —
+          always filter to one view key when totalling.
 
       - name: entity_id
         sql: entity_id

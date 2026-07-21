@@ -36,7 +36,7 @@ WATER_DEEP = "#8aa0b5"
 def load_sprites(svg_dir, manifest):
     man = json.load(open(manifest))
     sprites = {}
-    for p in sorted(glob.glob(os.path.join(svg_dir, "*.svg"))):
+    for p in sorted(glob.glob(os.path.join(svg_dir, "**", "*.svg"), recursive=True)):
         name = os.path.splitext(os.path.basename(p))[0]
         if name not in man:
             continue
@@ -58,7 +58,7 @@ def by_role(sprites, *roles):
 class Scene:
     def __init__(self, W, H, sprites, rng):
         self.W, self.H, self.sp, self.rng = W, H, sprites, rng
-        self.layers = {k: [] for k in ("sky", "far", "mid", "near", "fg")}
+        self.layers = {k: [] for k in ("sky", "water", "far", "mid", "near", "fg")}
 
     def put(self, layer, name, cx, cy, scale, opacity=1.0, flip=False,
             tint=0.0):
@@ -99,6 +99,27 @@ class Scene:
             self.layers["sky"].append((0,
                 f'<g opacity="0.9">{rays}<circle cx="{sx:.0f}" cy="{sy:.0f}" r="{sr:.0f}" '
                 f'fill="#f2c96b" stroke="#d9a33c" stroke-width="2"/></g>'))
+
+    def flowing_water(self, density=1.0):
+        """Build a broad watercolor sea from overlapping reusable flow SVGs."""
+        W, H, r = self.W, self.H, self.rng
+        flows = by_role(self.sp, "water_flow")
+        pools = by_role(self.sp, "water")
+        if flows:
+            for row, y in enumerate((0.30, 0.48, 0.66, 0.84)):
+                x = -W * 0.10 - (row % 2) * W * 0.13
+                while x < W * 1.10:
+                    name = r.choice(flows)
+                    scale = (W / max(1, self.sp[name]["w"])) * r.uniform(.52, .68)
+                    self.put("water", name, x + self.sp[name]["w"] * scale / 2,
+                             H * y, scale, r.uniform(.42, .64), row % 2 == 1)
+                    x += self.sp[name]["w"] * scale * r.uniform(.62, .78)
+        if pools:
+            for _ in range(max(5, int(10 * density))):
+                name = r.choice(pools)
+                self.put("water", name, r.uniform(.04, .96) * W,
+                         r.uniform(.30, .90) * H, r.uniform(.8, 1.8),
+                         r.uniform(.14, .28), r.random() < .5)
 
     def horizon(self):
         """Castle focal point + far islands arcing away from it."""
@@ -225,6 +246,10 @@ class Scene:
       <feGaussianBlur stdDeviation="0.5"/></filter>
     <filter id="atm2"><feColorMatrix type="matrix"
       values="0.93 0 0 0 0.03  0 0.96 0 0 0.03  0 0 1 0 0.05  0 0 0 1 0"/></filter>
+    <filter id="pathWash" x="-5%" y="-8%" width="110%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency=".018 .035" numOctaves="2" seed="23" result="paper"/>
+      <feDisplacementMap in="SourceGraphic" in2="paper" scale="4" xChannelSelector="R" yChannelSelector="B"/>
+    </filter>
   </defs>
   <style>.atm{{filter:url(#atm)}}.atm2{{filter:url(#atm2)}}</style>"""
 
@@ -242,7 +267,7 @@ class Scene:
         bg_rect = f'<rect width="{W}" height="{H}" fill="url(#bg)"/>'
         if split_layers:
             base = path.replace(".svg", "")
-            order = ["sky", "far", "mid", "near", "fg"]
+            order = ["sky", "water", "far", "mid", "near", "fg"]
             for i, nm in enumerate(order):
                 body = self._layer_body(nm)
                 bg = bg_rect if i == 0 else ""
@@ -253,7 +278,7 @@ class Scene:
                 print("wrote", f"{base}_{i}_{nm}.svg")
         else:
             body = "\n".join(self._layer_body(n)
-                             for n in ["sky", "far", "mid", "near", "fg"])
+                             for n in ["sky", "water", "far", "mid", "near", "fg"])
             doc = (f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" '
                    f'height="{H}" viewBox="0 0 {W} {H}">{self._style()}'
                    f'{self._defs(body)}{bg_rect}\n{body}\n</svg>')
@@ -278,6 +303,7 @@ def main():
     sprites = load_sprites(args.svg_dir, args.manifest)
     sc = Scene(args.width, args.height, sprites, rng)
     sc.sky_and_clouds(sun=args.sun)
+    sc.flowing_water(args.density)
     sc.horizon()
     sc.midfield(args.density)
     sc.foreground(args.density)

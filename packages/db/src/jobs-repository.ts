@@ -1,8 +1,7 @@
 import { eq } from "drizzle-orm";
+import type { JobStatus } from "@control-ai/shared/sim";
 import type { Database } from "./client.js";
 import { jobs } from "./schema.js";
-
-export type JobStatus = "queued" | "running" | "done" | "error";
 
 export interface EnqueueJobParams {
   id: string;
