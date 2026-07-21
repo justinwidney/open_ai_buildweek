@@ -88,6 +88,9 @@ export function tick(ctx: TickContext): TickResult {
       { domain: "income", entityId: id, entityLabel: label, viewKey: "taxFree", amountCents: views.taxFreeCents },
       { domain: "income", entityId: id, entityLabel: label, viewKey: "socialSecurityWage", amountCents: views.socialSecurityWageCents },
       { domain: "income", entityId: id, entityLabel: label, viewKey: "takeHome", amountCents: views.takeHomeCents },
+      { domain: "income", entityId: id, entityLabel: label, viewKey: "federalTax", amountCents: views.federalTaxCents },
+      { domain: "income", entityId: id, entityLabel: label, viewKey: "stateTax", amountCents: views.stateTaxCents },
+      { domain: "income", entityId: id, entityLabel: label, viewKey: "fica", amountCents: views.ficaTaxCents },
     );
 
     taxBasis = {
