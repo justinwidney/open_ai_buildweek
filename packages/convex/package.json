@@ -1,0 +1,16 @@
+{
+  "name": "@control-ai/convex",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Convex backend (schema + functions) persisting simulation scenarios, months, decisions, and goals for the pathway simulator.",
+  "scripts": {
+    "dev": "convex dev",
+    "deploy": "convex deploy",
+    "codegen": "convex codegen"
+  },
+  "dependencies": {
+    "@control-ai/engine": "workspace:*",
+    "convex": "^1.17.0"
+  }
+}
