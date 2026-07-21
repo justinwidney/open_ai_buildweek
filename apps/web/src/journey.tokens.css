@@ -1,0 +1,87 @@
+:root {
+  /* Layer contract: world art < signs < in-world labels < shell UI < pages. */
+  --journey-layer-world: -20;
+  --journey-layer-world-scrim: -10;
+  --journey-layer-background: 0;
+  --journey-layer-atmosphere: 10;
+  --journey-layer-signs: 20;
+  --journey-layer-world-ui: 40;
+  --journey-layer-shell-ui: 300;
+  --journey-layer-shell-panel: 310;
+  --journey-layer-page: 600;
+  --journey-layer-inventory: 650;
+  --journey-layer-overlay: 700;
+
+  /* Shared visual language. */
+  --journey-color-sky: #7eb2d2;
+  --journey-color-ink: #342719;
+  --journey-color-ink-muted: #755225;
+  --journey-color-parchment: #f4e4bd;
+  --journey-color-parchment-deep: #d0a465;
+  --journey-color-gold: #d5ad4f;
+  --journey-color-violet: #6a4a97;
+  --journey-color-card-border: #6f4c25;
+  --journey-color-card-velvet: #253f3c;
+  --journey-color-card-velvet-deep: #142824;
+  --journey-color-card-ink: #302315;
+  --journey-color-card-wash: #fbefce;
+  --journey-color-world-label: rgba(39, 46, 43, .72);
+  --journey-color-world-label-ink: #fff3cb;
+
+  --journey-font-display: Georgia, "Times New Roman", serif;
+  --journey-font-ui: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --journey-radius-control: 8px;
+  --journey-radius-window: 16px;
+  --journey-shadow-sign: drop-shadow(0 7px 5px rgba(43, 30, 21, .3));
+  --journey-shadow-window: 0 22px 70px rgba(20, 24, 25, .4);
+  --journey-shadow-card: 0 24px 55px rgba(12, 20, 19, .48), 0 0 0 1px rgba(248, 217, 132, .34);
+  --journey-sign-width: clamp(190px, 17vw, 270px);
+  --journey-sign-height: clamp(150px, 14.8vw, 210px);
+  --journey-motion-enter: .55s cubic-bezier(.18, .8, .25, 1.08);
+  --journey-motion-flip: .7s cubic-bezier(.2, .78, .18, 1);
+
+  /* ---- Spacing: strict 4/8 scale. Every padding, margin, and gap in the
+     planner surfaces resolves to one of these. No literals. ---- */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 24px;
+  --sp-6: 32px;
+  --sp-7: 48px;
+  --sp-8: 64px;
+
+  /* ---- Radius: 4/8 scale plus a pill. ---- */
+  --r-1: 4px;
+  --r-2: 8px;
+  --r-3: 12px;
+  --r-4: 16px;
+  --r-pill: 999px;
+
+  /* ---- Type: sizes follow a ratio, line-heights land on the 4px grid so
+     text blocks stack in rhythm with the spacing scale. 11px is the floor —
+     the old 7-9px caps were below legible size. ---- */
+  --text-label: 11px;
+  --text-label-lh: 16px;
+  --text-sm: 13px;
+  --text-sm-lh: 20px;
+  --text-body: 15px;
+  --text-body-lh: 24px;
+  --text-lg: 18px;
+  --text-lg-lh: 24px;
+  --text-title: 24px;
+  --text-title-lh: 28px;
+  --text-display: clamp(28px, 2.4vw, 40px);
+  --text-display-lh: 1.05;
+
+  /* Tracking for the carved uppercase labels. */
+  --track-label: .12em;
+
+  /* ---- Semantic accents. Budget direction and plan health. ---- */
+  --tone-save: #4E6B3C;
+  --tone-save-wash: #DCE7CE;
+  --tone-balanced: #6B573B;
+  --tone-balanced-wash: #E7DCC3;
+  --tone-spend: #9C5A38;
+  --tone-spend-wash: #EBD3C4;
+}

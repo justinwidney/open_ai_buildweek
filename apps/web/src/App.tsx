@@ -19,7 +19,10 @@ import {
   statementAt,
   type JourneyPath,
 } from "./labs/decision-travel/pathModel";
-import { DecisionExperience } from "./labs/decision-travel/DecisionExperience";
+import { DecisionExperience, JourneyPromptSign } from "./labs/decision-travel/DecisionExperience";
+import { detailsForDecision, isDecisionExplorerNode } from "./labs/decision-travel/decisionCatalog";
+import { CardInventory, InventoryButton, type InventoryCardItem } from "./labs/decision-travel/CardInventory";
+import { createLifestyleDecision, isLifestyleDecisionNode } from "./labs/decision-travel/lifestyleDecisions";
 import {
   directionsForOptions,
   ROUTE_DIRECTION_LABELS,
@@ -30,10 +33,12 @@ import {
 import { contextWithFinances, decisionsAt, evaluateYear, isInertBranch, nodeEmoji, routeKindForNode, stageMeta } from "./labs/decision-travel/journeyGraph";
 import { fmtMoney } from "./labs/decision-travel/format";
 import { OnboardingExperience } from "./labs/onboarding/OnboardingLab";
+import { HomeScreen } from "./labs/home/HomeScreen";
 import {
   ONBOARDING_PROFILE_STORAGE_KEY,
   type JourneyOnboardingProfile,
 } from "./labs/onboarding/onboarding.types";
+import "./journey.tokens.css";
 import "./labs/decision-travel/theme.css";
 import "./labs/decision-travel/panels.css";
 import "./DecisionJourney.css";
@@ -103,17 +108,40 @@ function monthlyIncomeFromProfile(profile: JourneyOnboardingProfile): number {
   return DEFAULT_SETTINGS.monthlyIncome;
 }
 
+/** Home is the front door; onboarding is only reached by asking to edit your start. */
+type AppScreen = "home" | "onboarding" | "journey";
+
+function initialScreen(): AppScreen {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get("editStart") === "1") return "onboarding";
+  if (import.meta.env.DEV && params.get("skipHome") === "1") return "journey";
+  return "home";
+}
+
 export function App() {
   const [onboardingProfile, setOnboardingProfile] = useState(readStoredOnboardingProfile);
-  const skipOnboarding = import.meta.env.DEV && new URLSearchParams(window.location.search).get("skipOnboarding") === "1";
+  const [screen, setScreen] = useState<AppScreen>(initialScreen);
 
-  if (!onboardingProfile && !skipOnboarding) {
-    return <OnboardingExperience onComplete={setOnboardingProfile} showLabBack={false} />;
+  if (screen === "home") {
+    return <HomeScreen onStart={() => setScreen("journey")} />;
+  }
+
+  if (screen === "onboarding") {
+    return (
+      <OnboardingExperience
+        onComplete={(profile) => {
+          setOnboardingProfile(profile);
+          setScreen("journey");
+        }}
+        showLabBack={false}
+      />
+    );
   }
 
   const editStart = () => {
     sessionStorage.removeItem(ONBOARDING_PROFILE_STORAGE_KEY);
     setOnboardingProfile(null);
+    setScreen("onboarding");
   };
 
   return <DecisionJourney onboardingProfile={onboardingProfile} onEditStart={editStart} />;
@@ -123,7 +151,7 @@ function DecisionJourney({ onboardingProfile, onEditStart }: DecisionJourneyProp
   const settings = useMemo(
     () => onboardingProfile ? {
       ...DEFAULT_SETTINGS,
-      age: onboardingProfile.demographics.age,
+      age: 18,
       monthlyIncome: monthlyIncomeFromProfile(onboardingProfile),
     } : DEFAULT_SETTINGS,
     [onboardingProfile],
@@ -138,6 +166,10 @@ function DecisionJourney({ onboardingProfile, onEditStart }: DecisionJourneyProp
   const [decisionLog, setDecisionLog] = useState<DecisionLogEntry[]>([]);
   const [lastDirection, setLastDirection] = useState("The road out of high school");
   const [status, setStatus] = useState("Your first crossroads is right in front of you.");
+  const [decisionPage, setDecisionPage] = useState<"map" | "explorer">(
+    window.location.hash.startsWith("#/explore/") ? "explorer" : "map",
+  );
+  const [inventoryOpen, setInventoryOpen] = useState(false);
   const firedInitialRef = useRef<JourneyPath | null>(null);
 
   const stopIndex = Math.round(markerMonth / STOP_MONTHS);
@@ -151,20 +183,58 @@ function DecisionJourney({ onboardingProfile, onEditStart }: DecisionJourneyProp
   const progress = Math.round((stopIndex / STOPS) * 100);
   const stage = stageMeta(journey.context.stage);
   const opportunities = useMemo(() => decisionsAt(journey.context).opportunities, [journey]);
+  const inventoryCards = useMemo<InventoryCardItem[]>(() => {
+    const collected = new Map<string, InventoryCardItem>();
+    for (const step of journey.history) {
+      const details = detailsForDecision(step.nodeId)?.find((choice) => choice.id === step.branchId.replace(/^switch-/, ""));
+      if (!details?.artwork) continue;
+      const title = step.label
+        .replace(/^Declare /, "")
+        .replace(/^Switch major to /, "")
+        .replace(/^Adopted /, "")
+        .replace(/ job$/, "");
+      const id = `${details.kind}:${details.id}`;
+      collected.set(id, {
+        id,
+        title,
+        acquiredAge: settings.age + Math.round(step.month / STOP_MONTHS),
+        details,
+      });
+    }
+    return [...collected.values()];
+  }, [journey.history, settings.age]);
 
   const revealMap = (map: DecisionMap) => {
     setWorldMap(map);
     setMapRevision((revision) => revision + 1);
   };
 
+  const navigateToMap = () => {
+    setDecisionPage("map");
+    window.history.pushState({ journeyPage: "map" }, "", "#/journey");
+  };
+
+  const navigateToExplorer = (node: DecisionNode) => {
+    setDecisionPage("explorer");
+    window.history.pushState({ journeyPage: node.id }, "", `#/explore/${node.id}`);
+  };
+
   const presentMilestone = (node: DecisionNode, age: number, month: number, lead: string) => {
     setPending({ node, age, month });
     revealMap(selectDecisionMap(routeKindForNode(node), `${node.id}:${age}`, {
-      preJourney: node.id === "hs-launch",
+      preJourney: age <= 30,
       branchCount: node.branches.length,
     }));
     setStatus(`${lead} — choose the route forward.`);
+    if (isDecisionExplorerNode(node.id)) navigateToExplorer(node);
+    else setDecisionPage("map");
   };
+
+  useEffect(() => {
+    const syncPageFromHistory = () => setDecisionPage(window.location.hash.startsWith("#/explore/") ? "explorer" : "map");
+    window.addEventListener("popstate", syncPageFromHistory);
+    return () => window.removeEventListener("popstate", syncPageFromHistory);
+  }, []);
 
   // The very first crossroads (life after high school) is waiting at month 0, so
   // present it as soon as a fresh baseline mounts or a restart resets the run.
@@ -195,7 +265,8 @@ function DecisionJourney({ onboardingProfile, onEditStart }: DecisionJourneyProp
       revealMap(selectRouteMap("straight", "journey-complete"));
       setStatus("You reached the end of this route. Your life is settled.");
     } else {
-      setStatus(`Age ${age}: a quiet year. Travel on when you're ready.`);
+      const lifestyleDecision = createLifestyleDecision(age, ctx.stage);
+      presentMilestone(lifestyleDecision, age, month, `Age ${age} life-design review`);
     }
   };
 
@@ -210,13 +281,14 @@ function DecisionJourney({ onboardingProfile, onEditStart }: DecisionJourneyProp
     // "Maybe later" on an optional opportunity leaves it open for a future year.
     if (isInertBranch(branch)) {
       setPending(null);
+      navigateToMap();
       setStatus("You let the moment pass — you can revisit it later.");
       return;
     }
 
     const optionIndex = node.branches.findIndex((candidate) => candidate.id === branch.id);
     const direction = directionsForOptions(node.branches.length, routeKindForNode(node))[optionIndex] ?? "winding";
-    const directionLabel = ROUTE_DIRECTION_LABELS[direction];
+    const directionLabel = isLifestyleDecisionNode(node.id) ? "Life design" : ROUTE_DIRECTION_LABELS[direction];
 
     const next = applyDecision(journey, month, node, branch);
     // Refresh finances against the changed path so chained checks and the opportunity list are current.
@@ -232,7 +304,10 @@ function DecisionJourney({ onboardingProfile, onEditStart }: DecisionJourneyProp
     // Choosing a path (go to college) immediately surfaces its first milestone (declare a major).
     const { milestone } = decisionsAt(withFin.context);
     if (milestone) presentMilestone(milestone, age, month, milestone.title);
-    else setPending(null);
+    else {
+      setPending(null);
+      navigateToMap();
+    }
   };
 
   const restartJourney = () => {
@@ -241,8 +316,11 @@ function DecisionJourney({ onboardingProfile, onEditStart }: DecisionJourneyProp
     setMarkerMonth(0);
     setPending(null);
     setDecisionLog([]);
+    setInventoryOpen(false);
     setLastDirection("The road out of high school");
     setStatus("Your first crossroads is right in front of you.");
+    setDecisionPage("map");
+    window.history.replaceState({ journeyPage: "map" }, "", "#/journey");
     revealMap(selectRouteMap("straight", "opening-road"));
   };
 
@@ -348,20 +426,43 @@ function DecisionJourney({ onboardingProfile, onEditStart }: DecisionJourneyProp
             alt={`${worldMap.label} watercolor route world`}
           />
           <div className="journey-world__atmosphere" aria-hidden="true" />
+          {pending && !isDecisionExplorerNode(pending.node.id) && decisionPage === "map" && (
+            <DecisionExperience
+              age={pending.age}
+              node={pending.node}
+              ctx={{ ...journey.context, month: pending.month }}
+              map={worldMap}
+              onChoose={chooseRoute}
+              onDismiss={pending.node.trigger === "opportunity" ? () => { setPending(null); navigateToMap(); } : undefined}
+            />
+          )}
           <div className="journey-world__route-label">
             <span>{worldMap.library === "pre-journey" ? "pre-journey scene" : routeKindLabel(worldMap)}</span>
-            <b>{worldMap.label}</b>
+            <b>{worldMap.label}{worldMap.pathCount ? ` · ${worldMap.pathCount} path${worldMap.pathCount === 1 ? "" : "s"}` : ""}</b>
           </div>
+          {!pending && stopIndex < STOPS && (
+            <JourneyPromptSign placement="left" label={`Travel & plan age ${ageNow + 1}`} detail="The next year is yours to shape" onClick={advanceYear} />
+          )}
+          {pending && isDecisionExplorerNode(pending.node.id) && decisionPage === "map" && (
+            <JourneyPromptSign placement="left" label={pending.node.title} detail="Your choice is waiting" onClick={() => navigateToExplorer(pending.node)} />
+          )}
+          {decisionPage === "map" && (!pending || isDecisionExplorerNode(pending.node.id)) && (
+            <InventoryButton count={inventoryCards.length} onClick={() => setInventoryOpen(true)} />
+          )}
         </div>
       </UiShell>
 
-      {pending && (
+      {inventoryOpen && <CardInventory cards={inventoryCards} onClose={() => setInventoryOpen(false)} />}
+
+      {pending && isDecisionExplorerNode(pending.node.id) && decisionPage === "explorer" && (
         <DecisionExperience
           age={pending.age}
           node={pending.node}
           ctx={{ ...journey.context, month: pending.month }}
+          map={worldMap}
           onChoose={chooseRoute}
-          onDismiss={pending.node.trigger === "opportunity" ? () => setPending(null) : undefined}
+          onDismiss={pending.node.trigger === "opportunity" ? () => { setPending(null); navigateToMap(); } : undefined}
+          onBackToMap={isDecisionExplorerNode(pending.node.id) ? navigateToMap : undefined}
         />
       )}
     </div>

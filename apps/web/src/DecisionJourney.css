@@ -1,10 +1,12 @@
 .journey-app {
+  isolation: isolate;
   min-height: 100dvh;
   overflow: hidden;
+  position: relative;
 }
 
 .journey-world {
-  background: #7eb2d2;
+  background: var(--journey-color-sky, #7eb2d2);
   height: 100%;
   isolation: isolate;
   overflow: hidden;
@@ -22,6 +24,7 @@
   position: absolute;
   transform-origin: 50% 72%;
   width: 100%;
+  z-index: var(--journey-layer-background, 0);
 }
 
 .journey-world__atmosphere {
@@ -31,16 +34,17 @@
   inset: 0;
   pointer-events: none;
   position: absolute;
+  z-index: var(--journey-layer-atmosphere, 10);
 }
 
 .journey-world__route-label {
   align-items: center;
   backdrop-filter: blur(10px);
-  background: rgba(39, 46, 43, .62);
+  background: var(--journey-color-world-label, rgba(39, 46, 43, .72));
   border: 1px solid rgba(255, 242, 194, .68);
   border-radius: 999px;
   box-shadow: 0 5px 18px rgba(24, 36, 42, .22);
-  color: #fff3cb;
+  color: var(--journey-color-world-label-ink, #fff3cb);
   display: flex;
   gap: 9px;
   left: 50%;
@@ -49,6 +53,7 @@
   top: clamp(82px, 8vw, 116px);
   transform: translateX(-50%);
   white-space: nowrap;
+  z-index: var(--journey-layer-world-ui, 40);
 }
 
 .journey-world__route-label span {
@@ -195,7 +200,7 @@
 .journey-decision-log li b { font-size: 12px; }
 .journey-decision-log li span { color: var(--ink-soft); font-size: 10px; }
 
-.journey-app .event-overlay { z-index: 4000; }
+.journey-app .event-overlay { z-index: var(--journey-layer-overlay, 700); }
 .journey-app .event-card--choices-only { width: min(620px, 100%); }
 .journey-app .event-card__layout.is-choices-only { display: block; }
 .journey-app .event-card--choices-only .event-card__choice { padding-top: 2px; }

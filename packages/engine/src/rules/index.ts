@@ -24,12 +24,18 @@ export {
   numberFlag,
   initialLifeContext,
   advanceLifeContext,
+  normalizeLifeContext,
 } from "./context.js";
 
-export type { LifeGraph, DecisionNode, DecisionBranch, BranchOutcome, DecisionTrigger, LifeDecisionCategory, RandomChance } from "./graph.js";
-export { availableDecisions, nextMilestone, availableOpportunities, findNode, findBranch, branchEligibility, resolveBranch } from "./graph.js";
+export type { LifeProfileState, EducationProfile, WorkProfile, HouseholdProfile, PlaceProfile, WeeklyTimeBudget, WellbeingProfile, LifeGoal, HousingTenure } from "./life-profile.js";
+export { LIFE_PROFILE_SCHEMA_VERSION, initialLifeProfile, normalizeLifeProfile } from "./life-profile.js";
+
+export type { LifeGraph, DecisionNode, DecisionBranch, BranchOutcome, DecisionResolution, DecisionTradeoffs, DecisionEditorKind, DecisionTrigger, LifeDecisionCategory, RandomChance } from "./graph.js";
+export { availableDecisions, nextMilestone, nextReflection, availableOpportunities, findNode, findBranch, branchEligibility, resolveBranch } from "./graph.js";
 export { rollYear, randomEvents } from "./random.js";
 export { recommendedBudget, type RecommendedBudget, type BudgetCategory, type BudgetCategoryKey } from "./budgets.js";
+export type { AnnualLifePlanInputs } from "./annual-life-plan.js";
+export { ANNUAL_LIFE_PLAN_SCHEMA_VERSION, annualLifePlanMonthlyCost, annualLifePlanTimeBudget, validateAnnualLifePlan, createAnnualLifePlanBranch, parseAnnualLifePlanInputs } from "./annual-life-plan.js";
 
 export {
   PRIMARY_JOB_ID,
@@ -49,3 +55,4 @@ export {
 export type { JobParams, EffectParams } from "./effects.js";
 
 export { lifeGraph2026 } from "./catalog.js";
+export { STORY_REFLECTION_NODES } from "./story-decisions.js";

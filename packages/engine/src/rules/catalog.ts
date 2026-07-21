@@ -3,6 +3,7 @@ import { buyCar, buyHome, changeContributionRate, haveChild, marry } from "../ev
 import { allOf, eligible, flag, gate, hasFlag, moneyGate, monthsInStage, numberFlag, type LifeContext } from "./context.js";
 import type { DecisionBranch, DecisionNode, LifeGraph } from "./graph.js";
 import { buildEffect, clearPrimaryJob, dropTuition, gainCash, scaleLiving, scalePrimaryJob, setLivingCost, setPrimaryJob, setTuition, spendCash } from "./effects.js";
+import { STORY_REFLECTION_NODES } from "./story-decisions.js";
 
 /**
  * The age-18 "life after high school" decision tree — the concrete `LifeGraph`
@@ -65,6 +66,7 @@ const DECLINE: DecisionBranch = {
   id: "decline",
   label: "Not now",
   description: "Stay the course — no change to your path.",
+  resolution: { kind: "defer", reviewAfterMonths: 12 },
   outcome: {},
 };
 
@@ -105,14 +107,14 @@ const HS_LAUNCH: DecisionNode = {
           importanceLevel: "major",
           mutations: [...setPrimaryJob({ label: "Part-time job", monthlyGrossDollars: 900, pretaxDeferralRate: 0, month: ctx.month })],
         }),
-      outcome: { setStage: "school", mergeFlags: { enrolled: true } },
+      outcome: { setStage: "school", mergeFlags: { enrolled: true }, updateProfile: (profile) => ({ ...profile, education: { ...profile.education, status: "enrolled" }, work: { ...profile.work, status: "part-time", weeklyHours: 12 } }) },
     },
     {
       id: "work",
       label: "Start working",
       description: "Go straight into the workforce and pick an entry-level track.",
       importance: "major",
-      outcome: { setStage: "working", mergeFlags: { wentToWork: true } },
+      outcome: { setStage: "working", mergeFlags: { wentToWork: true }, updateProfile: (profile) => ({ ...profile, work: { ...profile.work, status: "full-time", weeklyHours: 40 } }) },
     },
     {
       id: "trade",
@@ -126,7 +128,7 @@ const HS_LAUNCH: DecisionNode = {
       label: "Enlist in the military",
       description: "Serve a term with housing covered; open the GI Bill for later.",
       importance: "major",
-      outcome: { setStage: "military", mergeFlags: { enlisted: true } },
+      outcome: { setStage: "military", mergeFlags: { enlisted: true }, updateProfile: (profile) => ({ ...profile, work: { ...profile.work, status: "service", weeklyHours: 50 }, place: { ...profile.place, housingTenure: "provided" } }) },
     },
     {
       id: "gap-year",
@@ -171,7 +173,7 @@ function majorBranch(spec: MajorSpec, options: { swap: boolean }): DecisionBranc
         mutations: options.swap ? [spendCash(2_000), ...mutations] : mutations,
       });
     },
-    outcome: { mergeFlags: flags },
+    outcome: { mergeFlags: flags, updateProfile: (profile) => ({ ...profile, education: { ...profile.education, status: "enrolled", programId: spec.key } }) },
   };
 }
 
@@ -247,7 +249,7 @@ const GRADUATE: DecisionNode = {
             }),
           ],
         }),
-      outcome: { setStage: "working", mergeFlags: { degreeEarned: true, enrolled: false } },
+      outcome: { setStage: "working", mergeFlags: { degreeEarned: true, enrolled: false }, updateProfile: (profile) => ({ ...profile, education: { status: "completed", programId: profile.education.programId, credentials: [...profile.education.credentials, profile.education.programId ?? "degree"] }, work: { ...profile.work, status: "full-time", weeklyHours: 40 } }) },
     },
   ],
 };
@@ -336,27 +338,27 @@ const GRAD_SCHOOL_COMPLETE: DecisionNode = {
 // Work-straight-out-of-HS subtree: entry track → (certification, promotion)
 // ─────────────────────────────────────────────────────────────────────────────
 
-const ENTRY_TRACKS: readonly { key: string; label: string; monthly: number; growth: number; description: string }[] = [
-  { key: "retail", label: "Retail & service", monthly: 2_600, growth: 0.025, description: "Steady hourly work with room to manage." },
-  { key: "warehouse", label: "Warehouse & logistics", monthly: 3_200, growth: 0.03, description: "Higher starting pay, physical work." },
-  { key: "sales", label: "Sales", monthly: 3_000, growth: 0.05, description: "Lower base, faster growth on commission." },
-  { key: "administrative-assistant", label: "Administrative assistant", monthly: 3_150, growth: 0.03, description: "Organize teams, calendars, records, and customer communication." },
-  { key: "customer-support", label: "Customer support", monthly: 3_050, growth: 0.031, description: "Solve customer problems with clear communication and product knowledge." },
-  { key: "bank-teller", label: "Bank teller", monthly: 3_100, growth: 0.028, description: "Build financial-service experience in a structured branch environment." },
-  { key: "construction-laborer", label: "Construction laborer", monthly: 3_550, growth: 0.034, description: "Hands-on project work with a route into specialized crews." },
-  { key: "delivery-driver", label: "Delivery driver", monthly: 3_350, growth: 0.029, description: "Independent route work with an early start and active days." },
-  { key: "medical-assistant", label: "Medical assistant", monthly: 3_450, growth: 0.034, description: "Support clinical teams and patients in a fast-moving care setting." },
-  { key: "pharmacy-technician", label: "Pharmacy technician", monthly: 3_300, growth: 0.032, description: "Prepare prescriptions and build practical healthcare experience." },
-  { key: "it-support", label: "IT support specialist", monthly: 3_850, growth: 0.042, description: "Troubleshoot devices and accounts with strong certification upside." },
-  { key: "junior-web-developer", label: "Junior web developer", monthly: 4_250, growth: 0.048, description: "Turn a portfolio or bootcamp foundation into production experience." },
-  { key: "security-officer", label: "Security officer", monthly: 3_150, growth: 0.027, description: "Protect people and property through alert, dependable shift work." },
-  { key: "food-service", label: "Food service", monthly: 2_750, growth: 0.03, description: "Fast-paced team work with a path toward shift leadership." },
-  { key: "childcare-assistant", label: "Childcare assistant", monthly: 2_850, growth: 0.028, description: "Support children and families in an energetic care environment." },
-  { key: "manufacturing", label: "Manufacturing technician", monthly: 3_600, growth: 0.034, description: "Operate equipment, improve processes, and build technical skills." },
-  { key: "landscaping", label: "Landscaping crew", monthly: 3_050, growth: 0.031, description: "Outdoor project work with a route toward crew leadership or ownership." },
-  { key: "call-center", label: "Call center representative", monthly: 2_950, growth: 0.029, description: "High-volume service work that develops sales and communication skills." },
-  { key: "bookkeeping", label: "Bookkeeping clerk", monthly: 3_500, growth: 0.035, description: "Keep small-business accounts accurate and grow through certifications." },
-  { key: "real-estate", label: "Real estate assistant", monthly: 3_200, growth: 0.045, description: "Learn transactions and client service with licensing upside." },
+const ENTRY_TRACKS: readonly { key: string; label: string; monthly: number; growth: number; startup: number; description: string }[] = [
+  { key: "retail", label: "Retail & service", monthly: 2_600, growth: 0.025, startup: 250, description: "Steady hourly work with room to manage." },
+  { key: "warehouse", label: "Warehouse & logistics", monthly: 3_200, growth: 0.03, startup: 350, description: "Higher starting pay, physical work." },
+  { key: "sales", label: "Sales", monthly: 3_000, growth: 0.05, startup: 500, description: "Lower base, faster growth on commission." },
+  { key: "administrative-assistant", label: "Administrative assistant", monthly: 3_150, growth: 0.03, startup: 600, description: "Organize teams, calendars, records, and customer communication." },
+  { key: "customer-support", label: "Customer support", monthly: 3_050, growth: 0.031, startup: 450, description: "Solve customer problems with clear communication and product knowledge." },
+  { key: "bank-teller", label: "Bank teller", monthly: 3_100, growth: 0.028, startup: 300, description: "Build financial-service experience in a structured branch environment." },
+  { key: "construction-laborer", label: "Construction laborer", monthly: 3_550, growth: 0.034, startup: 900, description: "Hands-on project work with a route into specialized crews." },
+  { key: "delivery-driver", label: "Delivery driver", monthly: 3_350, growth: 0.029, startup: 650, description: "Independent route work with an early start and active days." },
+  { key: "medical-assistant", label: "Medical assistant", monthly: 3_450, growth: 0.034, startup: 3_800, description: "Support clinical teams and patients in a fast-moving care setting." },
+  { key: "pharmacy-technician", label: "Pharmacy technician", monthly: 3_300, growth: 0.032, startup: 2_400, description: "Prepare prescriptions and build practical healthcare experience." },
+  { key: "it-support", label: "IT support specialist", monthly: 3_850, growth: 0.042, startup: 1_200, description: "Troubleshoot devices and accounts with strong certification upside." },
+  { key: "junior-web-developer", label: "Junior web developer", monthly: 4_250, growth: 0.048, startup: 4_500, description: "Turn a portfolio or bootcamp foundation into production experience." },
+  { key: "security-officer", label: "Security officer", monthly: 3_150, growth: 0.027, startup: 700, description: "Protect people and property through alert, dependable shift work." },
+  { key: "food-service", label: "Food service", monthly: 2_750, growth: 0.03, startup: 350, description: "Fast-paced team work with a path toward shift leadership." },
+  { key: "childcare-assistant", label: "Childcare assistant", monthly: 2_850, growth: 0.028, startup: 900, description: "Support children and families in an energetic care environment." },
+  { key: "manufacturing", label: "Manufacturing technician", monthly: 3_600, growth: 0.034, startup: 1_100, description: "Operate equipment, improve processes, and build technical skills." },
+  { key: "landscaping", label: "Landscaping crew", monthly: 3_050, growth: 0.031, startup: 950, description: "Outdoor project work with a route toward crew leadership or ownership." },
+  { key: "call-center", label: "Call center representative", monthly: 2_950, growth: 0.029, startup: 400, description: "High-volume service work that develops sales and communication skills." },
+  { key: "bookkeeping", label: "Bookkeeping clerk", monthly: 3_500, growth: 0.035, startup: 1_600, description: "Keep small-business accounts accurate and grow through certifications." },
+  { key: "real-estate", label: "Real estate assistant", monthly: 3_200, growth: 0.045, startup: 2_300, description: "Learn transactions and client service with licensing upside." },
 ];
 
 const ENTRY_TRACK: DecisionNode = {
@@ -372,6 +374,7 @@ const ENTRY_TRACK: DecisionNode = {
     label: track.label,
     description: track.description,
     importance: "major" as const,
+    tradeoffs: { upfrontDollars: -track.startup },
     effect: (ctx: LifeContext) =>
       buildEffect({
         id: "entry-track",
@@ -380,7 +383,7 @@ const ENTRY_TRACK: DecisionNode = {
         label: `${track.label} job`,
         month: ctx.month,
         importanceLevel: "major",
-        mutations: setPrimaryJob({ label: track.label, monthlyGrossDollars: track.monthly, annualGrowthRate: track.growth, month: ctx.month }),
+        mutations: [spendCash(track.startup), ...setPrimaryJob({ label: track.label, monthlyGrossDollars: track.monthly, annualGrowthRate: track.growth, month: ctx.month })],
       }),
     outcome: { mergeFlags: { track: track.key } },
   })),
@@ -586,7 +589,7 @@ const MILITARY_BRANCH: DecisionNode = {
         importanceLevel: "major",
         mutations: [...setPrimaryJob({ label: `${service.label} service`, monthlyGrossDollars: service.monthly, annualGrowthRate: 0.03, pretaxDeferralRate: 0.05, month: ctx.month }), setLivingCost({ monthlyDollars: 900 })],
       }),
-    outcome: { mergeFlags: { serviceBranch: service.key } },
+    outcome: { mergeFlags: { serviceBranch: service.key }, updateProfile: (profile) => ({ ...profile, work: { ...profile.work, status: "service", occupationId: service.key, weeklyHours: 50 } }) },
   })),
 };
 
@@ -661,7 +664,7 @@ const MARRIAGE: DecisionNode = {
       description: "Partner earns ~$5.5k/mo. File jointly.",
       importance: "major",
       effect: (ctx) => marry({ effectiveFromMonth: ctx.month, spouseIncome: { id: "spouse", label: "Partner", baseMonthlyGrossCents: cents(5_500), annualGrowthRate: 0.03, stateCode: "TX", pretaxDeferralRate: 0.05 }, weddingCostCents: cents(20_000) }),
-      outcome: { mergeFlags: { married: true } },
+      outcome: { mergeFlags: { married: true }, updateProfile: (profile) => ({ ...profile, household: { ...profile.household, relationshipStatus: "married" } }) },
     },
     {
       id: "single",
@@ -669,7 +672,7 @@ const MARRIAGE: DecisionNode = {
       description: "A partner at home. File jointly, one income.",
       importance: "major",
       effect: (ctx) => marry({ effectiveFromMonth: ctx.month, weddingCostCents: cents(16_000) }),
-      outcome: { mergeFlags: { married: true } },
+      outcome: { mergeFlags: { married: true }, updateProfile: (profile) => ({ ...profile, household: { ...profile.household, relationshipStatus: "married", weeklyCareHours: Math.max(10, profile.household.weeklyCareHours) } }) },
     },
     { ...DECLINE, label: "Not yet" },
   ],
@@ -696,7 +699,7 @@ const FIRST_HOME: DecisionNode = {
       description: "20% down, 30-year mortgage.",
       importance: "major",
       effect: (ctx) => buyHome({ id: `home-${ctx.month}`, priceCents: cents(320_000), downPaymentCents: cents(64_000), closingCostsCents: cents(9_600), mortgageAnnualRate: 0.065, termMonths: 360, monthlyEscrowCents: cents(420), monthlyMaintenanceCents: cents(280), annualAppreciationRate: 0.03, effectiveFromMonth: ctx.month }),
-      outcome: { mergeFlags: { homeowner: true } },
+      outcome: { mergeFlags: { homeowner: true }, updateProfile: (profile) => ({ ...profile, place: { ...profile.place, housingTenure: "owner" } }) },
     },
     {
       id: "buy-modest",
@@ -704,7 +707,7 @@ const FIRST_HOME: DecisionNode = {
       description: "Smaller place, more cash free.",
       importance: "major",
       effect: (ctx) => buyHome({ id: `home-${ctx.month}`, priceCents: cents(240_000), downPaymentCents: cents(48_000), closingCostsCents: cents(7_200), mortgageAnnualRate: 0.065, termMonths: 360, monthlyEscrowCents: cents(320), monthlyMaintenanceCents: cents(210), annualAppreciationRate: 0.03, effectiveFromMonth: ctx.month }),
-      outcome: { mergeFlags: { homeowner: true } },
+      outcome: { mergeFlags: { homeowner: true }, updateProfile: (profile) => ({ ...profile, place: { ...profile.place, housingTenure: "owner" } }) },
     },
     { ...DECLINE, label: "Keep renting" },
   ],
@@ -725,7 +728,7 @@ const FIRST_CHILD: DecisionNode = {
       description: "~$1.5k/mo childcare for about five years.",
       importance: "major",
       effect: (ctx) => haveChild({ childId: `kid-${ctx.month}`, effectiveFromMonth: ctx.month, oneTimeBirthCostCents: cents(6_000), monthlyChildcareCents: cents(1_500), childcareEndMonth: ctx.month + 60 }),
-      outcome: { mergeFlags: { hasChild: true } },
+      outcome: { mergeFlags: { hasChild: true }, updateProfile: (profile) => ({ ...profile, household: { ...profile.household, dependents: profile.household.dependents + 1, weeklyCareHours: profile.household.weeklyCareHours + 20 } }) },
     },
     { ...DECLINE, label: "Not now" },
   ],
@@ -913,7 +916,7 @@ function randomForcedCost(p: { id: string; category: DecisionNode["category"]; t
 }
 
 /** A pure inflow: one branch that adds cash. */
-function randomWindfall(p: { id: string; title: string; prompt: string; amountDollars: number; chance: number; repeatable?: boolean }): DecisionNode {
+function randomWindfall(p: { id: string; title: string; prompt: string; amountDollars: number; chance: number; repeatable?: boolean; cooldownMonths?: number; available?: (ctx: LifeContext) => ReturnType<typeof eligible> }): DecisionNode {
   return {
     id: p.id,
     category: "financial",
@@ -922,7 +925,7 @@ function randomWindfall(p: { id: string; title: string; prompt: string; amountDo
     prompt: p.prompt,
     importance: "minor",
     chance: { annualProbability: p.chance, oncePerLife: !p.repeatable },
-    available: () => eligible(),
+    available: p.available ?? (() => eligible()),
     branches: [
       {
         id: "take",
@@ -930,16 +933,57 @@ function randomWindfall(p: { id: string; title: string; prompt: string; amountDo
         description: "A welcome boost.",
         importance: "minor",
         effect: (ctx) => buildEffect({ id: p.id, domain: "windfall", optionId: "take", label: p.title, month: ctx.month, mutations: [gainCash(p.amountDollars)] }),
-        outcome: p.repeatable ? { reopen: [p.id] } : {},
+        resolution: p.repeatable ? { kind: "repeatable", cooldownMonths: p.cooldownMonths } : undefined,
+        outcome: {},
       },
     ],
   };
 }
 
 /** Decline that blocks a once-per-life event (so it never re-offers) or is inert for a repeatable one. */
-function declineBranch(nodeId: string, oncePerLife: boolean, label = "Not now"): DecisionBranch {
-  return oncePerLife ? { id: "decline", label, description: "You pass on it.", outcome: { block: [nodeId] } } : { ...DECLINE, label };
+function declineBranch(_nodeId: string, oncePerLife: boolean, label = "Not now"): DecisionBranch {
+  return oncePerLife
+    ? { id: "decline", label, description: "You pass on it.", resolution: { kind: "permanent-decline" }, outcome: {} }
+    : { ...DECLINE, label };
 }
+
+const UNEMPLOYMENT_SEARCH: DecisionNode = {
+  id: "unemployment-search",
+  category: "career",
+  trigger: "milestone",
+  title: "Choose your route back into work",
+  prompt: "The layoff is now a real interval. How will you search, retrain, and protect your runway?",
+  importance: "major",
+  editorKind: "career-scenario",
+  storyCoverage: ["direct-work-retail-family", "direct-work-tech-mobile", "air-force-civilian-family"],
+  available: (ctx) => gate(ctx.stage === "unemployed" && monthsInStage(ctx) >= 6, "This follows an active unemployment period."),
+  branches: [
+    {
+      id: "comparable-role",
+      label: "Search longer for a comparable role",
+      description: "Use more runway to protect role quality and compensation.",
+      tradeoffs: { upfrontDollars: -6_000, weeklyHoursDelta: -20, health: -1, career: 1, relationships: -1 },
+      effect: (ctx) => buildEffect({ id: "unemployment-search", domain: "career", optionId: "comparable-role", label: "Returned to a comparable role after a longer search", month: ctx.month, mutations: [spendCash(6_000), ...setPrimaryJob({ label: "New career role", monthlyGrossDollars: 4_800, month: ctx.month })] }),
+      outcome: { setStage: "working", mergeFlags: { unemployed: false, lastJobSearchOutcome: "comparable-role" }, updateProfile: (profile) => ({ ...profile, work: { ...profile.work, status: "full-time", weeklyHours: 40 } }) },
+    },
+    {
+      id: "fast-reentry",
+      label: "Take a faster re-entry role",
+      description: "Return sooner at lower pay and rebuild from inside the workforce.",
+      tradeoffs: { weeklyHoursDelta: -30, health: 0, career: -1, relationships: 0 },
+      effect: (ctx) => buildEffect({ id: "unemployment-search", domain: "career", optionId: "fast-reentry", label: "Returned to work quickly after a layoff", month: ctx.month, mutations: setPrimaryJob({ label: "Re-entry role", monthlyGrossDollars: 3_600, month: ctx.month }) }),
+      outcome: { setStage: "working", mergeFlags: { unemployed: false, lastJobSearchOutcome: "fast-reentry" }, updateProfile: (profile) => ({ ...profile, work: { ...profile.work, status: "full-time", weeklyHours: 40 } }) },
+    },
+    {
+      id: "retrain",
+      label: "Retrain and change direction",
+      description: "Spend more cash and time now for a portable new skill path.",
+      tradeoffs: { upfrontDollars: -8_000, weeklyHoursDelta: -35, health: -1, career: 2, relationships: -1 },
+      effect: (ctx) => buildEffect({ id: "unemployment-search", domain: "career", optionId: "retrain", label: "Retrained after a layoff", month: ctx.month, mutations: [spendCash(8_000), ...setPrimaryJob({ label: "New-field role", monthlyGrossDollars: 3_900, annualGrowthRate: 0.05, month: ctx.month })] }),
+      outcome: { setStage: "working", mergeFlags: { unemployed: false, retrainedAfterLayoff: true, lastJobSearchOutcome: "retrain" }, updateProfile: (profile) => ({ ...profile, work: { ...profile.work, status: "full-time", weeklyHours: 40 }, education: { ...profile.education, credentials: [...profile.education.credentials, "layoff-retraining"] } }) },
+    },
+  ],
+};
 
 const RNG_LAYOFF: DecisionNode = {
   id: "rng-layoff",
@@ -957,15 +1001,15 @@ const RNG_LAYOFF: DecisionNode = {
       description: "Back to work fast, but at lower pay.",
       importance: "major",
       effect: (ctx) => buildEffect({ id: "rng-layoff", domain: "career", optionId: "rebound", label: "Laid off — took a lower-paying role", month: ctx.month, importanceLevel: "major", mutations: [scalePrimaryJob(0.85)] }),
-      outcome: {},
+      outcome: { mergeFlags: { layoffExperienced: true, lastJobSearchOutcome: "rapid-rebound" } },
     },
     {
       id: "hold-out",
       label: "Hold out for a comparable role",
       description: "Burn ~$12k of savings but keep your pay.",
       importance: "major",
-      effect: (ctx) => buildEffect({ id: "rng-layoff", domain: "career", optionId: "hold-out", label: "Laid off — held out for a comparable role", month: ctx.month, importanceLevel: "major", mutations: [spendCash(12_000)] }),
-      outcome: {},
+      effect: (ctx) => buildEffect({ id: "rng-layoff", domain: "career", optionId: "hold-out", label: "Laid off — began a longer search", month: ctx.month, importanceLevel: "major", mutations: [spendCash(12_000), clearPrimaryJob()] }),
+      outcome: { setStage: "unemployed", mergeFlags: (ctx) => ({ layoffExperienced: true, unemployed: true, unemploymentStartedMonth: ctx.month }), updateProfile: (profile) => ({ ...profile, work: { ...profile.work, status: "not-working", weeklyHours: 0 }, wellbeing: { ...profile.wellbeing, stress: Math.min(100, profile.wellbeing.stress + 25), burnoutRisk: Math.max(0, profile.wellbeing.burnoutRisk - 10) } }) },
     },
   ],
 };
@@ -1007,7 +1051,7 @@ const RNG_PROMOTION: DecisionNode = {
       description: "About +15% pay and more responsibility.",
       importance: "minor",
       effect: (ctx) => buildEffect({ id: "rng-promotion", domain: "career", optionId: "accept", label: "Accepted a promotion", month: ctx.month, mutations: [scalePrimaryJob(1.15)] }),
-      outcome: { reopen: ["rng-promotion"] },
+      outcome: { mergeFlags: (ctx) => ({ promotionCount: numberFlag(ctx, "promotionCount") + 1 }), reopen: ["rng-promotion"] },
     },
     { ...DECLINE, label: "Stay in your current role" },
   ],
@@ -1029,7 +1073,7 @@ const RNG_RECRUITER: DecisionNode = {
       description: "A raise now, though you start over on tenure.",
       importance: "minor",
       effect: (ctx) => buildEffect({ id: "rng-recruiter", domain: "career", optionId: "jump", label: "Changed jobs for a raise", month: ctx.month, mutations: [scalePrimaryJob(1.12)] }),
-      outcome: { reopen: ["rng-recruiter"] },
+      outcome: { mergeFlags: (ctx) => ({ jobChangeCount: numberFlag(ctx, "jobChangeCount") + 1, lastJobChangeMonth: ctx.month }), reopen: ["rng-recruiter"] },
     },
     { ...DECLINE, label: "Stay put" },
   ],
@@ -1051,7 +1095,7 @@ const RNG_SIDE_GIG: DecisionNode = {
       description: "Adds a small ongoing income.",
       importance: "minor",
       effect: (ctx) => buildEffect({ id: "rng-side-gig", domain: "career", optionId: "start", label: "Started a side hustle", month: ctx.month, mutations: [{ kind: "addIncome", income: { config: { id: "side-gig", label: "Side income", baseMonthlyGrossCents: cents(900), annualGrowthRate: 0.02, stateCode: "TX", pretaxDeferralRate: 0, startMonth: ctx.month } } }] }),
-      outcome: {},
+      outcome: { mergeFlags: { hasSideGig: true }, updateProfile: (profile) => ({ ...profile, work: { ...profile.work, weeklyHours: profile.work.weeklyHours + 8 }, wellbeing: { ...profile.wellbeing, stress: Math.min(100, profile.wellbeing.stress + 10), burnoutRisk: Math.min(100, profile.wellbeing.burnoutRisk + 15) } }) },
     },
     declineBranch("rng-side-gig", true, "Pass"),
   ],
@@ -1079,24 +1123,52 @@ const RNG_TRIP: DecisionNode = {
   ],
 };
 
+const PET_OPTIONS = [
+  { key: "adult-dog", label: "Adult rescue dog", upfront: 650, monthly: 145, weeklyHours: 10, commitment: "10–14 years", description: "Daily walks and training in a pet-friendly home; a steady, active companion." },
+  { key: "puppy", label: "Puppy", upfront: 1_400, monthly: 230, weeklyHours: 18, commitment: "12–15 years", description: "Frequent breaks, house training, socialization, supervision, and stable dog-friendly housing." },
+  { key: "senior-dog", label: "Senior dog", upfront: 750, monthly: 190, weeklyHours: 9, commitment: "2–7 years", description: "A gentle pace with easy outdoor access and a larger medical and mobility reserve." },
+  { key: "adult-cat", label: "Adult cat", upfront: 500, monthly: 90, weeklyHours: 5, commitment: "12–18 years", description: "Indoor pet-friendly housing, daily play, litter care, enrichment, and routine veterinary care." },
+  { key: "bonded-cats", label: "Bonded cats", upfront: 850, monthly: 165, weeklyHours: 7, commitment: "12–18 years", description: "Housing must allow two cats; companionship is built in, while food, litter, and veterinary costs double." },
+  { key: "rabbit", label: "Rabbit", upfront: 600, monthly: 100, weeklyHours: 7, commitment: "8–12 years", description: "A roomy rabbit-safe indoor exercise area, daily cleaning, hay, enrichment, and exotic-vet access." },
+  { key: "guinea-pig-pair", label: "Guinea pig pair", upfront: 450, monthly: 80, weeklyHours: 5, commitment: "5–7 years", description: "A social pair needing a large stable enclosure, hay and vegetables, cleaning, and exotic-vet care." },
+  { key: "hamster", label: "Hamster", upfront: 225, monthly: 35, weeklyHours: 2, commitment: "2–3 years", description: "A shorter, lower-cost commitment with a humane deep-bedding enclosure and nocturnal schedule." },
+  { key: "parakeet", label: "Parakeet", upfront: 425, monthly: 55, weeklyHours: 5, commitment: "7–12 years", description: "Daily social time, safe flight, cage care, an avian vet, and housing where some noise is acceptable." },
+  { key: "freshwater-aquarium", label: "Freshwater aquarium", upfront: 500, monthly: 45, weeklyHours: 2, commitment: "5–10 years", description: "Quiet and space-efficient, but dependent on tank cycling, water testing, cleaning, and reliable equipment." },
+  { key: "leopard-gecko", label: "Leopard gecko", upfront: 550, monthly: 45, weeklyHours: 3, commitment: "10–20 years", description: "A quiet reptile needing reliable power, controlled heat, live food, supplements, and an exotic vet." },
+  { key: "tortoise", label: "Tortoise", upfront: 900, monthly: 70, weeklyHours: 4, commitment: "40+ years", description: "A lifetime-scale commitment requiring a large climate-controlled habitat, UV light, and a future care plan." },
+] as const;
+
 const RNG_PET: DecisionNode = {
   id: "rng-pet",
   category: "lifestyle",
   trigger: "random",
-  title: "Adopt a pet?",
-  prompt: "A dog needs a home. Companionship — and about $120/mo in costs.",
+  title: "Choose a companion",
+  prompt: "Compare the time, housing, setup, monthly care, and lifetime commitment behind each possible pet.",
   importance: "minor",
   chance: { annualProbability: 0.06, oncePerLife: true },
   available: () => eligible(),
   branches: [
-    {
-      id: "adopt",
-      label: "Adopt",
-      description: "Adds ~$120/mo in ongoing costs.",
+    ...PET_OPTIONS.map((pet): DecisionBranch => ({
+      id: pet.key,
+      label: pet.label,
+      description: pet.description,
       importance: "minor",
-      effect: (ctx) => buildEffect({ id: "rng-pet", domain: "lifestyle", optionId: "adopt", label: "Adopted a pet", month: ctx.month, mutations: [{ kind: "addExpense", expense: { config: { id: "pet", label: "Pet costs", category: "fixed", baseMonthlyAmountCents: cents(120), annualInflationRate: 0.03, startMonth: ctx.month } } }] }),
-      outcome: {},
-    },
+      inputs: { upfrontDollars: pet.upfront, monthlyDollars: pet.monthly, weeklyCareHours: pet.weeklyHours, commitment: pet.commitment },
+      tradeoffs: { upfrontDollars: -pet.upfront, monthlyCashFlowDollars: -pet.monthly, weeklyHoursDelta: -pet.weeklyHours, relationships: 1 },
+      effect: (ctx) => buildEffect({
+        id: "rng-pet",
+        domain: "lifestyle",
+        optionId: pet.key,
+        label: `Adopted ${pet.label}`,
+        month: ctx.month,
+        inputs: { petType: pet.key, upfrontDollars: pet.upfront, monthlyDollars: pet.monthly, weeklyCareHours: pet.weeklyHours, commitment: pet.commitment },
+        mutations: [
+          spendCash(pet.upfront),
+          { kind: "addExpense", expense: { config: { id: "pet", label: `${pet.label} care`, category: "fixed", baseMonthlyAmountCents: cents(pet.monthly), annualInflationRate: 0.03, startMonth: ctx.month } } },
+        ],
+      }),
+      outcome: { mergeFlags: { hasPet: true, petType: pet.key, petWeeklyCareHours: pet.weeklyHours } },
+    })),
     declineBranch("rng-pet", true, "Not now"),
   ],
 };
@@ -1104,14 +1176,34 @@ const RNG_PET: DecisionNode = {
 const RNG_MEDICAL = randomForcedCost({ id: "rng-medical", category: "family", title: "A medical emergency", prompt: "An unexpected medical bill has landed. It has to be paid.", costDollars: 8_000, chance: 0.05, repeatable: true });
 const RNG_CAR_REPAIR = randomForcedCost({ id: "rng-car-repair", category: "lifestyle", title: "Your car breaks down", prompt: "A major repair is due. No car, no commute.", costDollars: 2_500, chance: 0.12, repeatable: true, available: (ctx) => gate(hasFlag(ctx, "hasCar"), "You don't own a car.") });
 const RNG_HOME_REPAIR = randomForcedCost({ id: "rng-home-repair", category: "housing", title: "The house needs a big repair", prompt: "A roof, an HVAC unit, a burst pipe — homeownership's hidden cost.", costDollars: 6_000, chance: 0.1, repeatable: true, available: (ctx) => gate(hasFlag(ctx, "homeowner"), "You don't own a home.") });
-const RNG_INHERITANCE = randomWindfall({ id: "rng-inheritance", title: "An unexpected inheritance", prompt: "A relative has left you a sum.", amountDollars: 60_000, chance: 0.03 });
-const RNG_BONUS = randomWindfall({ id: "rng-bonus", title: "A surprise bonus", prompt: "Work paid out a windfall bonus this year.", amountDollars: 8_000, chance: 0.08, repeatable: true });
+const DIRECT_BONUS_TRACKS = new Set(["sales", "real-estate"]);
+const DEGREE_BONUS_MAJORS = new Set(["business", "accounting", "mechanical-engineering", "economics", "computer-science", "cybersecurity", "data-science", "finance"]);
+
+const RNG_BONUS = randomWindfall({
+  id: "rng-bonus",
+  title: "A performance bonus",
+  prompt: "Your bonus-eligible role paid out after a strong year.",
+  amountDollars: 8_000,
+  chance: 0.04,
+  repeatable: true,
+  cooldownMonths: 36,
+  available: (ctx) => {
+    const track = String(flag(ctx, "track") ?? "");
+    const major = String(flag(ctx, "major") ?? "");
+    const eligibleDirectRole = DIRECT_BONUS_TRACKS.has(track);
+    const eligibleGraduateRole = hasFlag(ctx, "degreeEarned") && DEGREE_BONUS_MAJORS.has(major);
+    return allOf(
+      gate(ctx.stage === "working", "Bonuses only occur while working."),
+      gate(eligibleDirectRole || eligibleGraduateRole, "This career path does not normally include performance bonuses."),
+    );
+  },
+});
 const RNG_TAX_REFUND = randomWindfall({ id: "rng-tax-refund", title: "A tax refund", prompt: "Your return came back larger than expected.", amountDollars: 3_000, chance: 0.14, repeatable: true });
 
 /** The complete age-18 life graph. */
 export const lifeGraph2026: LifeGraph = {
   id: "life-after-high-school",
-  version: "2026.1",
+  version: "2026.4",
   nodes: [
     HS_LAUNCH,
     DECLARE_MAJOR,
@@ -1136,6 +1228,9 @@ export const lifeGraph2026: LifeGraph = {
     BUILD_EMERGENCY,
     RETIREMENT_CATCHUP,
     RETIRE,
+    UNEMPLOYMENT_SEARCH,
+    // Context-sensitive reflection sessions derived from the ten-story critique.
+    ...STORY_REFLECTION_NODES,
     // Random "life happens" events, ordered most-disruptive-first for the yearly roll.
     RNG_LAYOFF,
     RNG_MEDICAL,
@@ -1147,7 +1242,6 @@ export const lifeGraph2026: LifeGraph = {
     RNG_SIDE_GIG,
     RNG_TRIP,
     RNG_PET,
-    RNG_INHERITANCE,
     RNG_BONUS,
     RNG_TAX_REFUND,
   ],

@@ -2,8 +2,9 @@ import type { DecisionImportanceLevel } from "../contracts/decisions.js";
 import type { JsonValue, StableId, VersionId } from "../contracts/values.js";
 import type { EventEffect } from "../events/apply.js";
 import { eligible, type Eligibility, type LifeContext, type LifeStage } from "./context.js";
+import type { LifeProfileState } from "./life-profile.js";
 
-export type LifeDecisionCategory = "education" | "career" | "family" | "housing" | "financial" | "lifestyle" | "military";
+export type LifeDecisionCategory = "education" | "career" | "family" | "housing" | "financial" | "lifestyle" | "military" | "health" | "community";
 
 /**
  * How a decision node surfaces, and the reason iteration can stay sparse:
@@ -18,7 +19,28 @@ export type LifeDecisionCategory = "education" | "career" | "family" | "housing"
  *   surfaced by the milestone/opportunity selectors; it is offered only when a
  *   yearly dice roll clears its `chance.annualProbability` (see `rollYear`).
  */
-export type DecisionTrigger = "milestone" | "opportunity" | "random";
+export type DecisionTrigger = "milestone" | "opportunity" | "random" | "reflection";
+
+export type DecisionEditorKind =
+  | "road-signs"
+  | "annual-plan"
+  | "education-funding"
+  | "weekly-timetable"
+  | "household-plan"
+  | "care-calendar"
+  | "housing-comparison"
+  | "risk-planner"
+  | "career-scenario"
+  | "multi-domain-plan";
+
+export interface DecisionTradeoffs {
+  upfrontDollars?: number;
+  monthlyCashFlowDollars?: number;
+  weeklyHoursDelta?: number;
+  health?: -2 | -1 | 0 | 1 | 2;
+  career?: -2 | -1 | 0 | 1 | 2;
+  relationships?: -2 | -1 | 0 | 1 | 2;
+}
 
 /** Probability metadata for a `random`-trigger node. */
 export interface RandomChance {
@@ -48,7 +70,15 @@ export interface BranchOutcome {
   block?: readonly StableId[];
   /** Node ids to clear from "resolved" so they can fire again once their precondition passes again (gap year re-opens the root). */
   reopen?: readonly StableId[];
+  /** Typed state transition for life domains that have outgrown the legacy flags map. */
+  updateProfile?: (profile: LifeProfileState, ctx: LifeContext) => LifeProfileState;
 }
+
+export type DecisionResolution =
+  | { kind: "complete" }
+  | { kind: "defer"; reviewAfterMonths: number }
+  | { kind: "repeatable"; cooldownMonths?: number }
+  | { kind: "permanent-decline" };
 
 /** One option at a crossroads. */
 export interface DecisionBranch {
@@ -64,6 +94,12 @@ export interface DecisionBranch {
   available?: (ctx: LifeContext) => Eligibility;
   /** The financial fork this branch applies at `ctx.month`, or null/omitted for a purely narrative branch. */
   effect?: (ctx: LifeContext) => EventEffect | null;
+  /** JSON-safe input payload required to replay a user-authored/custom decision. */
+  inputs?: Readonly<Record<string, JsonValue>>;
+  /** Defaults to complete. Deferral is intentionally distinct from permanent decline. */
+  resolution?: DecisionResolution;
+  /** Structured preview values consumed by rich, domain-specific decision editors. */
+  tradeoffs?: DecisionTradeoffs;
   outcome: BranchOutcome;
 }
 
@@ -75,6 +111,9 @@ export interface DecisionNode {
   title: string;
   prompt: string;
   importance: DecisionImportanceLevel;
+  /** Renderer contract and audit linkage for critique-driven decisions. */
+  editorKind?: DecisionEditorKind;
+  storyCoverage?: readonly StableId[];
   /** Structured precondition over the life context. Returns reasons when ineligible; never silently removes. */
   available: (ctx: LifeContext) => Eligibility;
   /** Present only for `random`-trigger nodes: how likely the event is to be offered each year. */
@@ -93,7 +132,8 @@ const IMPORTANCE_RANK: Record<DecisionImportanceLevel, number> = { major: 0, min
 
 /** A node is a live candidate when it has not already been resolved and is not blocked. */
 function isCandidate(node: DecisionNode, ctx: LifeContext): boolean {
-  return !ctx.resolvedNodeIds.includes(node.id) && !ctx.blockedNodeIds.includes(node.id);
+  const reviewMonth = ctx.deferredNodeUntilMonth?.[node.id];
+  return !ctx.resolvedNodeIds.includes(node.id) && !ctx.blockedNodeIds.includes(node.id) && (reviewMonth === undefined || ctx.month >= reviewMonth);
 }
 
 /** Stable priority sort: major before minor, preserving graph order within a tier. */
@@ -125,6 +165,11 @@ export function availableOpportunities(graph: LifeGraph, ctx: LifeContext): read
   return availableDecisions(graph, ctx).filter((node) => node.trigger === "opportunity");
 }
 
+/** Highest-priority reflective planning session, used only after milestones and random events. */
+export function nextReflection(graph: LifeGraph, ctx: LifeContext): DecisionNode | null {
+  return availableDecisions(graph, ctx).find((node) => node.trigger === "reflection") ?? null;
+}
+
 export function findNode(graph: LifeGraph, nodeId: string): DecisionNode | null {
   return graph.nodes.find((node) => node.id === nodeId) ?? null;
 }
@@ -149,14 +194,23 @@ export function resolveBranch(ctx: LifeContext, node: DecisionNode, branch: Deci
   const outcome = branch.outcome;
   const stageChanged = outcome.setStage !== undefined && outcome.setStage !== ctx.stage;
 
+  const resolution = branch.resolution ?? { kind: "complete" as const };
   const reopen = new Set(outcome.reopen ?? []);
   let resolvedNodeIds = ctx.resolvedNodeIds.filter((id) => !reopen.has(id));
-  if (!reopen.has(node.id) && !resolvedNodeIds.includes(node.id)) {
+  if (resolution.kind === "complete" && !reopen.has(node.id) && !resolvedNodeIds.includes(node.id)) {
     resolvedNodeIds = [...resolvedNodeIds, node.id];
   }
 
-  const blockedNodeIds =
-    outcome.block && outcome.block.length > 0 ? [...new Set([...ctx.blockedNodeIds, ...outcome.block])] : ctx.blockedNodeIds;
+  const resolutionBlocks = resolution.kind === "permanent-decline" ? [node.id] : [];
+  const blockedNodeIds = outcome.block || resolutionBlocks.length > 0
+    ? [...new Set([...ctx.blockedNodeIds, ...(outcome.block ?? []), ...resolutionBlocks])]
+    : ctx.blockedNodeIds;
+
+  const deferredNodeUntilMonth = { ...(ctx.deferredNodeUntilMonth ?? {}) };
+  delete deferredNodeUntilMonth[node.id];
+  if (resolution.kind === "defer") deferredNodeUntilMonth[node.id] = ctx.month + Math.max(1, resolution.reviewAfterMonths);
+  if (resolution.kind === "repeatable" && resolution.cooldownMonths) deferredNodeUntilMonth[node.id] = ctx.month + Math.max(1, resolution.cooldownMonths);
+  for (const id of reopen) delete deferredNodeUntilMonth[id];
 
   const merged = typeof outcome.mergeFlags === "function" ? outcome.mergeFlags(ctx) : outcome.mergeFlags;
 
@@ -167,5 +221,7 @@ export function resolveBranch(ctx: LifeContext, node: DecisionNode, branch: Deci
     flags: merged ? { ...ctx.flags, ...merged } : ctx.flags,
     resolvedNodeIds,
     blockedNodeIds,
+    deferredNodeUntilMonth,
+    profile: outcome.updateProfile ? outcome.updateProfile(ctx.profile, ctx) : ctx.profile,
   };
 }

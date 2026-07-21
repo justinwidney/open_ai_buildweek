@@ -208,4 +208,25 @@ describe("rules/catalog walk-throughs", () => {
     assert.ok(tuition, "tuition expense added");
     assert.equal(tuition!.config.endMonth, ctx.stageStartedMonth + 48);
   });
+
+  it("offers every illustrated pet and applies its differentiated upfront and monthly costs", () => {
+    const petNode = graph.nodes.find((node) => node.id === "rng-pet")!;
+    assert.deepEqual(
+      petNode.branches.map((candidate) => candidate.id),
+      ["adult-dog", "puppy", "senior-dog", "adult-cat", "bonded-cats", "rabbit", "guinea-pig-pair", "hamster", "parakeet", "freshwater-aquarium", "leopard-gecko", "tortoise", "decline"],
+    );
+
+    const ctx = { ...initialLifeContext({ ageYears: 25 }), month: 84 };
+    const puppy = branch(petNode, "puppy");
+    const effect = puppy.effect!(ctx)!;
+    const cash = effect.mutations.find((mutation) => mutation.kind === "adjustCash");
+    const expense = effect.mutations.find((mutation) => mutation.kind === "addExpense");
+    assert.deepEqual(cash, { kind: "adjustCash", deltaCents: -cents(1_400) });
+    assert.equal(expense?.kind === "addExpense" ? expense.expense.config.baseMonthlyAmountCents : 0, cents(230));
+    assert.equal(puppy.tradeoffs?.weeklyHoursDelta, -18);
+
+    const adopted = resolveBranch(ctx, petNode, puppy);
+    assert.equal(adopted.flags["hasPet"], true);
+    assert.equal(adopted.flags["petType"], "puppy");
+  });
 });

@@ -18,6 +18,8 @@ export function rollYear(graph: LifeGraph, ctx: LifeContext, rng: () => number):
   for (const node of graph.nodes) {
     if (node.trigger !== "random" || !node.chance) continue;
     if (ctx.resolvedNodeIds.includes(node.id) || ctx.blockedNodeIds.includes(node.id)) continue;
+    const reviewMonth = ctx.deferredNodeUntilMonth?.[node.id];
+    if (reviewMonth !== undefined && ctx.month < reviewMonth) continue;
     if (!node.available(ctx).eligible) continue;
     // Draw once per candidate so probabilities are independent and stable given the seed.
     if (rng() < node.chance.annualProbability) return node;

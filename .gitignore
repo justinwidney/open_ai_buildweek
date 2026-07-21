@@ -1,7 +1,13 @@
 node_modules/
 dist/
+storybook-static/
 *.tsbuildinfo
 .devvit/
 .env
 .DS_Store
 .tmp/
+
+# Local Python env for the tools/svg pipeline (vtracer, pillow, scipy)
+.venv-svg/
+tools/svg_grouper/debug/node_modules/
+tools/svg_grouper/debug/home-preview/

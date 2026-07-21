@@ -1,5 +1,6 @@
 import type { JsonValue, StableId } from "../contracts/values.js";
 import type { MonthKey } from "../types/month.js";
+import { initialLifeProfile, normalizeLifeProfile, type LifeProfileState } from "./life-profile.js";
 
 /**
  * The coarse life phase the decision graph branches on — the single most
@@ -14,10 +15,11 @@ export type LifeStage =
   | "apprenticeship" // paid trade apprenticeship, pre-ticket
   | "gap-year" // taking a year before re-choosing the root path
   | "military" // active service
+  | "unemployed" // between jobs and actively choosing a search/retraining path
   // deno-lint-ignore ban-types
   | (string & {});
 
-export const KNOWN_LIFE_STAGES = ["pre-launch", "school", "working", "apprenticeship", "gap-year", "military"] as const;
+export const KNOWN_LIFE_STAGES = ["pre-launch", "school", "working", "apprenticeship", "gap-year", "military", "unemployed"] as const;
 
 /**
  * The durable, JSON-serializable position in the life graph. Everything a
@@ -40,6 +42,10 @@ export interface LifeContext {
   resolvedNodeIds: readonly StableId[];
   /** Nodes a prior branch permanently removed from ever being offered. */
   blockedNodeIds: readonly StableId[];
+  /** Nodes deferred until a later month; unlike a permanent block, they are automatically re-offered. */
+  deferredNodeUntilMonth: Readonly<Record<StableId, MonthKey>>;
+  /** Typed, versioned life state used by decisions instead of accumulating unstructured flags. */
+  profile: LifeProfileState;
   /** Derived money summary for affordability gates; recomputed each year, not persisted. */
   finances?: FinancialSummary;
 }
@@ -160,6 +166,17 @@ export function initialLifeContext(params: InitialLifeContextParams): LifeContex
     flags: params.flags ?? {},
     resolvedNodeIds: [],
     blockedNodeIds: [],
+    deferredNodeUntilMonth: {},
+    profile: initialLifeProfile(),
+  };
+}
+
+/** Runtime migration guard for contexts restored from older JSON. */
+export function normalizeLifeContext(ctx: LifeContext): LifeContext {
+  return {
+    ...ctx,
+    deferredNodeUntilMonth: ctx.deferredNodeUntilMonth ?? {},
+    profile: normalizeLifeProfile(ctx.profile),
   };
 }
 

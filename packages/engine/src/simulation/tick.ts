@@ -7,7 +7,7 @@ import type { AdjustmentContext } from "../adjustable/index.js";
 import { findLineItem, resolveAdjustable } from "../adjustable/index.js";
 import { buildIncomeAdjustable, incomeViews, isIncomeActive } from "../income/index.js";
 import { buildExpenseAdjustable, expenseViews, isExpenseActive } from "../expenses/index.js";
-import { applyPrincipalPayment, buildDebtPaymentAdjustable, debtViews, isDebtActive } from "../debts/index.js";
+import { applyPrincipalPayment, buildDebtPaymentAdjustable, debtViews, initialDebtState, isDebtActive } from "../debts/index.js";
 import { tickFinancialAsset } from "../assets/index.js";
 import { tickHoldingGrowth } from "../portfolio/index.js";
 import { currentPhysicalAssetValueCents } from "../physical-assets/index.js";
@@ -28,6 +28,8 @@ export interface TickResult {
   snapshot: LifeStateSnapshot;
   detail: MonthDetail;
 }
+
+const STUDENT_LOAN_ID = "student-loans";
 
 function mergeDecisions(existing: DecisionSet, deltas: DecisionSet): DecisionSet {
   if (deltas.length === 0) return existing;
@@ -107,12 +109,25 @@ export function tick(ctx: TickContext): TickResult {
 
   // Expenses.
   let totalExpensesCents = 0;
+  let studentLoanBorrowingCents = 0;
+  let studentLoanRepaymentStartMonth: MonthKey | undefined;
+  let studentLoanAnnualRate = 0.055;
+  let studentLoanTermMonths = 120;
   for (const expenseState of previous.expenses) {
     if (!isExpenseActive(expenseState, month)) continue;
     const localCtx: AdjustmentContext = { month, rng: ctx.rng, referenceData: ctx.referenceData, taxBasis };
     const result = resolveAdjustable(localCtx, buildExpenseAdjustable(expenseState, month));
     const views = expenseViews(result, expenseState.config.category);
     totalExpensesCents += views.outOfPocketCents;
+    if (expenseState.config.financing?.kind === "student-loan") {
+      studentLoanBorrowingCents += views.outOfPocketCents;
+      studentLoanRepaymentStartMonth = Math.max(
+        studentLoanRepaymentStartMonth ?? expenseState.config.financing.repaymentStartMonth,
+        expenseState.config.financing.repaymentStartMonth,
+      );
+      studentLoanAnnualRate = expenseState.config.financing.annualRate;
+      studentLoanTermMonths = expenseState.config.financing.termMonths;
+    }
     const { id, label } = expenseState.config;
     flows.push(
       { domain: "expense", entityId: id, entityLabel: label, viewKey: "total", amountCents: views.totalMonthlyCents },
@@ -122,7 +137,7 @@ export function tick(ctx: TickContext): TickResult {
 
   // Debts: pay down principal, accumulate total cash paid.
   let totalDebtPaymentsCents = 0;
-  const nextDebts = previous.debts.map((debtState) => {
+  let nextDebts = previous.debts.map((debtState) => {
     const { id, label } = debtState.config;
     if (!isDebtActive(debtState, month)) {
       balances.push({ domain: "debt", entityId: id, metricKey: "remainingBalance", amountCents: debtState.remainingBalanceCents });
@@ -145,9 +160,46 @@ export function tick(ctx: TickContext): TickResult {
     return next;
   });
 
+  // Tuition financing is a real liability. Each funded tuition month adds principal,
+  // offsets that tuition's cash outflow, and immediately lowers net worth. Repayment
+  // begins at graduation (the expense's configured repayment month).
+  if (studentLoanBorrowingCents > 0 && studentLoanRepaymentStartMonth !== undefined) {
+    const existingIndex = nextDebts.findIndex((debt) => debt.config.id === STUDENT_LOAN_ID);
+    if (existingIndex >= 0) {
+      const existing = nextDebts[existingIndex]!;
+      const updated = {
+        ...existing,
+        config: {
+          ...existing.config,
+          originalPrincipalCents: existing.config.originalPrincipalCents + studentLoanBorrowingCents,
+          startMonth: Math.max(existing.config.startMonth, studentLoanRepaymentStartMonth),
+        },
+        remainingBalanceCents: existing.remainingBalanceCents + studentLoanBorrowingCents,
+      };
+      nextDebts = nextDebts.map((debt, index) => index === existingIndex ? updated : debt);
+    } else {
+      nextDebts = [...nextDebts, initialDebtState({
+        id: STUDENT_LOAN_ID,
+        label: "Student loans",
+        originalPrincipalCents: studentLoanBorrowingCents,
+        annualRate: studentLoanAnnualRate,
+        termMonths: studentLoanTermMonths,
+        startMonth: studentLoanRepaymentStartMonth,
+        monthlyEscrowCents: 0,
+      })];
+    }
+
+    const studentLoan = nextDebts.find((debt) => debt.config.id === STUDENT_LOAN_ID)!;
+    const balanceIndex = balances.findIndex((balance) => balance.domain === "debt" && balance.entityId === STUDENT_LOAN_ID);
+    const balance = { domain: "debt", entityId: STUDENT_LOAN_ID, metricKey: "remainingBalance", amountCents: studentLoan.remainingBalanceCents } as const;
+    if (balanceIndex >= 0) balances[balanceIndex] = balance;
+    else balances.push(balance);
+    flows.push({ domain: "debt", entityId: STUDENT_LOAN_ID, entityLabel: "Student loans", viewKey: "borrowed", amountCents: studentLoanBorrowingCents });
+  }
+
   // Net cash flow lands on the first financial asset (the household's primary cash account);
   // any additional financial assets just grow on their own — a documented simplification, see README.
-  const netCashFlowCents = totalTakeHomeCents - totalExpensesCents - totalDebtPaymentsCents;
+  const netCashFlowCents = totalTakeHomeCents - totalExpensesCents - totalDebtPaymentsCents + studentLoanBorrowingCents;
   const nextFinancialAssets = previous.financialAssets.map((assetState, index) => {
     const next = tickFinancialAsset(assetState, index === 0 ? netCashFlowCents : 0);
     balances.push({ domain: "financialAsset", entityId: assetState.config.id, metricKey: "balance", amountCents: next.balanceCents });

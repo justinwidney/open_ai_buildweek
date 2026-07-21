@@ -96,6 +96,43 @@ describe("simulation", () => {
     assert.ok(cashDelta > 0, "a software engineer's take-home should exceed rent + mortgage payment in this scenario");
   });
 
+  it("finances active tuition as student debt and allows net worth to become negative", () => {
+    const cash = initialFinancialAssetState({ id: "checking", label: "Checking", annualInterestRate: 0 }, cents(0));
+    const student: LifeStateSnapshot = {
+      runId: "student",
+      month: 0,
+      parentSnapshotRef: null,
+      decisions: [],
+      incomes: [],
+      expenses: [{ config: {
+        id: "tuition",
+        label: "Tuition & fees",
+        category: "fixed",
+        baseMonthlyAmountCents: cents(1_500),
+        annualInflationRate: 0,
+        startMonth: 0,
+        endMonth: 48,
+        financing: { kind: "student-loan", annualRate: 0.055, termMonths: 120, repaymentStartMonth: 48 },
+      } }],
+      debts: [],
+      financialAssets: [cash],
+      portfolio: { holdings: [] },
+      physicalAssets: [],
+      taxBasis: initialTaxBasis(2026, "single"),
+      netWorthCents: 0,
+      extensions: {},
+    };
+
+    const { snapshots, details } = runSimulation(student, 12, runOptions());
+    const first = snapshots[1]!;
+    const last = snapshots[12]!;
+    assert.equal(first.debts[0]!.config.id, "student-loans");
+    assert.equal(first.debts[0]!.remainingBalanceCents, cents(1_500));
+    assert.equal(last.debts[0]!.remainingBalanceCents, cents(18_000));
+    assert.equal(last.netWorthCents, -cents(18_000));
+    assert.ok(details.every((detail) => detail.flows.some((flow) => flow.entityId === "student-loans" && flow.viewKey === "borrowed")));
+  });
+
   it("tick's detail reports the same take-home figure the snapshot's cash growth implies", () => {
     const initial = buildInitialSnapshot("run-b2");
     const { snapshot, detail } = tick({ month: 1, previous: initial, decisionDeltas: [], returnsStrategy, referenceData: referenceData2026, rng: createRandomSource("s") });

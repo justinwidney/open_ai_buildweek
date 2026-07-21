@@ -2,6 +2,7 @@ import {
   availableOpportunities,
   lifeGraph2026,
   nextMilestone,
+  nextReflection,
   rollYear,
   withFinances,
   type DecisionBranch,
@@ -55,7 +56,7 @@ export function decisionsAt(ctx: LifeContext): { milestone: DecisionNode | null;
  */
 export function evaluateYear(ctx: LifeContext, rng: () => number): { forced: DecisionNode | null; opportunities: readonly DecisionNode[] } {
   const milestone = nextMilestone(LIFE_GRAPH, ctx);
-  const forced = milestone ?? rollYear(LIFE_GRAPH, ctx, rng);
+  const forced = milestone ?? rollYear(LIFE_GRAPH, ctx, rng) ?? nextReflection(LIFE_GRAPH, ctx);
   return { forced, opportunities: availableOpportunities(LIFE_GRAPH, ctx) };
 }
 
@@ -67,8 +68,8 @@ export function evaluateYear(ctx: LifeContext, rng: () => number): { forced: Dec
  */
 export function isInertBranch(branch: DecisionBranch): boolean {
   const o = branch.outcome;
-  const emptyOutcome = o.setStage === undefined && o.mergeFlags === undefined && !o.block?.length && !o.reopen?.length;
-  return !branch.effect && emptyOutcome;
+  const emptyOutcome = o.setStage === undefined && o.mergeFlags === undefined && o.updateProfile === undefined && !o.block?.length && !o.reopen?.length;
+  return !branch.effect && branch.resolution === undefined && emptyOutcome;
 }
 
 /** Pick a route-tile grammar for a node from its shape — more branches read as a busier junction. */
@@ -88,6 +89,8 @@ const CATEGORY_EMOJI: Record<DecisionNode["category"], string> = {
   financial: "📈",
   lifestyle: "🧭",
   military: "🎖️",
+  health: "♥",
+  community: "🤝",
 };
 
 export function nodeEmoji(node: DecisionNode): string {

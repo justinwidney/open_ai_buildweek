@@ -12,6 +12,7 @@ import {
   type DecisionNode,
   type LifeContext,
   type LifeStateSnapshot,
+  type JsonValue,
   type MonthDetail,
   type MonthlyStatement,
 } from "@control-ai/engine";
@@ -52,6 +53,8 @@ export interface JourneyStep {
   /** The decision node and chosen branch, so a reload replays the exact life-graph walk. */
   nodeId: string;
   branchId: string;
+  /** Inputs for a custom decision, retained so the engine can reconstruct its effect on replay. */
+  inputs?: Readonly<Record<string, JsonValue>>;
 }
 
 export interface JourneyPath {
@@ -158,7 +161,7 @@ export function applyDecision(journey: JourneyPath, forkMonth: number, node: Dec
     runId: journey.runId,
     snapshots,
     details,
-    history: [...journey.history, { month: forkMonth, label: effect?.decision.label ?? branch.label, nodeId: node.id, branchId: branch.id }],
+    history: [...journey.history, { month: forkMonth, label: effect?.decision.label ?? branch.label, nodeId: node.id, branchId: branch.id, inputs: branch.inputs }],
     context: nextContext,
   };
 }

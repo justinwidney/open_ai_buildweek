@@ -6,9 +6,10 @@ import {
   type StoredDecision,
   type StoredRun,
 } from "@control-ai/shared/sim";
-import { findBranch, findNode } from "@control-ai/engine";
+import { createAnnualLifePlanBranch, findBranch, findNode, parseAnnualLifePlanInputs } from "@control-ai/engine";
 import { HORIZON, RETURNS_STRATEGY, applyDecision, runBaseline, settingsFromSeed, travelContext, type JourneyPath, type JourneyStep, type LifeSettings } from "./pathModel";
 import { LIFE_GRAPH } from "./journeyGraph";
+import { createLifestyleDecision, isLifestyleDecisionNode } from "./lifestyleDecisions";
 
 /**
  * Saving and resuming a life, on top of `@control-ai/shared/sim`'s
@@ -142,6 +143,7 @@ export async function persistDecision(runId: string, journey: JourneyPath, step:
     optionId: step.branchId,
     label: step.label,
     effectiveFromMonth: step.month,
+    inputs: step.inputs,
   };
   await runStore.appendMonths({ runId, months: [], decisions: [decision] });
   await persistThrough(runId, journey, step.month, throughMonth);
@@ -158,14 +160,21 @@ export async function restoreJourney(life: SavedLife): Promise<{ journey: Journe
   const baseline = runBaseline(life.settings, life.run.id);
   const decisions = await runStore.listDecisions(life.run.id);
   const steps = decisions
-    .map((d) => decodeStepId(d.id, d.label))
+    .map((d) => decodeStepId(d.id, d.label, d.inputs))
     .filter((s): s is JourneyStep => s !== null)
     .sort((a, b) => a.month - b.month);
 
   let journey = baseline;
   for (const step of steps) {
-    const node = findNode(LIFE_GRAPH, step.nodeId);
-    const branch = node ? findBranch(LIFE_GRAPH, step.nodeId, step.branchId) : null;
+    let node = findNode(LIFE_GRAPH, step.nodeId);
+    let branch = node ? findBranch(LIFE_GRAPH, step.nodeId, step.branchId) : null;
+    if (!node && isLifestyleDecisionNode(step.nodeId)) {
+      const plan = parseAnnualLifePlanInputs(step.inputs);
+      if (plan) {
+        node = createLifestyleDecision(plan.age, journey.context.stage);
+        branch = createAnnualLifePlanBranch(node.id, plan);
+      }
+    }
     // A node/branch removed from the graph since the save is skipped rather than
     // throwing, so an older save stays loadable.
     if (!node || !branch) continue;
@@ -191,10 +200,10 @@ function encodeStepId(step: JourneyStep): string {
   return `${step.nodeId}#${step.branchId}@${step.month}`;
 }
 
-function decodeStepId(id: string, label: string): JourneyStep | null {
+function decodeStepId(id: string, label: string, inputs?: StoredDecision["inputs"]): JourneyStep | null {
   const match = /^(.+)#(.+)@(\d+)$/.exec(id);
   if (!match) return null;
-  return { nodeId: match[1]!, branchId: match[2]!, month: Number(match[3]), label };
+  return { nodeId: match[1]!, branchId: match[2]!, month: Number(match[3]), label, inputs };
 }
 
 /** Storage health, for the footer indicator. `kind === "memory"` means nothing is really being saved. */

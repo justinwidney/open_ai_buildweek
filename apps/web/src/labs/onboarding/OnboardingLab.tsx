@@ -64,7 +64,7 @@ interface WorkDraft {
   notes: string;
 }
 
-const initialDemographics: DemographicDraft = { age: "25", countryCode: "CA", location: "", communityType: "large-city", educationLevel: "", fieldOfStudy: "" };
+const initialDemographics: DemographicDraft = { age: "18", countryCode: "CA", location: "", communityType: "large-city", educationLevel: "", fieldOfStudy: "" };
 const initialWork: WorkDraft = { hasPriorExperience: true, occupationId: "", yearsExperience: "2", compensationBasis: "salary", payCadence: "biweekly", scheduleKind: "standard", averageHoursPerWeek: "40", grossPay: "", hasBonusOrCommission: false, notes: "" };
 
 export interface OnboardingExperienceProps {
@@ -168,7 +168,7 @@ export function OnboardingExperience({ onComplete, showLabBack = true }: Onboard
           {step === 1 && <form onSubmit={continueFromDemographics} className="onboarding-form">
             <div className="onboarding-lead"><h3>Where does your story begin?</h3><p>Age and location anchor taxes, costs, and milestones. Education helps us understand the roads already open to you.</p></div>
             <div className="onboarding-field-grid">
-              <label className="onboarding-field"><span>Current age</span><input required min="16" max="80" inputMode="numeric" type="number" value={demographics.age} onChange={(event) => setDemographics({ ...demographics, age: event.target.value })} /><small>Your journey starts here</small></label>
+              <label className="onboarding-field"><span>Starting age</span><input required readOnly inputMode="numeric" type="number" value={demographics.age} /><small>High school graduation is the fixed trailhead</small></label>
               <label className="onboarding-field"><span>Country</span><select value={demographics.countryCode} onChange={(event) => setDemographics({ ...demographics, countryCode: event.target.value })}><option value="CA">Canada</option><option value="US">United States</option><option value="GB">United Kingdom</option><option value="AU">Australia</option><option value="OTHER">Another country</option></select></label>
               <label className="onboarding-field is-wide"><span>City, province, or region</span><input required autoComplete="address-level2" placeholder="e.g. Edmonton, Alberta" value={demographics.location} onChange={(event) => setDemographics({ ...demographics, location: event.target.value })} /><small>Used to estimate local costs and opportunities</small></label>
               <label className="onboarding-field is-wide"><span>Community type</span><select value={demographics.communityType} onChange={(event) => setDemographics({ ...demographics, communityType: event.target.value as CommunityType })}><option value="rural">Rural area</option><option value="small-town">Small town</option><option value="mid-size-city">Mid-size city</option><option value="large-city">Large city or metro area</option></select></label>

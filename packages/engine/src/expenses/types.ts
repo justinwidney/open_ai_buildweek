@@ -3,6 +3,13 @@ import type { MonthKey } from "../types/month.js";
 
 export type ExpenseCategory = "fixed" | "discretionary";
 
+export interface StudentLoanFinancing {
+  kind: "student-loan";
+  annualRate: number;
+  termMonths: number;
+  repaymentStartMonth: MonthKey;
+}
+
 export interface ExpenseConfig {
   id: string;
   label: string;
@@ -12,6 +19,8 @@ export interface ExpenseConfig {
   annualInflationRate: number;
   startMonth: MonthKey;
   endMonth?: MonthKey;
+  /** When present, this expense is funded by a liability instead of silently disappearing when cash reaches zero. */
+  financing?: StudentLoanFinancing;
 }
 
 export interface ExpenseState {

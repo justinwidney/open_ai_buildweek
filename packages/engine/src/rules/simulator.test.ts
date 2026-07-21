@@ -106,6 +106,21 @@ describe("rules/rollYear (RNG simulator)", () => {
     assert.equal(node("rng-car-repair").available(workingCtx(fin(), { hasCar: true })).eligible, true);
     assert.equal(node("rng-home-repair").available(workingCtx(fin(), { homeowner: true })).eligible, true);
   });
+
+  it("only offers performance bonuses to bonus-bearing direct roles or eligible graduates", () => {
+    const bonus = node("rng-bonus");
+    assert.equal(bonus.available(workingCtx(fin(), { degreeEarned: false, track: "retail" })).eligible, false);
+    assert.equal(bonus.available(workingCtx(fin(), { degreeEarned: false, track: "sales" })).eligible, true, "direct-to-work sales can earn bonuses");
+    assert.equal(bonus.available(workingCtx(fin(), { degreeEarned: false, major: "business" })).eligible, false, "a declared major is not a graduation");
+    assert.equal(bonus.available(workingCtx(fin(), { degreeEarned: true, major: "business" })).eligible, true, "bonus-bearing graduate careers qualify after graduation");
+  });
+
+  it("puts a three-year cooldown between repeat performance bonuses", () => {
+    const bonus = node("rng-bonus");
+    const ctx = workingCtx(fin(), { degreeEarned: false, track: "sales" });
+    const after = resolveBranch(ctx, bonus, bonus.branches[0]!);
+    assert.equal(after.deferredNodeUntilMonth[bonus.id], ctx.month + 36);
+  });
 });
 
 describe("rules/effects on the snapshot", () => {
@@ -133,6 +148,14 @@ describe("rules/effects on the snapshot", () => {
     const after = applyEvent(seedSnapshot(), finance.effect!(workingCtx(fin())));
     assert.equal(after.debts.length, 1);
     assert.equal(after.debts[0]!.remainingBalanceCents, cents(15_000)); // 18k - 3k down
+  });
+
+  it("deducts a starter role's explained setup cost when the job begins", () => {
+    const retail = node("entry-track").branches.find((branch) => branch.id === "retail")!;
+    const ctx = workingCtx(fin(), { degreeEarned: false, wentToWork: true });
+    const before = seedSnapshot();
+    const after = applyEvent(before, retail.effect!(ctx));
+    assert.equal(after.financialAssets[0]!.balanceCents, before.financialAssets[0]!.balanceCents - cents(250));
   });
 });
 

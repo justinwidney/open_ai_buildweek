@@ -1,0 +1,3587 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Deterministic rules-engine coverage audit; curated random events are explicitly injected rather than probability-rolled.",
+  "methodology": {
+    "scope": "LifeContext navigation, availability gates, and branch outcomes through ages 18–40.",
+    "financialEffectsApplied": false,
+    "financialGateAssumption": "A fixed high-liquidity audit summary is attached each year so the suite can inspect narrative reachability without conflating it with a market simulation.",
+    "randomEventMethod": "Selected random nodes are injected at named ages and still must pass their normal node and branch eligibility checks."
+  },
+  "graph": {
+    "id": "life-after-high-school",
+    "version": "2026.4"
+  },
+  "ageRange": {
+    "start": 18,
+    "end": 40
+  },
+  "scenarioCount": 10,
+  "summary": {
+    "totalDecisions": 179,
+    "totalQuietYears": 66,
+    "rootBranchesCovered": [
+      "gap-year",
+      "military",
+      "school",
+      "trade",
+      "work"
+    ],
+    "categoriesCovered": [
+      "career",
+      "community",
+      "education",
+      "family",
+      "financial",
+      "health",
+      "housing",
+      "lifestyle",
+      "military"
+    ]
+  },
+  "stories": [
+    {
+      "id": "college-cs-grad-family",
+      "name": "Computer science, graduate school, and young family",
+      "premise": "A college student switches into data science, completes a master's, marries, buys a home, and has a child.",
+      "ageRange": {
+        "start": 18,
+        "end": 40
+      },
+      "decisions": [
+        {
+          "age": 18,
+          "month": 0,
+          "source": "milestone",
+          "nodeId": "hs-launch",
+          "nodeTitle": "Life after high school",
+          "category": "education",
+          "branchId": "school",
+          "branchLabel": "Go to college",
+          "stageBefore": "pre-launch",
+          "stageAfter": "school",
+          "flagsAddedOrChanged": {
+            "enrolled": true
+          }
+        },
+        {
+          "age": 18,
+          "month": 0,
+          "source": "milestone",
+          "nodeId": "declare-major",
+          "nodeTitle": "Declare your major",
+          "category": "education",
+          "branchId": "computer-science",
+          "branchLabel": "Computer Science",
+          "stageBefore": "school",
+          "stageAfter": "school",
+          "flagsAddedOrChanged": {
+            "major": "computer-science",
+            "gradSalary": 8000,
+            "gradGrowth": 0.04
+          }
+        },
+        {
+          "age": 19,
+          "month": 12,
+          "source": "reflection",
+          "nodeId": "reflection-student-funding",
+          "nodeTitle": "Fund the next year of school",
+          "category": "education",
+          "branchId": "aid-search",
+          "branchLabel": "Pursue grants and aid",
+          "stageBefore": "school",
+          "stageAfter": "school",
+          "flagsAddedOrChanged": {
+            "schoolFundingPlan": "aid-search"
+          }
+        },
+        {
+          "age": 20,
+          "month": 24,
+          "source": "opportunity",
+          "nodeId": "swap-major",
+          "nodeTitle": "Change your major",
+          "category": "education",
+          "branchId": "switch-data-science",
+          "branchLabel": "Switch to Data Science",
+          "stageBefore": "school",
+          "stageAfter": "school",
+          "flagsAddedOrChanged": {
+            "major": "data-science",
+            "gradSalary": 8200,
+            "gradGrowth": 0.043,
+            "gradDelayMonths": 12
+          }
+        },
+        {
+          "age": 23,
+          "month": 60,
+          "source": "milestone",
+          "nodeId": "graduate",
+          "nodeTitle": "Graduation day",
+          "category": "education",
+          "branchId": "start-career",
+          "branchLabel": "Start your career",
+          "stageBefore": "school",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "enrolled": false,
+            "degreeEarned": true
+          }
+        },
+        {
+          "age": 23,
+          "month": 60,
+          "source": "opportunity",
+          "nodeId": "buy-car",
+          "nodeTitle": "Get a car",
+          "category": "lifestyle",
+          "branchId": "used-finance",
+          "branchLabel": "Finance a used car ($18k, $3k down)",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "hasCar": true
+          }
+        },
+        {
+          "age": 24,
+          "month": 72,
+          "source": "opportunity",
+          "nodeId": "grad-school",
+          "nodeTitle": "Graduate school",
+          "category": "education",
+          "branchId": "enroll-grad",
+          "branchLabel": "Enroll part-time",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "gradSchool": true,
+            "gradSchoolStartMonth": 72
+          }
+        },
+        {
+          "age": 25,
+          "month": 84,
+          "source": "curated-random-event",
+          "nodeId": "rng-trip",
+          "nodeTitle": "A once-in-a-lifetime trip",
+          "category": "lifestyle",
+          "branchId": "go",
+          "branchLabel": "Go for it ($12k)",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {}
+        },
+        {
+          "age": 26,
+          "month": 96,
+          "source": "milestone",
+          "nodeId": "grad-school-complete",
+          "nodeTitle": "Master's complete",
+          "category": "education",
+          "branchId": "finish-grad",
+          "branchLabel": "Finish and take the raise",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "gradSchoolDone": true
+          }
+        },
+        {
+          "age": 27,
+          "month": 108,
+          "source": "opportunity",
+          "nodeId": "marriage",
+          "nodeTitle": "Settling down",
+          "category": "family",
+          "branchId": "dual",
+          "branchLabel": "Marry — dual income",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "married": true
+          }
+        },
+        {
+          "age": 28,
+          "month": 120,
+          "source": "reflection",
+          "nodeId": "reflection-household-direction",
+          "nodeTitle": "Choose your household direction",
+          "category": "family",
+          "branchId": "family-planning",
+          "branchLabel": "Plan for dependents deliberately",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "householdIntent": "family-planning",
+            "familyPlanningIntent": "yes"
+          }
+        },
+        {
+          "age": 29,
+          "month": 132,
+          "source": "opportunity",
+          "nodeId": "first-child",
+          "nodeTitle": "Starting a family",
+          "category": "family",
+          "branchId": "yes",
+          "branchLabel": "Have a child",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "hasChild": true
+          }
+        },
+        {
+          "age": 30,
+          "month": 144,
+          "source": "opportunity",
+          "nodeId": "first-home",
+          "nodeTitle": "Rent or buy?",
+          "category": "housing",
+          "branchId": "buy-modest",
+          "branchLabel": "Buy modest ($240k)",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "homeowner": true
+          }
+        },
+        {
+          "age": 31,
+          "month": 156,
+          "source": "reflection",
+          "nodeId": "reflection-care-and-support",
+          "nodeTitle": "Design care and support",
+          "category": "community",
+          "branchId": "buy-capacity",
+          "branchLabel": "Pay for dependable support",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "carePlan": "buy-capacity"
+          }
+        },
+        {
+          "age": 33,
+          "month": 180,
+          "source": "curated-random-event",
+          "nodeId": "rng-medical",
+          "nodeTitle": "A medical emergency",
+          "category": "family",
+          "branchId": "handle",
+          "branchLabel": "Pay $8,000",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {}
+        },
+        {
+          "age": 34,
+          "month": 192,
+          "source": "reflection",
+          "nodeId": "reflection-resilience-plan",
+          "nodeTitle": "Build resilience before the next shock",
+          "category": "health",
+          "branchId": "health-capacity",
+          "branchLabel": "Invest in health capacity",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "resiliencePlan": "health-capacity"
+          }
+        },
+        {
+          "age": 35,
+          "month": 204,
+          "source": "reflection",
+          "nodeId": "reflection-career-recalibration",
+          "nodeTitle": "Recalibrate your career",
+          "category": "career",
+          "branchId": "deepen-specialty",
+          "branchLabel": "Deepen your specialty",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "careerDirection": "specialist"
+          }
+        },
+        {
+          "age": 37,
+          "month": 228,
+          "source": "reflection",
+          "nodeId": "reflection-location-reset",
+          "nodeTitle": "Reset location and commute",
+          "category": "housing",
+          "branchId": "move-near-support",
+          "branchLabel": "Move near trusted support",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "locationPlan": "support-network"
+          }
+        },
+        {
+          "age": 40,
+          "month": 264,
+          "source": "reflection",
+          "nodeId": "reflection-next-chapter",
+          "nodeTitle": "Choose what the next chapter optimizes for",
+          "category": "lifestyle",
+          "branchId": "health-first",
+          "branchLabel": "Put health and capacity first",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "nextChapter": "health"
+          }
+        }
+      ],
+      "quietYears": [
+        21,
+        22,
+        32,
+        36,
+        38,
+        39
+      ],
+      "finalState": {
+        "stage": "working",
+        "flags": {
+          "enrolled": false,
+          "major": "data-science",
+          "gradSalary": 8200,
+          "gradGrowth": 0.043,
+          "schoolFundingPlan": "aid-search",
+          "gradDelayMonths": 12,
+          "degreeEarned": true,
+          "hasCar": true,
+          "gradSchool": true,
+          "gradSchoolStartMonth": 72,
+          "gradSchoolDone": true,
+          "married": true,
+          "householdIntent": "family-planning",
+          "familyPlanningIntent": "yes",
+          "hasChild": true,
+          "homeowner": true,
+          "carePlan": "buy-capacity",
+          "resiliencePlan": "health-capacity",
+          "careerDirection": "specialist",
+          "locationPlan": "support-network",
+          "nextChapter": "health"
+        },
+        "resolvedNodeIds": [
+          "hs-launch",
+          "declare-major",
+          "reflection-student-funding",
+          "swap-major",
+          "graduate",
+          "buy-car",
+          "grad-school",
+          "grad-school-complete",
+          "marriage",
+          "reflection-household-direction",
+          "first-child",
+          "first-home",
+          "reflection-care-and-support",
+          "reflection-resilience-plan",
+          "reflection-career-recalibration",
+          "reflection-location-reset",
+          "reflection-next-chapter"
+        ],
+        "availableOpportunityIds": [
+          "boost-retirement"
+        ]
+      },
+      "coverage": {
+        "decisionCount": 19,
+        "categories": [
+          "career",
+          "community",
+          "education",
+          "family",
+          "health",
+          "housing",
+          "lifestyle"
+        ],
+        "milestoneCount": 4,
+        "opportunityCount": 6,
+        "randomEventCount": 2,
+        "reflectionCount": 7
+      }
+    },
+    {
+      "id": "college-nursing-to-public-health",
+      "name": "Nursing student changes direction and remains independent",
+      "premise": "A student changes from nursing to public health, builds a career, rents, adopts a pet, and does not marry by 40.",
+      "ageRange": {
+        "start": 18,
+        "end": 40
+      },
+      "decisions": [
+        {
+          "age": 18,
+          "month": 0,
+          "source": "milestone",
+          "nodeId": "hs-launch",
+          "nodeTitle": "Life after high school",
+          "category": "education",
+          "branchId": "school",
+          "branchLabel": "Go to college",
+          "stageBefore": "pre-launch",
+          "stageAfter": "school",
+          "flagsAddedOrChanged": {
+            "enrolled": true
+          }
+        },
+        {
+          "age": 18,
+          "month": 0,
+          "source": "milestone",
+          "nodeId": "declare-major",
+          "nodeTitle": "Declare your major",
+          "category": "education",
+          "branchId": "nursing",
+          "branchLabel": "Nursing",
+          "stageBefore": "school",
+          "stageAfter": "school",
+          "flagsAddedOrChanged": {
+            "major": "nursing",
+            "gradSalary": 6200,
+            "gradGrowth": 0.03
+          }
+        },
+        {
+          "age": 19,
+          "month": 12,
+          "source": "reflection",
+          "nodeId": "reflection-student-funding",
+          "nodeTitle": "Fund the next year of school",
+          "category": "education",
+          "branchId": "lower-cost-year",
+          "branchLabel": "Build a lower-cost school year",
+          "stageBefore": "school",
+          "stageAfter": "school",
+          "flagsAddedOrChanged": {
+            "schoolFundingPlan": "lower-cost-year"
+          }
+        },
+        {
+          "age": 20,
+          "month": 24,
+          "source": "opportunity",
+          "nodeId": "swap-major",
+          "nodeTitle": "Change your major",
+          "category": "education",
+          "branchId": "switch-public-health",
+          "branchLabel": "Switch to Public Health",
+          "stageBefore": "school",
+          "stageAfter": "school",
+          "flagsAddedOrChanged": {
+            "major": "public-health",
+            "gradSalary": 5300,
+            "gradGrowth": 0.033,
+            "gradDelayMonths": 12
+          }
+        },
+        {
+          "age": 23,
+          "month": 60,
+          "source": "milestone",
+          "nodeId": "graduate",
+          "nodeTitle": "Graduation day",
+          "category": "education",
+          "branchId": "start-career",
+          "branchLabel": "Start your career",
+          "stageBefore": "school",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "enrolled": false,
+            "degreeEarned": true
+          }
+        },
+        {
+          "age": 24,
+          "month": 72,
+          "source": "opportunity",
+          "nodeId": "buy-car",
+          "nodeTitle": "Get a car",
+          "category": "lifestyle",
+          "branchId": "used-cash",
+          "branchLabel": "Buy a used car in cash ($12k)",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "hasCar": true
+          }
+        },
+        {
+          "age": 25,
+          "month": 84,
+          "source": "opportunity",
+          "nodeId": "boost-retirement",
+          "nodeTitle": "Boost your retirement savings",
+          "category": "financial",
+          "branchId": "boost",
+          "branchLabel": "Raise 401(k) to 15%",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "retirementBoosted": true
+          }
+        },
+        {
+          "age": 26,
+          "month": 96,
+          "source": "reflection",
+          "nodeId": "reflection-sustainable-work",
+          "nodeTitle": "Design a sustainable working week",
+          "category": "career",
+          "branchId": "balanced-week",
+          "branchLabel": "Protect a balanced week",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "workPace": "balanced"
+          }
+        },
+        {
+          "age": 27,
+          "month": 108,
+          "source": "curated-random-event",
+          "nodeId": "rng-pet",
+          "nodeTitle": "Choose a companion",
+          "category": "lifestyle",
+          "branchId": "adult-cat",
+          "branchLabel": "Adult cat",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "hasPet": true,
+            "petType": "adult-cat",
+            "petWeeklyCareHours": 5
+          }
+        },
+        {
+          "age": 28,
+          "month": 120,
+          "source": "reflection",
+          "nodeId": "reflection-household-direction",
+          "nodeTitle": "Choose your household direction",
+          "category": "family",
+          "branchId": "independent-community",
+          "branchLabel": "Build an independent, connected life",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "householdIntent": "independent-community"
+          }
+        },
+        {
+          "age": 30,
+          "month": 144,
+          "source": "curated-random-event",
+          "nodeId": "rng-recruiter",
+          "nodeTitle": "A recruiter comes calling",
+          "category": "career",
+          "branchId": "jump",
+          "branchLabel": "Take the new job (+12%)",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "jobChangeCount": 1,
+            "lastJobChangeMonth": 144
+          }
+        },
+        {
+          "age": 31,
+          "month": 156,
+          "source": "reflection",
+          "nodeId": "reflection-care-and-support",
+          "nodeTitle": "Design care and support",
+          "category": "community",
+          "branchId": "strengthen-network",
+          "branchLabel": "Strengthen your support network",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "carePlan": "support-network"
+          }
+        },
+        {
+          "age": 33,
+          "month": 180,
+          "source": "reflection",
+          "nodeId": "reflection-resilience-plan",
+          "nodeTitle": "Build resilience before the next shock",
+          "category": "health",
+          "branchId": "balanced-protection",
+          "branchLabel": "Balance protection and present life",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "resiliencePlan": "balanced"
+          }
+        },
+        {
+          "age": 35,
+          "month": 204,
+          "source": "reflection",
+          "nodeId": "reflection-career-recalibration",
+          "nodeTitle": "Recalibrate your career",
+          "category": "career",
+          "branchId": "sustainable-role",
+          "branchLabel": "Optimize for sustainability",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "careerDirection": "sustainable"
+          }
+        },
+        {
+          "age": 37,
+          "month": 228,
+          "source": "reflection",
+          "nodeId": "reflection-location-reset",
+          "nodeTitle": "Reset location and commute",
+          "category": "housing",
+          "branchId": "stay-optimize",
+          "branchLabel": "Stay and optimize daily routes",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "locationPlan": "stay-optimize"
+          }
+        },
+        {
+          "age": 40,
+          "month": 264,
+          "source": "reflection",
+          "nodeId": "reflection-next-chapter",
+          "nodeTitle": "Choose what the next chapter optimizes for",
+          "category": "lifestyle",
+          "branchId": "community-family",
+          "branchLabel": "Shift toward people and community",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "nextChapter": "community"
+          }
+        }
+      ],
+      "quietYears": [
+        21,
+        22,
+        29,
+        32,
+        34,
+        36,
+        38,
+        39
+      ],
+      "finalState": {
+        "stage": "working",
+        "flags": {
+          "enrolled": false,
+          "major": "public-health",
+          "gradSalary": 5300,
+          "gradGrowth": 0.033,
+          "schoolFundingPlan": "lower-cost-year",
+          "gradDelayMonths": 12,
+          "degreeEarned": true,
+          "hasCar": true,
+          "retirementBoosted": true,
+          "workPace": "balanced",
+          "hasPet": true,
+          "petType": "adult-cat",
+          "petWeeklyCareHours": 5,
+          "householdIntent": "independent-community",
+          "jobChangeCount": 1,
+          "lastJobChangeMonth": 144,
+          "carePlan": "support-network",
+          "resiliencePlan": "balanced",
+          "careerDirection": "sustainable",
+          "locationPlan": "stay-optimize",
+          "nextChapter": "community"
+        },
+        "resolvedNodeIds": [
+          "hs-launch",
+          "declare-major",
+          "reflection-student-funding",
+          "swap-major",
+          "graduate",
+          "buy-car",
+          "boost-retirement",
+          "reflection-sustainable-work",
+          "rng-pet",
+          "reflection-household-direction",
+          "reflection-care-and-support",
+          "reflection-resilience-plan",
+          "reflection-career-recalibration",
+          "reflection-location-reset",
+          "reflection-next-chapter"
+        ],
+        "availableOpportunityIds": [
+          "marriage",
+          "first-home"
+        ]
+      },
+      "coverage": {
+        "decisionCount": 16,
+        "categories": [
+          "career",
+          "community",
+          "education",
+          "family",
+          "financial",
+          "health",
+          "housing",
+          "lifestyle"
+        ],
+        "milestoneCount": 3,
+        "opportunityCount": 3,
+        "randomEventCount": 2,
+        "reflectionCount": 8
+      }
+    },
+    {
+      "id": "direct-work-retail-family",
+      "name": "Retail worker advances into management",
+      "premise": "A high-school graduate enters retail, certifies, becomes a supervisor, and supports a single-income family.",
+      "ageRange": {
+        "start": 18,
+        "end": 40
+      },
+      "decisions": [
+        {
+          "age": 18,
+          "month": 0,
+          "source": "milestone",
+          "nodeId": "hs-launch",
+          "nodeTitle": "Life after high school",
+          "category": "education",
+          "branchId": "work",
+          "branchLabel": "Start working",
+          "stageBefore": "pre-launch",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "wentToWork": true
+          }
+        },
+        {
+          "age": 18,
+          "month": 0,
+          "source": "milestone",
+          "nodeId": "entry-track",
+          "nodeTitle": "Pick your line of work",
+          "category": "career",
+          "branchId": "retail",
+          "branchLabel": "Retail & service",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "track": "retail"
+          }
+        },
+        {
+          "age": 20,
+          "month": 24,
+          "source": "opportunity",
+          "nodeId": "work-cert",
+          "nodeTitle": "Earn a certification",
+          "category": "career",
+          "branchId": "get-cert",
+          "branchLabel": "Get certified",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "certified": true
+          }
+        },
+        {
+          "age": 20,
+          "month": 24,
+          "source": "curated-random-event",
+          "nodeId": "rng-rent-hike",
+          "nodeTitle": "Your rent is going up",
+          "category": "housing",
+          "branchId": "absorb",
+          "branchLabel": "Absorb the increase",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {}
+        },
+        {
+          "age": 21,
+          "month": 36,
+          "source": "opportunity",
+          "nodeId": "buy-car",
+          "nodeTitle": "Get a car",
+          "category": "lifestyle",
+          "branchId": "used-finance",
+          "branchLabel": "Finance a used car ($18k, $3k down)",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "hasCar": true
+          }
+        },
+        {
+          "age": 22,
+          "month": 48,
+          "source": "opportunity",
+          "nodeId": "work-promotion",
+          "nodeTitle": "Step up to management",
+          "category": "career",
+          "branchId": "accept-promotion",
+          "branchLabel": "Take the promotion",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "promoted": true
+          }
+        },
+        {
+          "age": 23,
+          "month": 60,
+          "source": "reflection",
+          "nodeId": "reflection-sustainable-work",
+          "nodeTitle": "Design a sustainable working week",
+          "category": "career",
+          "branchId": "balanced-week",
+          "branchLabel": "Protect a balanced week",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "workPace": "balanced"
+          }
+        },
+        {
+          "age": 24,
+          "month": 72,
+          "source": "curated-random-event",
+          "nodeId": "rng-layoff",
+          "nodeTitle": "You've been laid off",
+          "category": "career",
+          "branchId": "rebound",
+          "branchLabel": "Take a new role quickly (−15% pay)",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "layoffExperienced": true,
+            "lastJobSearchOutcome": "rapid-rebound"
+          }
+        },
+        {
+          "age": 26,
+          "month": 96,
+          "source": "opportunity",
+          "nodeId": "marriage",
+          "nodeTitle": "Settling down",
+          "category": "family",
+          "branchId": "single",
+          "branchLabel": "Marry — single income",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "married": true
+          }
+        },
+        {
+          "age": 27,
+          "month": 108,
+          "source": "reflection",
+          "nodeId": "reflection-household-direction",
+          "nodeTitle": "Choose your household direction",
+          "category": "family",
+          "branchId": "family-planning",
+          "branchLabel": "Plan for dependents deliberately",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "householdIntent": "family-planning",
+            "familyPlanningIntent": "yes"
+          }
+        },
+        {
+          "age": 28,
+          "month": 120,
+          "source": "opportunity",
+          "nodeId": "first-home",
+          "nodeTitle": "Rent or buy?",
+          "category": "housing",
+          "branchId": "buy-modest",
+          "branchLabel": "Buy modest ($240k)",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "homeowner": true
+          }
+        },
+        {
+          "age": 29,
+          "month": 132,
+          "source": "opportunity",
+          "nodeId": "first-child",
+          "nodeTitle": "Starting a family",
+          "category": "family",
+          "branchId": "yes",
+          "branchLabel": "Have a child",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "hasChild": true
+          }
+        },
+        {
+          "age": 30,
+          "month": 144,
+          "source": "reflection",
+          "nodeId": "reflection-care-and-support",
+          "nodeTitle": "Design care and support",
+          "category": "community",
+          "branchId": "flex-work",
+          "branchLabel": "Trade income for care time",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "carePlan": "flex-work"
+          }
+        },
+        {
+          "age": 33,
+          "month": 180,
+          "source": "reflection",
+          "nodeId": "reflection-resilience-plan",
+          "nodeTitle": "Build resilience before the next shock",
+          "category": "health",
+          "branchId": "cash-buffer",
+          "branchLabel": "Build a larger cash buffer",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "resiliencePlan": "cash-buffer"
+          }
+        },
+        {
+          "age": 34,
+          "month": 192,
+          "source": "curated-random-event",
+          "nodeId": "rng-home-repair",
+          "nodeTitle": "The house needs a big repair",
+          "category": "housing",
+          "branchId": "handle",
+          "branchLabel": "Pay $6,000",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {}
+        },
+        {
+          "age": 35,
+          "month": 204,
+          "source": "reflection",
+          "nodeId": "reflection-career-recalibration",
+          "nodeTitle": "Recalibrate your career",
+          "category": "career",
+          "branchId": "lead-people",
+          "branchLabel": "Pursue leadership",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "careerDirection": "leadership"
+          }
+        },
+        {
+          "age": 37,
+          "month": 228,
+          "source": "reflection",
+          "nodeId": "reflection-location-reset",
+          "nodeTitle": "Reset location and commute",
+          "category": "housing",
+          "branchId": "lower-cost-base",
+          "branchLabel": "Choose a lower-cost home base",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "locationPlan": "lower-cost"
+          }
+        },
+        {
+          "age": 40,
+          "month": 264,
+          "source": "reflection",
+          "nodeId": "reflection-next-chapter",
+          "nodeTitle": "Choose what the next chapter optimizes for",
+          "category": "lifestyle",
+          "branchId": "stay-course",
+          "branchLabel": "Stay the course with small improvements",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "nextChapter": "stay-course"
+          }
+        }
+      ],
+      "quietYears": [
+        19,
+        25,
+        31,
+        32,
+        36,
+        38,
+        39
+      ],
+      "finalState": {
+        "stage": "working",
+        "flags": {
+          "wentToWork": true,
+          "track": "retail",
+          "certified": true,
+          "hasCar": true,
+          "promoted": true,
+          "workPace": "balanced",
+          "layoffExperienced": true,
+          "lastJobSearchOutcome": "rapid-rebound",
+          "married": true,
+          "householdIntent": "family-planning",
+          "familyPlanningIntent": "yes",
+          "homeowner": true,
+          "hasChild": true,
+          "carePlan": "flex-work",
+          "resiliencePlan": "cash-buffer",
+          "careerDirection": "leadership",
+          "locationPlan": "lower-cost",
+          "nextChapter": "stay-course"
+        },
+        "resolvedNodeIds": [
+          "hs-launch",
+          "entry-track",
+          "work-cert",
+          "buy-car",
+          "work-promotion",
+          "reflection-sustainable-work",
+          "rng-layoff",
+          "marriage",
+          "reflection-household-direction",
+          "first-home",
+          "first-child",
+          "reflection-care-and-support",
+          "reflection-resilience-plan",
+          "reflection-career-recalibration",
+          "reflection-location-reset",
+          "reflection-next-chapter"
+        ],
+        "availableOpportunityIds": [
+          "boost-retirement"
+        ]
+      },
+      "coverage": {
+        "decisionCount": 18,
+        "categories": [
+          "career",
+          "community",
+          "education",
+          "family",
+          "health",
+          "housing",
+          "lifestyle"
+        ],
+        "milestoneCount": 2,
+        "opportunityCount": 6,
+        "randomEventCount": 3,
+        "reflectionCount": 7
+      }
+    },
+    {
+      "id": "direct-work-tech-mobile",
+      "name": "Mobile technology worker with multiple income streams",
+      "premise": "A web developer prioritizes career mobility, a side business, and travel without marriage or homeownership.",
+      "ageRange": {
+        "start": 18,
+        "end": 40
+      },
+      "decisions": [
+        {
+          "age": 18,
+          "month": 0,
+          "source": "milestone",
+          "nodeId": "hs-launch",
+          "nodeTitle": "Life after high school",
+          "category": "education",
+          "branchId": "work",
+          "branchLabel": "Start working",
+          "stageBefore": "pre-launch",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "wentToWork": true
+          }
+        },
+        {
+          "age": 18,
+          "month": 0,
+          "source": "milestone",
+          "nodeId": "entry-track",
+          "nodeTitle": "Pick your line of work",
+          "category": "career",
+          "branchId": "junior-web-developer",
+          "branchLabel": "Junior web developer",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "track": "junior-web-developer"
+          }
+        },
+        {
+          "age": 20,
+          "month": 24,
+          "source": "opportunity",
+          "nodeId": "work-cert",
+          "nodeTitle": "Earn a certification",
+          "category": "career",
+          "branchId": "get-cert",
+          "branchLabel": "Get certified",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "certified": true
+          }
+        },
+        {
+          "age": 21,
+          "month": 36,
+          "source": "opportunity",
+          "nodeId": "buy-car",
+          "nodeTitle": "Get a car",
+          "category": "lifestyle",
+          "branchId": "new-finance",
+          "branchLabel": "Finance a new car ($32k, $5k down)",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "hasCar": true
+          }
+        },
+        {
+          "age": 22,
+          "month": 48,
+          "source": "opportunity",
+          "nodeId": "work-promotion",
+          "nodeTitle": "Step up to management",
+          "category": "career",
+          "branchId": "accept-promotion",
+          "branchLabel": "Take the promotion",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "promoted": true
+          }
+        },
+        {
+          "age": 23,
+          "month": 60,
+          "source": "curated-random-event",
+          "nodeId": "rng-side-gig",
+          "nodeTitle": "A side-hustle opportunity",
+          "category": "career",
+          "branchId": "start",
+          "branchLabel": "Start the side hustle",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "hasSideGig": true
+          }
+        },
+        {
+          "age": 24,
+          "month": 72,
+          "source": "reflection",
+          "nodeId": "reflection-sustainable-work",
+          "nodeTitle": "Design a sustainable working week",
+          "category": "career",
+          "branchId": "skill-build",
+          "branchLabel": "Reserve time for a portable skill",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "workPace": "skill-build"
+          }
+        },
+        {
+          "age": 25,
+          "month": 84,
+          "source": "curated-random-event",
+          "nodeId": "rng-recruiter",
+          "nodeTitle": "A recruiter comes calling",
+          "category": "career",
+          "branchId": "jump",
+          "branchLabel": "Take the new job (+12%)",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "jobChangeCount": 1,
+            "lastJobChangeMonth": 84
+          }
+        },
+        {
+          "age": 27,
+          "month": 108,
+          "source": "reflection",
+          "nodeId": "reflection-household-direction",
+          "nodeTitle": "Choose your household direction",
+          "category": "family",
+          "branchId": "independent-community",
+          "branchLabel": "Build an independent, connected life",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "householdIntent": "independent-community"
+          }
+        },
+        {
+          "age": 28,
+          "month": 120,
+          "source": "curated-random-event",
+          "nodeId": "rng-trip",
+          "nodeTitle": "A once-in-a-lifetime trip",
+          "category": "lifestyle",
+          "branchId": "go",
+          "branchLabel": "Go for it ($12k)",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {}
+        },
+        {
+          "age": 29,
+          "month": 132,
+          "source": "reflection",
+          "nodeId": "reflection-business-or-stability",
+          "nodeTitle": "Choose stability or business growth",
+          "category": "career",
+          "branchId": "formalize-business",
+          "branchLabel": "Formalize and grow the business",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "hasSideGig": false,
+            "businessDirection": "formalized",
+            "businessEntity": true
+          }
+        },
+        {
+          "age": 30,
+          "month": 144,
+          "source": "reflection",
+          "nodeId": "reflection-care-and-support",
+          "nodeTitle": "Design care and support",
+          "category": "community",
+          "branchId": "strengthen-network",
+          "branchLabel": "Strengthen your support network",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "carePlan": "support-network"
+          }
+        },
+        {
+          "age": 33,
+          "month": 180,
+          "source": "reflection",
+          "nodeId": "reflection-resilience-plan",
+          "nodeTitle": "Build resilience before the next shock",
+          "category": "health",
+          "branchId": "health-capacity",
+          "branchLabel": "Invest in health capacity",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "resiliencePlan": "health-capacity"
+          }
+        },
+        {
+          "age": 35,
+          "month": 204,
+          "source": "curated-random-event",
+          "nodeId": "rng-layoff",
+          "nodeTitle": "You've been laid off",
+          "category": "career",
+          "branchId": "hold-out",
+          "branchLabel": "Hold out for a comparable role",
+          "stageBefore": "working",
+          "stageAfter": "unemployed",
+          "flagsAddedOrChanged": {
+            "layoffExperienced": true,
+            "unemployed": true,
+            "unemploymentStartedMonth": 204
+          }
+        },
+        {
+          "age": 36,
+          "month": 216,
+          "source": "milestone",
+          "nodeId": "unemployment-search",
+          "nodeTitle": "Choose your route back into work",
+          "category": "career",
+          "branchId": "comparable-role",
+          "branchLabel": "Search longer for a comparable role",
+          "stageBefore": "unemployed",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "unemployed": false,
+            "lastJobSearchOutcome": "comparable-role"
+          }
+        },
+        {
+          "age": 37,
+          "month": 228,
+          "source": "reflection",
+          "nodeId": "reflection-career-recalibration",
+          "nodeTitle": "Recalibrate your career",
+          "category": "career",
+          "branchId": "deepen-specialty",
+          "branchLabel": "Deepen your specialty",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "careerDirection": "specialist"
+          }
+        },
+        {
+          "age": 38,
+          "month": 240,
+          "source": "reflection",
+          "nodeId": "reflection-location-reset",
+          "nodeTitle": "Reset location and commute",
+          "category": "housing",
+          "branchId": "move-near-opportunity",
+          "branchLabel": "Move near work and daily needs",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "locationPlan": "opportunity-center"
+          }
+        },
+        {
+          "age": 40,
+          "month": 264,
+          "source": "reflection",
+          "nodeId": "reflection-next-chapter",
+          "nodeTitle": "Choose what the next chapter optimizes for",
+          "category": "lifestyle",
+          "branchId": "career-reinvention",
+          "branchLabel": "Begin a career reinvention",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "nextChapter": "career-reinvention"
+          }
+        }
+      ],
+      "quietYears": [
+        19,
+        26,
+        31,
+        32,
+        34,
+        39
+      ],
+      "finalState": {
+        "stage": "working",
+        "flags": {
+          "wentToWork": true,
+          "track": "junior-web-developer",
+          "certified": true,
+          "hasCar": true,
+          "promoted": true,
+          "hasSideGig": false,
+          "workPace": "skill-build",
+          "jobChangeCount": 1,
+          "lastJobChangeMonth": 84,
+          "householdIntent": "independent-community",
+          "businessDirection": "formalized",
+          "businessEntity": true,
+          "carePlan": "support-network",
+          "resiliencePlan": "health-capacity",
+          "layoffExperienced": true,
+          "unemployed": false,
+          "unemploymentStartedMonth": 204,
+          "lastJobSearchOutcome": "comparable-role",
+          "careerDirection": "specialist",
+          "locationPlan": "opportunity-center",
+          "nextChapter": "career-reinvention"
+        },
+        "resolvedNodeIds": [
+          "hs-launch",
+          "entry-track",
+          "work-cert",
+          "buy-car",
+          "work-promotion",
+          "rng-side-gig",
+          "reflection-sustainable-work",
+          "reflection-household-direction",
+          "reflection-business-or-stability",
+          "reflection-care-and-support",
+          "reflection-resilience-plan",
+          "rng-layoff",
+          "unemployment-search",
+          "reflection-career-recalibration",
+          "reflection-location-reset",
+          "reflection-next-chapter"
+        ],
+        "availableOpportunityIds": [
+          "marriage",
+          "first-home",
+          "boost-retirement"
+        ]
+      },
+      "coverage": {
+        "decisionCount": 18,
+        "categories": [
+          "career",
+          "community",
+          "education",
+          "family",
+          "health",
+          "housing",
+          "lifestyle"
+        ],
+        "milestoneCount": 3,
+        "opportunityCount": 3,
+        "randomEventCount": 4,
+        "reflectionCount": 8
+      }
+    },
+    {
+      "id": "electrician-business-owner",
+      "name": "Electrician becomes a business owner",
+      "premise": "An apprentice earns a ticket, opens a shop, and builds a dual-income household with a child and a home.",
+      "ageRange": {
+        "start": 18,
+        "end": 40
+      },
+      "decisions": [
+        {
+          "age": 18,
+          "month": 0,
+          "source": "milestone",
+          "nodeId": "hs-launch",
+          "nodeTitle": "Life after high school",
+          "category": "education",
+          "branchId": "trade",
+          "branchLabel": "Enter a trade apprenticeship",
+          "stageBefore": "pre-launch",
+          "stageAfter": "apprenticeship",
+          "flagsAddedOrChanged": {}
+        },
+        {
+          "age": 18,
+          "month": 0,
+          "source": "milestone",
+          "nodeId": "apprenticeship-trade",
+          "nodeTitle": "Choose your trade",
+          "category": "career",
+          "branchId": "electrician",
+          "branchLabel": "Electrician",
+          "stageBefore": "apprenticeship",
+          "stageAfter": "apprenticeship",
+          "flagsAddedOrChanged": {
+            "trade": "electrician",
+            "journeymanPay": 6000
+          }
+        },
+        {
+          "age": 20,
+          "month": 24,
+          "source": "opportunity",
+          "nodeId": "buy-car",
+          "nodeTitle": "Get a car",
+          "category": "lifestyle",
+          "branchId": "used-cash",
+          "branchLabel": "Buy a used car in cash ($12k)",
+          "stageBefore": "apprenticeship",
+          "stageAfter": "apprenticeship",
+          "flagsAddedOrChanged": {
+            "hasCar": true
+          }
+        },
+        {
+          "age": 21,
+          "month": 36,
+          "source": "milestone",
+          "nodeId": "journeyman-ticket",
+          "nodeTitle": "Earn your ticket",
+          "category": "career",
+          "branchId": "pass-ticket",
+          "branchLabel": "Pass the exam & get licensed",
+          "stageBefore": "apprenticeship",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "ticket": true
+          }
+        },
+        {
+          "age": 23,
+          "month": 60,
+          "source": "curated-random-event",
+          "nodeId": "rng-side-gig",
+          "nodeTitle": "A side-hustle opportunity",
+          "category": "career",
+          "branchId": "start",
+          "branchLabel": "Start the side hustle",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "hasSideGig": true
+          }
+        },
+        {
+          "age": 24,
+          "month": 72,
+          "source": "reflection",
+          "nodeId": "reflection-sustainable-work",
+          "nodeTitle": "Design a sustainable working week",
+          "category": "career",
+          "branchId": "balanced-week",
+          "branchLabel": "Protect a balanced week",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "workPace": "balanced"
+          }
+        },
+        {
+          "age": 25,
+          "month": 84,
+          "source": "opportunity",
+          "nodeId": "master-license",
+          "nodeTitle": "Go out on your own",
+          "category": "career",
+          "branchId": "start-shop",
+          "branchLabel": "Get master license & start a business",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "masterLicense": true
+          }
+        },
+        {
+          "age": 26,
+          "month": 96,
+          "source": "opportunity",
+          "nodeId": "marriage",
+          "nodeTitle": "Settling down",
+          "category": "family",
+          "branchId": "dual",
+          "branchLabel": "Marry — dual income",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "married": true
+          }
+        },
+        {
+          "age": 27,
+          "month": 108,
+          "source": "opportunity",
+          "nodeId": "first-home",
+          "nodeTitle": "Rent or buy?",
+          "category": "housing",
+          "branchId": "buy",
+          "branchLabel": "Buy a $320k home",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "homeowner": true
+          }
+        },
+        {
+          "age": 28,
+          "month": 120,
+          "source": "opportunity",
+          "nodeId": "first-child",
+          "nodeTitle": "Starting a family",
+          "category": "family",
+          "branchId": "yes",
+          "branchLabel": "Have a child",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "hasChild": true
+          }
+        },
+        {
+          "age": 29,
+          "month": 132,
+          "source": "reflection",
+          "nodeId": "reflection-household-direction",
+          "nodeTitle": "Choose your household direction",
+          "category": "family",
+          "branchId": "family-planning",
+          "branchLabel": "Plan for dependents deliberately",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "householdIntent": "family-planning",
+            "familyPlanningIntent": "yes"
+          }
+        },
+        {
+          "age": 30,
+          "month": 144,
+          "source": "reflection",
+          "nodeId": "reflection-business-or-stability",
+          "nodeTitle": "Choose stability or business growth",
+          "category": "career",
+          "branchId": "delegate-systems",
+          "branchLabel": "Hire help and build systems",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "businessDirection": "delegate",
+            "businessHasHelp": true
+          }
+        },
+        {
+          "age": 31,
+          "month": 156,
+          "source": "reflection",
+          "nodeId": "reflection-care-and-support",
+          "nodeTitle": "Design care and support",
+          "category": "community",
+          "branchId": "share-care",
+          "branchLabel": "Build a shared care rotation",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "carePlan": "shared"
+          }
+        },
+        {
+          "age": 32,
+          "month": 168,
+          "source": "curated-random-event",
+          "nodeId": "rng-home-repair",
+          "nodeTitle": "The house needs a big repair",
+          "category": "housing",
+          "branchId": "handle",
+          "branchLabel": "Pay $6,000",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {}
+        },
+        {
+          "age": 33,
+          "month": 180,
+          "source": "reflection",
+          "nodeId": "reflection-resilience-plan",
+          "nodeTitle": "Build resilience before the next shock",
+          "category": "health",
+          "branchId": "cash-buffer",
+          "branchLabel": "Build a larger cash buffer",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "resiliencePlan": "cash-buffer"
+          }
+        },
+        {
+          "age": 35,
+          "month": 204,
+          "source": "reflection",
+          "nodeId": "reflection-career-recalibration",
+          "nodeTitle": "Recalibrate your career",
+          "category": "career",
+          "branchId": "lead-people",
+          "branchLabel": "Pursue leadership",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "careerDirection": "leadership"
+          }
+        },
+        {
+          "age": 37,
+          "month": 228,
+          "source": "reflection",
+          "nodeId": "reflection-location-reset",
+          "nodeTitle": "Reset location and commute",
+          "category": "housing",
+          "branchId": "stay-optimize",
+          "branchLabel": "Stay and optimize daily routes",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "locationPlan": "stay-optimize"
+          }
+        },
+        {
+          "age": 40,
+          "month": 264,
+          "source": "reflection",
+          "nodeId": "reflection-next-chapter",
+          "nodeTitle": "Choose what the next chapter optimizes for",
+          "category": "lifestyle",
+          "branchId": "community-family",
+          "branchLabel": "Shift toward people and community",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "nextChapter": "community"
+          }
+        }
+      ],
+      "quietYears": [
+        19,
+        22,
+        34,
+        36,
+        38,
+        39
+      ],
+      "finalState": {
+        "stage": "working",
+        "flags": {
+          "trade": "electrician",
+          "journeymanPay": 6000,
+          "hasCar": true,
+          "ticket": true,
+          "hasSideGig": true,
+          "workPace": "balanced",
+          "masterLicense": true,
+          "married": true,
+          "homeowner": true,
+          "hasChild": true,
+          "householdIntent": "family-planning",
+          "familyPlanningIntent": "yes",
+          "businessDirection": "delegate",
+          "businessHasHelp": true,
+          "carePlan": "shared",
+          "resiliencePlan": "cash-buffer",
+          "careerDirection": "leadership",
+          "locationPlan": "stay-optimize",
+          "nextChapter": "community"
+        },
+        "resolvedNodeIds": [
+          "hs-launch",
+          "apprenticeship-trade",
+          "buy-car",
+          "journeyman-ticket",
+          "rng-side-gig",
+          "reflection-sustainable-work",
+          "master-license",
+          "marriage",
+          "first-home",
+          "first-child",
+          "reflection-household-direction",
+          "reflection-business-or-stability",
+          "reflection-care-and-support",
+          "reflection-resilience-plan",
+          "reflection-career-recalibration",
+          "reflection-location-reset",
+          "reflection-next-chapter"
+        ],
+        "availableOpportunityIds": [
+          "boost-retirement"
+        ]
+      },
+      "coverage": {
+        "decisionCount": 18,
+        "categories": [
+          "career",
+          "community",
+          "education",
+          "family",
+          "health",
+          "housing",
+          "lifestyle"
+        ],
+        "milestoneCount": 3,
+        "opportunityCount": 5,
+        "randomEventCount": 2,
+        "reflectionCount": 8
+      }
+    },
+    {
+      "id": "hvac-journeyman-stable",
+      "name": "HVAC journeyman chooses stability",
+      "premise": "A tradesperson remains a journeyman, focuses on retirement, marries later, and starts a family in their thirties.",
+      "ageRange": {
+        "start": 18,
+        "end": 40
+      },
+      "decisions": [
+        {
+          "age": 18,
+          "month": 0,
+          "source": "milestone",
+          "nodeId": "hs-launch",
+          "nodeTitle": "Life after high school",
+          "category": "education",
+          "branchId": "trade",
+          "branchLabel": "Enter a trade apprenticeship",
+          "stageBefore": "pre-launch",
+          "stageAfter": "apprenticeship",
+          "flagsAddedOrChanged": {}
+        },
+        {
+          "age": 18,
+          "month": 0,
+          "source": "milestone",
+          "nodeId": "apprenticeship-trade",
+          "nodeTitle": "Choose your trade",
+          "category": "career",
+          "branchId": "hvac",
+          "branchLabel": "HVAC",
+          "stageBefore": "apprenticeship",
+          "stageAfter": "apprenticeship",
+          "flagsAddedOrChanged": {
+            "trade": "hvac",
+            "journeymanPay": 5600
+          }
+        },
+        {
+          "age": 21,
+          "month": 36,
+          "source": "milestone",
+          "nodeId": "journeyman-ticket",
+          "nodeTitle": "Earn your ticket",
+          "category": "career",
+          "branchId": "pass-ticket",
+          "branchLabel": "Pass the exam & get licensed",
+          "stageBefore": "apprenticeship",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "ticket": true
+          }
+        },
+        {
+          "age": 22,
+          "month": 48,
+          "source": "opportunity",
+          "nodeId": "buy-car",
+          "nodeTitle": "Get a car",
+          "category": "lifestyle",
+          "branchId": "used-cash",
+          "branchLabel": "Buy a used car in cash ($12k)",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "hasCar": true
+          }
+        },
+        {
+          "age": 23,
+          "month": 60,
+          "source": "reflection",
+          "nodeId": "reflection-sustainable-work",
+          "nodeTitle": "Design a sustainable working week",
+          "category": "career",
+          "branchId": "balanced-week",
+          "branchLabel": "Protect a balanced week",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "workPace": "balanced"
+          }
+        },
+        {
+          "age": 24,
+          "month": 72,
+          "source": "opportunity",
+          "nodeId": "boost-retirement",
+          "nodeTitle": "Boost your retirement savings",
+          "category": "financial",
+          "branchId": "boost",
+          "branchLabel": "Raise 401(k) to 15%",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "retirementBoosted": true
+          }
+        },
+        {
+          "age": 25,
+          "month": 84,
+          "source": "curated-random-event",
+          "nodeId": "rng-rent-hike",
+          "nodeTitle": "Your rent is going up",
+          "category": "housing",
+          "branchId": "absorb",
+          "branchLabel": "Absorb the increase",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {}
+        },
+        {
+          "age": 27,
+          "month": 108,
+          "source": "reflection",
+          "nodeId": "reflection-household-direction",
+          "nodeTitle": "Choose your household direction",
+          "category": "family",
+          "branchId": "preserve-flexibility",
+          "branchLabel": "Preserve flexibility this year",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "householdIntent": "flexible",
+            "householdReviewMonth": 132
+          }
+        },
+        {
+          "age": 28,
+          "month": 120,
+          "source": "reflection",
+          "nodeId": "reflection-business-or-stability",
+          "nodeTitle": "Choose stability or business growth",
+          "category": "career",
+          "branchId": "stable-craft",
+          "branchLabel": "Choose a stable craft and predictable hours",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "businessDirection": "stable-craft",
+            "stabilityChosen": true
+          }
+        },
+        {
+          "age": 29,
+          "month": 132,
+          "source": "opportunity",
+          "nodeId": "marriage",
+          "nodeTitle": "Settling down",
+          "category": "family",
+          "branchId": "single",
+          "branchLabel": "Marry — single income",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "married": true
+          }
+        },
+        {
+          "age": 30,
+          "month": 144,
+          "source": "reflection",
+          "nodeId": "reflection-care-and-support",
+          "nodeTitle": "Design care and support",
+          "category": "community",
+          "branchId": "share-care",
+          "branchLabel": "Build a shared care rotation",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "carePlan": "shared"
+          }
+        },
+        {
+          "age": 31,
+          "month": 156,
+          "source": "opportunity",
+          "nodeId": "first-child",
+          "nodeTitle": "Starting a family",
+          "category": "family",
+          "branchId": "yes",
+          "branchLabel": "Have a child",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "hasChild": true
+          }
+        },
+        {
+          "age": 33,
+          "month": 180,
+          "source": "reflection",
+          "nodeId": "reflection-resilience-plan",
+          "nodeTitle": "Build resilience before the next shock",
+          "category": "health",
+          "branchId": "health-capacity",
+          "branchLabel": "Invest in health capacity",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "resiliencePlan": "health-capacity"
+          }
+        },
+        {
+          "age": 34,
+          "month": 192,
+          "source": "curated-random-event",
+          "nodeId": "rng-medical",
+          "nodeTitle": "A medical emergency",
+          "category": "family",
+          "branchId": "handle",
+          "branchLabel": "Pay $8,000",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {}
+        },
+        {
+          "age": 35,
+          "month": 204,
+          "source": "reflection",
+          "nodeId": "reflection-career-recalibration",
+          "nodeTitle": "Recalibrate your career",
+          "category": "career",
+          "branchId": "sustainable-role",
+          "branchLabel": "Optimize for sustainability",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "careerDirection": "sustainable"
+          }
+        },
+        {
+          "age": 37,
+          "month": 228,
+          "source": "reflection",
+          "nodeId": "reflection-location-reset",
+          "nodeTitle": "Reset location and commute",
+          "category": "housing",
+          "branchId": "stay-optimize",
+          "branchLabel": "Stay and optimize daily routes",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "locationPlan": "stay-optimize"
+          }
+        },
+        {
+          "age": 40,
+          "month": 264,
+          "source": "reflection",
+          "nodeId": "reflection-next-chapter",
+          "nodeTitle": "Choose what the next chapter optimizes for",
+          "category": "lifestyle",
+          "branchId": "stay-course",
+          "branchLabel": "Stay the course with small improvements",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "nextChapter": "stay-course"
+          }
+        }
+      ],
+      "quietYears": [
+        19,
+        20,
+        26,
+        32,
+        36,
+        38,
+        39
+      ],
+      "finalState": {
+        "stage": "working",
+        "flags": {
+          "trade": "hvac",
+          "journeymanPay": 5600,
+          "ticket": true,
+          "hasCar": true,
+          "workPace": "balanced",
+          "retirementBoosted": true,
+          "householdIntent": "flexible",
+          "householdReviewMonth": 132,
+          "businessDirection": "stable-craft",
+          "stabilityChosen": true,
+          "married": true,
+          "carePlan": "shared",
+          "hasChild": true,
+          "resiliencePlan": "health-capacity",
+          "careerDirection": "sustainable",
+          "locationPlan": "stay-optimize",
+          "nextChapter": "stay-course"
+        },
+        "resolvedNodeIds": [
+          "hs-launch",
+          "apprenticeship-trade",
+          "journeyman-ticket",
+          "buy-car",
+          "reflection-sustainable-work",
+          "boost-retirement",
+          "reflection-household-direction",
+          "reflection-business-or-stability",
+          "marriage",
+          "reflection-care-and-support",
+          "first-child",
+          "reflection-resilience-plan",
+          "reflection-career-recalibration",
+          "reflection-location-reset",
+          "reflection-next-chapter"
+        ],
+        "availableOpportunityIds": [
+          "first-home",
+          "master-license"
+        ]
+      },
+      "coverage": {
+        "decisionCount": 17,
+        "categories": [
+          "career",
+          "community",
+          "education",
+          "family",
+          "financial",
+          "health",
+          "housing",
+          "lifestyle"
+        ],
+        "milestoneCount": 3,
+        "opportunityCount": 4,
+        "randomEventCount": 2,
+        "reflectionCount": 8
+      }
+    },
+    {
+      "id": "army-gi-bill-nurse",
+      "name": "Army veteran uses the GI Bill",
+      "premise": "An Army veteran attends college after service, becomes a nurse, and creates a dual-income household.",
+      "ageRange": {
+        "start": 18,
+        "end": 40
+      },
+      "decisions": [
+        {
+          "age": 18,
+          "month": 0,
+          "source": "milestone",
+          "nodeId": "hs-launch",
+          "nodeTitle": "Life after high school",
+          "category": "education",
+          "branchId": "military",
+          "branchLabel": "Enlist in the military",
+          "stageBefore": "pre-launch",
+          "stageAfter": "military",
+          "flagsAddedOrChanged": {
+            "enlisted": true
+          }
+        },
+        {
+          "age": 18,
+          "month": 0,
+          "source": "milestone",
+          "nodeId": "military-branch",
+          "nodeTitle": "Choose your branch",
+          "category": "military",
+          "branchId": "army",
+          "branchLabel": "Army",
+          "stageBefore": "military",
+          "stageAfter": "military",
+          "flagsAddedOrChanged": {
+            "serviceBranch": "army"
+          }
+        },
+        {
+          "age": 19,
+          "month": 12,
+          "source": "reflection",
+          "nodeId": "reflection-military-service-design",
+          "nodeTitle": "Shape the rest of your service",
+          "category": "military",
+          "branchId": "portable-credential",
+          "branchLabel": "Earn a portable credential",
+          "stageBefore": "military",
+          "stageAfter": "military",
+          "flagsAddedOrChanged": {
+            "servicePlan": "portable-credential",
+            "serviceCredential": true
+          }
+        },
+        {
+          "age": 20,
+          "month": 24,
+          "source": "curated-random-event",
+          "nodeId": "rng-pet",
+          "nodeTitle": "Choose a companion",
+          "category": "lifestyle",
+          "branchId": "adult-dog",
+          "branchLabel": "Adult rescue dog",
+          "stageBefore": "military",
+          "stageAfter": "military",
+          "flagsAddedOrChanged": {
+            "hasPet": true,
+            "petType": "adult-dog",
+            "petWeeklyCareHours": 10
+          }
+        },
+        {
+          "age": 22,
+          "month": 48,
+          "source": "milestone",
+          "nodeId": "post-service",
+          "nodeTitle": "End of your service term",
+          "category": "military",
+          "branchId": "gi-bill-school",
+          "branchLabel": "Use the GI Bill for college",
+          "stageBefore": "military",
+          "stageAfter": "school",
+          "flagsAddedOrChanged": {
+            "separated": true,
+            "enrolled": true,
+            "giBill": true
+          }
+        },
+        {
+          "age": 22,
+          "month": 48,
+          "source": "milestone",
+          "nodeId": "declare-major",
+          "nodeTitle": "Declare your major",
+          "category": "education",
+          "branchId": "nursing",
+          "branchLabel": "Nursing",
+          "stageBefore": "school",
+          "stageAfter": "school",
+          "flagsAddedOrChanged": {
+            "major": "nursing",
+            "gradSalary": 6200,
+            "gradGrowth": 0.03
+          }
+        },
+        {
+          "age": 25,
+          "month": 84,
+          "source": "curated-random-event",
+          "nodeId": "rng-trip",
+          "nodeTitle": "A once-in-a-lifetime trip",
+          "category": "lifestyle",
+          "branchId": "go",
+          "branchLabel": "Go for it ($12k)",
+          "stageBefore": "school",
+          "stageAfter": "school",
+          "flagsAddedOrChanged": {}
+        },
+        {
+          "age": 26,
+          "month": 96,
+          "source": "milestone",
+          "nodeId": "graduate",
+          "nodeTitle": "Graduation day",
+          "category": "education",
+          "branchId": "start-career",
+          "branchLabel": "Start your career",
+          "stageBefore": "school",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "enrolled": false,
+            "degreeEarned": true
+          }
+        },
+        {
+          "age": 27,
+          "month": 108,
+          "source": "opportunity",
+          "nodeId": "buy-car",
+          "nodeTitle": "Get a car",
+          "category": "lifestyle",
+          "branchId": "used-finance",
+          "branchLabel": "Finance a used car ($18k, $3k down)",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "hasCar": true
+          }
+        },
+        {
+          "age": 28,
+          "month": 120,
+          "source": "opportunity",
+          "nodeId": "marriage",
+          "nodeTitle": "Settling down",
+          "category": "family",
+          "branchId": "dual",
+          "branchLabel": "Marry — dual income",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "married": true
+          }
+        },
+        {
+          "age": 29,
+          "month": 132,
+          "source": "reflection",
+          "nodeId": "reflection-household-direction",
+          "nodeTitle": "Choose your household direction",
+          "category": "family",
+          "branchId": "family-planning",
+          "branchLabel": "Plan for dependents deliberately",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "householdIntent": "family-planning",
+            "familyPlanningIntent": "yes"
+          }
+        },
+        {
+          "age": 30,
+          "month": 144,
+          "source": "opportunity",
+          "nodeId": "first-child",
+          "nodeTitle": "Starting a family",
+          "category": "family",
+          "branchId": "yes",
+          "branchLabel": "Have a child",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "hasChild": true
+          }
+        },
+        {
+          "age": 31,
+          "month": 156,
+          "source": "opportunity",
+          "nodeId": "first-home",
+          "nodeTitle": "Rent or buy?",
+          "category": "housing",
+          "branchId": "buy-modest",
+          "branchLabel": "Buy modest ($240k)",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "homeowner": true
+          }
+        },
+        {
+          "age": 32,
+          "month": 168,
+          "source": "reflection",
+          "nodeId": "reflection-care-and-support",
+          "nodeTitle": "Design care and support",
+          "category": "community",
+          "branchId": "share-care",
+          "branchLabel": "Build a shared care rotation",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "carePlan": "shared"
+          }
+        },
+        {
+          "age": 33,
+          "month": 180,
+          "source": "reflection",
+          "nodeId": "reflection-resilience-plan",
+          "nodeTitle": "Build resilience before the next shock",
+          "category": "health",
+          "branchId": "health-capacity",
+          "branchLabel": "Invest in health capacity",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "resiliencePlan": "health-capacity"
+          }
+        },
+        {
+          "age": 35,
+          "month": 204,
+          "source": "curated-random-event",
+          "nodeId": "rng-medical",
+          "nodeTitle": "A medical emergency",
+          "category": "family",
+          "branchId": "handle",
+          "branchLabel": "Pay $8,000",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {}
+        },
+        {
+          "age": 36,
+          "month": 216,
+          "source": "reflection",
+          "nodeId": "reflection-career-recalibration",
+          "nodeTitle": "Recalibrate your career",
+          "category": "career",
+          "branchId": "deepen-specialty",
+          "branchLabel": "Deepen your specialty",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "careerDirection": "specialist"
+          }
+        },
+        {
+          "age": 37,
+          "month": 228,
+          "source": "reflection",
+          "nodeId": "reflection-location-reset",
+          "nodeTitle": "Reset location and commute",
+          "category": "housing",
+          "branchId": "move-near-support",
+          "branchLabel": "Move near trusted support",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "locationPlan": "support-network"
+          }
+        },
+        {
+          "age": 40,
+          "month": 264,
+          "source": "reflection",
+          "nodeId": "reflection-next-chapter",
+          "nodeTitle": "Choose what the next chapter optimizes for",
+          "category": "lifestyle",
+          "branchId": "community-family",
+          "branchLabel": "Shift toward people and community",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "nextChapter": "community"
+          }
+        }
+      ],
+      "quietYears": [
+        21,
+        23,
+        24,
+        34,
+        38,
+        39
+      ],
+      "finalState": {
+        "stage": "working",
+        "flags": {
+          "enlisted": true,
+          "serviceBranch": "army",
+          "servicePlan": "portable-credential",
+          "serviceCredential": true,
+          "hasPet": true,
+          "petType": "adult-dog",
+          "petWeeklyCareHours": 10,
+          "separated": true,
+          "enrolled": false,
+          "giBill": true,
+          "major": "nursing",
+          "gradSalary": 6200,
+          "gradGrowth": 0.03,
+          "degreeEarned": true,
+          "hasCar": true,
+          "married": true,
+          "householdIntent": "family-planning",
+          "familyPlanningIntent": "yes",
+          "hasChild": true,
+          "homeowner": true,
+          "carePlan": "shared",
+          "resiliencePlan": "health-capacity",
+          "careerDirection": "specialist",
+          "locationPlan": "support-network",
+          "nextChapter": "community"
+        },
+        "resolvedNodeIds": [
+          "hs-launch",
+          "military-branch",
+          "reflection-military-service-design",
+          "rng-pet",
+          "post-service",
+          "declare-major",
+          "graduate",
+          "buy-car",
+          "marriage",
+          "reflection-household-direction",
+          "first-child",
+          "first-home",
+          "reflection-care-and-support",
+          "reflection-resilience-plan",
+          "reflection-career-recalibration",
+          "reflection-location-reset",
+          "reflection-next-chapter"
+        ],
+        "availableOpportunityIds": [
+          "boost-retirement"
+        ]
+      },
+      "coverage": {
+        "decisionCount": 19,
+        "categories": [
+          "career",
+          "community",
+          "education",
+          "family",
+          "health",
+          "housing",
+          "lifestyle",
+          "military"
+        ],
+        "milestoneCount": 5,
+        "opportunityCount": 4,
+        "randomEventCount": 3,
+        "reflectionCount": 7
+      }
+    },
+    {
+      "id": "air-force-civilian-family",
+      "name": "Air Force veteran enters civilian work",
+      "premise": "An Air Force veteran moves directly into civilian employment and builds a home-owning family.",
+      "ageRange": {
+        "start": 18,
+        "end": 40
+      },
+      "decisions": [
+        {
+          "age": 18,
+          "month": 0,
+          "source": "milestone",
+          "nodeId": "hs-launch",
+          "nodeTitle": "Life after high school",
+          "category": "education",
+          "branchId": "military",
+          "branchLabel": "Enlist in the military",
+          "stageBefore": "pre-launch",
+          "stageAfter": "military",
+          "flagsAddedOrChanged": {
+            "enlisted": true
+          }
+        },
+        {
+          "age": 18,
+          "month": 0,
+          "source": "milestone",
+          "nodeId": "military-branch",
+          "nodeTitle": "Choose your branch",
+          "category": "military",
+          "branchId": "air-force",
+          "branchLabel": "Air Force",
+          "stageBefore": "military",
+          "stageAfter": "military",
+          "flagsAddedOrChanged": {
+            "serviceBranch": "air-force"
+          }
+        },
+        {
+          "age": 19,
+          "month": 12,
+          "source": "reflection",
+          "nodeId": "reflection-military-service-design",
+          "nodeTitle": "Shape the rest of your service",
+          "category": "military",
+          "branchId": "transition-network",
+          "branchLabel": "Build a civilian transition network",
+          "stageBefore": "military",
+          "stageAfter": "military",
+          "flagsAddedOrChanged": {
+            "servicePlan": "transition-network",
+            "transitionNetwork": true
+          }
+        },
+        {
+          "age": 22,
+          "month": 48,
+          "source": "milestone",
+          "nodeId": "post-service",
+          "nodeTitle": "End of your service term",
+          "category": "military",
+          "branchId": "civilian-work",
+          "branchLabel": "Enter the civilian workforce",
+          "stageBefore": "military",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "separated": true,
+            "veteranHire": true
+          }
+        },
+        {
+          "age": 23,
+          "month": 60,
+          "source": "opportunity",
+          "nodeId": "buy-car",
+          "nodeTitle": "Get a car",
+          "category": "lifestyle",
+          "branchId": "new-finance",
+          "branchLabel": "Finance a new car ($32k, $5k down)",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "hasCar": true
+          }
+        },
+        {
+          "age": 24,
+          "month": 72,
+          "source": "opportunity",
+          "nodeId": "boost-retirement",
+          "nodeTitle": "Boost your retirement savings",
+          "category": "financial",
+          "branchId": "boost",
+          "branchLabel": "Raise 401(k) to 15%",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "retirementBoosted": true
+          }
+        },
+        {
+          "age": 25,
+          "month": 84,
+          "source": "curated-random-event",
+          "nodeId": "rng-promotion",
+          "nodeTitle": "A promotion offer",
+          "category": "career",
+          "branchId": "accept",
+          "branchLabel": "Accept the promotion",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "promotionCount": 1
+          }
+        },
+        {
+          "age": 26,
+          "month": 96,
+          "source": "opportunity",
+          "nodeId": "marriage",
+          "nodeTitle": "Settling down",
+          "category": "family",
+          "branchId": "dual",
+          "branchLabel": "Marry — dual income",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "married": true
+          }
+        },
+        {
+          "age": 27,
+          "month": 108,
+          "source": "reflection",
+          "nodeId": "reflection-household-direction",
+          "nodeTitle": "Choose your household direction",
+          "category": "family",
+          "branchId": "deepen-partnership",
+          "branchLabel": "Build toward shared partnership",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "householdIntent": "partnership"
+          }
+        },
+        {
+          "age": 28,
+          "month": 120,
+          "source": "opportunity",
+          "nodeId": "first-home",
+          "nodeTitle": "Rent or buy?",
+          "category": "housing",
+          "branchId": "buy",
+          "branchLabel": "Buy a $320k home",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "homeowner": true
+          }
+        },
+        {
+          "age": 29,
+          "month": 132,
+          "source": "opportunity",
+          "nodeId": "first-child",
+          "nodeTitle": "Starting a family",
+          "category": "family",
+          "branchId": "yes",
+          "branchLabel": "Have a child",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "hasChild": true
+          }
+        },
+        {
+          "age": 30,
+          "month": 144,
+          "source": "reflection",
+          "nodeId": "reflection-care-and-support",
+          "nodeTitle": "Design care and support",
+          "category": "community",
+          "branchId": "buy-capacity",
+          "branchLabel": "Pay for dependable support",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "carePlan": "buy-capacity"
+          }
+        },
+        {
+          "age": 33,
+          "month": 180,
+          "source": "curated-random-event",
+          "nodeId": "rng-layoff",
+          "nodeTitle": "You've been laid off",
+          "category": "career",
+          "branchId": "rebound",
+          "branchLabel": "Take a new role quickly (−15% pay)",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "layoffExperienced": true,
+            "lastJobSearchOutcome": "rapid-rebound"
+          }
+        },
+        {
+          "age": 34,
+          "month": 192,
+          "source": "reflection",
+          "nodeId": "reflection-resilience-plan",
+          "nodeTitle": "Build resilience before the next shock",
+          "category": "health",
+          "branchId": "cash-buffer",
+          "branchLabel": "Build a larger cash buffer",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "resiliencePlan": "cash-buffer"
+          }
+        },
+        {
+          "age": 35,
+          "month": 204,
+          "source": "reflection",
+          "nodeId": "reflection-career-recalibration",
+          "nodeTitle": "Recalibrate your career",
+          "category": "career",
+          "branchId": "lead-people",
+          "branchLabel": "Pursue leadership",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "careerDirection": "leadership"
+          }
+        },
+        {
+          "age": 37,
+          "month": 228,
+          "source": "reflection",
+          "nodeId": "reflection-location-reset",
+          "nodeTitle": "Reset location and commute",
+          "category": "housing",
+          "branchId": "move-near-opportunity",
+          "branchLabel": "Move near work and daily needs",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "locationPlan": "opportunity-center"
+          }
+        },
+        {
+          "age": 40,
+          "month": 264,
+          "source": "reflection",
+          "nodeId": "reflection-next-chapter",
+          "nodeTitle": "Choose what the next chapter optimizes for",
+          "category": "lifestyle",
+          "branchId": "stay-course",
+          "branchLabel": "Stay the course with small improvements",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "nextChapter": "stay-course"
+          }
+        }
+      ],
+      "quietYears": [
+        20,
+        21,
+        31,
+        32,
+        36,
+        38,
+        39
+      ],
+      "finalState": {
+        "stage": "working",
+        "flags": {
+          "enlisted": true,
+          "serviceBranch": "air-force",
+          "servicePlan": "transition-network",
+          "transitionNetwork": true,
+          "separated": true,
+          "veteranHire": true,
+          "hasCar": true,
+          "retirementBoosted": true,
+          "promotionCount": 1,
+          "married": true,
+          "householdIntent": "partnership",
+          "homeowner": true,
+          "hasChild": true,
+          "carePlan": "buy-capacity",
+          "layoffExperienced": true,
+          "lastJobSearchOutcome": "rapid-rebound",
+          "resiliencePlan": "cash-buffer",
+          "careerDirection": "leadership",
+          "locationPlan": "opportunity-center",
+          "nextChapter": "stay-course"
+        },
+        "resolvedNodeIds": [
+          "hs-launch",
+          "military-branch",
+          "reflection-military-service-design",
+          "post-service",
+          "buy-car",
+          "boost-retirement",
+          "marriage",
+          "reflection-household-direction",
+          "first-home",
+          "first-child",
+          "reflection-care-and-support",
+          "rng-layoff",
+          "reflection-resilience-plan",
+          "reflection-career-recalibration",
+          "reflection-location-reset",
+          "reflection-next-chapter"
+        ],
+        "availableOpportunityIds": []
+      },
+      "coverage": {
+        "decisionCount": 17,
+        "categories": [
+          "career",
+          "community",
+          "education",
+          "family",
+          "financial",
+          "health",
+          "housing",
+          "lifestyle",
+          "military"
+        ],
+        "milestoneCount": 3,
+        "opportunityCount": 5,
+        "randomEventCount": 2,
+        "reflectionCount": 7
+      }
+    },
+    {
+      "id": "gap-year-business-degree",
+      "name": "Gap year followed by a business degree",
+      "premise": "A traveler delays college, studies business, completes graduate school, then establishes a family and home.",
+      "ageRange": {
+        "start": 18,
+        "end": 40
+      },
+      "decisions": [
+        {
+          "age": 18,
+          "month": 0,
+          "source": "milestone",
+          "nodeId": "hs-launch",
+          "nodeTitle": "Life after high school",
+          "category": "education",
+          "branchId": "gap-year",
+          "branchLabel": "Take a gap year",
+          "stageBefore": "pre-launch",
+          "stageAfter": "gap-year",
+          "flagsAddedOrChanged": {
+            "tookGapYear": true
+          }
+        },
+        {
+          "age": 19,
+          "month": 12,
+          "source": "milestone",
+          "nodeId": "hs-launch",
+          "nodeTitle": "Life after high school",
+          "category": "education",
+          "branchId": "school",
+          "branchLabel": "Go to college",
+          "stageBefore": "gap-year",
+          "stageAfter": "school",
+          "flagsAddedOrChanged": {
+            "enrolled": true
+          }
+        },
+        {
+          "age": 19,
+          "month": 12,
+          "source": "milestone",
+          "nodeId": "declare-major",
+          "nodeTitle": "Declare your major",
+          "category": "education",
+          "branchId": "business",
+          "branchLabel": "Business",
+          "stageBefore": "school",
+          "stageAfter": "school",
+          "flagsAddedOrChanged": {
+            "major": "business",
+            "gradSalary": 5500,
+            "gradGrowth": 0.035
+          }
+        },
+        {
+          "age": 19,
+          "month": 12,
+          "source": "curated-random-event",
+          "nodeId": "rng-trip",
+          "nodeTitle": "A once-in-a-lifetime trip",
+          "category": "lifestyle",
+          "branchId": "go",
+          "branchLabel": "Go for it ($12k)",
+          "stageBefore": "school",
+          "stageAfter": "school",
+          "flagsAddedOrChanged": {}
+        },
+        {
+          "age": 20,
+          "month": 24,
+          "source": "reflection",
+          "nodeId": "reflection-student-funding",
+          "nodeTitle": "Fund the next year of school",
+          "category": "education",
+          "branchId": "work-study",
+          "branchLabel": "Work more while studying",
+          "stageBefore": "school",
+          "stageAfter": "school",
+          "flagsAddedOrChanged": {
+            "schoolFundingPlan": "work-study"
+          }
+        },
+        {
+          "age": 23,
+          "month": 60,
+          "source": "milestone",
+          "nodeId": "graduate",
+          "nodeTitle": "Graduation day",
+          "category": "education",
+          "branchId": "start-career",
+          "branchLabel": "Start your career",
+          "stageBefore": "school",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "enrolled": false,
+            "degreeEarned": true
+          }
+        },
+        {
+          "age": 24,
+          "month": 72,
+          "source": "opportunity",
+          "nodeId": "buy-car",
+          "nodeTitle": "Get a car",
+          "category": "lifestyle",
+          "branchId": "used-finance",
+          "branchLabel": "Finance a used car ($18k, $3k down)",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "hasCar": true
+          }
+        },
+        {
+          "age": 24,
+          "month": 72,
+          "source": "opportunity",
+          "nodeId": "grad-school",
+          "nodeTitle": "Graduate school",
+          "category": "education",
+          "branchId": "enroll-grad",
+          "branchLabel": "Enroll part-time",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "gradSchool": true,
+            "gradSchoolStartMonth": 72
+          }
+        },
+        {
+          "age": 25,
+          "month": 84,
+          "source": "reflection",
+          "nodeId": "reflection-sustainable-work",
+          "nodeTitle": "Design a sustainable working week",
+          "category": "career",
+          "branchId": "balanced-week",
+          "branchLabel": "Protect a balanced week",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "workPace": "balanced"
+          }
+        },
+        {
+          "age": 26,
+          "month": 96,
+          "source": "milestone",
+          "nodeId": "grad-school-complete",
+          "nodeTitle": "Master's complete",
+          "category": "education",
+          "branchId": "finish-grad",
+          "branchLabel": "Finish and take the raise",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "gradSchoolDone": true
+          }
+        },
+        {
+          "age": 27,
+          "month": 108,
+          "source": "opportunity",
+          "nodeId": "marriage",
+          "nodeTitle": "Settling down",
+          "category": "family",
+          "branchId": "dual",
+          "branchLabel": "Marry — dual income",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "married": true
+          }
+        },
+        {
+          "age": 28,
+          "month": 120,
+          "source": "reflection",
+          "nodeId": "reflection-household-direction",
+          "nodeTitle": "Choose your household direction",
+          "category": "family",
+          "branchId": "family-planning",
+          "branchLabel": "Plan for dependents deliberately",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "householdIntent": "family-planning",
+            "familyPlanningIntent": "yes"
+          }
+        },
+        {
+          "age": 29,
+          "month": 132,
+          "source": "opportunity",
+          "nodeId": "first-home",
+          "nodeTitle": "Rent or buy?",
+          "category": "housing",
+          "branchId": "buy-modest",
+          "branchLabel": "Buy modest ($240k)",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "homeowner": true
+          }
+        },
+        {
+          "age": 30,
+          "month": 144,
+          "source": "opportunity",
+          "nodeId": "first-child",
+          "nodeTitle": "Starting a family",
+          "category": "family",
+          "branchId": "yes",
+          "branchLabel": "Have a child",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "hasChild": true
+          }
+        },
+        {
+          "age": 31,
+          "month": 156,
+          "source": "reflection",
+          "nodeId": "reflection-care-and-support",
+          "nodeTitle": "Design care and support",
+          "category": "community",
+          "branchId": "share-care",
+          "branchLabel": "Build a shared care rotation",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "carePlan": "shared"
+          }
+        },
+        {
+          "age": 33,
+          "month": 180,
+          "source": "reflection",
+          "nodeId": "reflection-resilience-plan",
+          "nodeTitle": "Build resilience before the next shock",
+          "category": "health",
+          "branchId": "balanced-protection",
+          "branchLabel": "Balance protection and present life",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "resiliencePlan": "balanced"
+          }
+        },
+        {
+          "age": 35,
+          "month": 204,
+          "source": "reflection",
+          "nodeId": "reflection-career-recalibration",
+          "nodeTitle": "Recalibrate your career",
+          "category": "career",
+          "branchId": "lead-people",
+          "branchLabel": "Pursue leadership",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "careerDirection": "leadership"
+          }
+        },
+        {
+          "age": 37,
+          "month": 228,
+          "source": "reflection",
+          "nodeId": "reflection-location-reset",
+          "nodeTitle": "Reset location and commute",
+          "category": "housing",
+          "branchId": "move-near-support",
+          "branchLabel": "Move near trusted support",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "locationPlan": "support-network"
+          }
+        },
+        {
+          "age": 40,
+          "month": 264,
+          "source": "reflection",
+          "nodeId": "reflection-next-chapter",
+          "nodeTitle": "Choose what the next chapter optimizes for",
+          "category": "lifestyle",
+          "branchId": "community-family",
+          "branchLabel": "Shift toward people and community",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "nextChapter": "community"
+          }
+        }
+      ],
+      "quietYears": [
+        21,
+        22,
+        32,
+        34,
+        36,
+        38,
+        39
+      ],
+      "finalState": {
+        "stage": "working",
+        "flags": {
+          "tookGapYear": true,
+          "enrolled": false,
+          "major": "business",
+          "gradSalary": 5500,
+          "gradGrowth": 0.035,
+          "schoolFundingPlan": "work-study",
+          "degreeEarned": true,
+          "hasCar": true,
+          "gradSchool": true,
+          "gradSchoolStartMonth": 72,
+          "workPace": "balanced",
+          "gradSchoolDone": true,
+          "married": true,
+          "householdIntent": "family-planning",
+          "familyPlanningIntent": "yes",
+          "homeowner": true,
+          "hasChild": true,
+          "carePlan": "shared",
+          "resiliencePlan": "balanced",
+          "careerDirection": "leadership",
+          "locationPlan": "support-network",
+          "nextChapter": "community"
+        },
+        "resolvedNodeIds": [
+          "hs-launch",
+          "declare-major",
+          "reflection-student-funding",
+          "graduate",
+          "buy-car",
+          "grad-school",
+          "reflection-sustainable-work",
+          "grad-school-complete",
+          "marriage",
+          "reflection-household-direction",
+          "first-home",
+          "first-child",
+          "reflection-care-and-support",
+          "reflection-resilience-plan",
+          "reflection-career-recalibration",
+          "reflection-location-reset",
+          "reflection-next-chapter"
+        ],
+        "availableOpportunityIds": [
+          "boost-retirement"
+        ]
+      },
+      "coverage": {
+        "decisionCount": 19,
+        "categories": [
+          "career",
+          "community",
+          "education",
+          "family",
+          "health",
+          "housing",
+          "lifestyle"
+        ],
+        "milestoneCount": 5,
+        "opportunityCount": 5,
+        "randomEventCount": 1,
+        "reflectionCount": 8
+      }
+    },
+    {
+      "id": "gap-year-sales-independent",
+      "name": "Gap year followed by sales and independent work",
+      "premise": "A gap-year graduate enters sales, advances quickly, starts a side hustle, buys a home, and remains unmarried.",
+      "ageRange": {
+        "start": 18,
+        "end": 40
+      },
+      "decisions": [
+        {
+          "age": 18,
+          "month": 0,
+          "source": "milestone",
+          "nodeId": "hs-launch",
+          "nodeTitle": "Life after high school",
+          "category": "education",
+          "branchId": "gap-year",
+          "branchLabel": "Take a gap year",
+          "stageBefore": "pre-launch",
+          "stageAfter": "gap-year",
+          "flagsAddedOrChanged": {
+            "tookGapYear": true
+          }
+        },
+        {
+          "age": 19,
+          "month": 12,
+          "source": "milestone",
+          "nodeId": "hs-launch",
+          "nodeTitle": "Life after high school",
+          "category": "education",
+          "branchId": "work",
+          "branchLabel": "Start working",
+          "stageBefore": "gap-year",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "wentToWork": true
+          }
+        },
+        {
+          "age": 19,
+          "month": 12,
+          "source": "milestone",
+          "nodeId": "entry-track",
+          "nodeTitle": "Pick your line of work",
+          "category": "career",
+          "branchId": "sales",
+          "branchLabel": "Sales",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "track": "sales"
+          }
+        },
+        {
+          "age": 20,
+          "month": 24,
+          "source": "opportunity",
+          "nodeId": "buy-car",
+          "nodeTitle": "Get a car",
+          "category": "lifestyle",
+          "branchId": "used-finance",
+          "branchLabel": "Finance a used car ($18k, $3k down)",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "hasCar": true
+          }
+        },
+        {
+          "age": 21,
+          "month": 36,
+          "source": "opportunity",
+          "nodeId": "work-cert",
+          "nodeTitle": "Earn a certification",
+          "category": "career",
+          "branchId": "get-cert",
+          "branchLabel": "Get certified",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "certified": true
+          }
+        },
+        {
+          "age": 22,
+          "month": 48,
+          "source": "curated-random-event",
+          "nodeId": "rng-side-gig",
+          "nodeTitle": "A side-hustle opportunity",
+          "category": "career",
+          "branchId": "start",
+          "branchLabel": "Start the side hustle",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "hasSideGig": true
+          }
+        },
+        {
+          "age": 23,
+          "month": 60,
+          "source": "opportunity",
+          "nodeId": "work-promotion",
+          "nodeTitle": "Step up to management",
+          "category": "career",
+          "branchId": "accept-promotion",
+          "branchLabel": "Take the promotion",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "promoted": true
+          }
+        },
+        {
+          "age": 24,
+          "month": 72,
+          "source": "curated-random-event",
+          "nodeId": "rng-recruiter",
+          "nodeTitle": "A recruiter comes calling",
+          "category": "career",
+          "branchId": "jump",
+          "branchLabel": "Take the new job (+12%)",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "jobChangeCount": 1,
+            "lastJobChangeMonth": 72
+          }
+        },
+        {
+          "age": 25,
+          "month": 84,
+          "source": "reflection",
+          "nodeId": "reflection-sustainable-work",
+          "nodeTitle": "Design a sustainable working week",
+          "category": "career",
+          "branchId": "career-sprint",
+          "branchLabel": "Run a focused career sprint",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "workPace": "sprint"
+          }
+        },
+        {
+          "age": 26,
+          "month": 96,
+          "source": "curated-random-event",
+          "nodeId": "rng-pet",
+          "nodeTitle": "Choose a companion",
+          "category": "lifestyle",
+          "branchId": "rabbit",
+          "branchLabel": "Rabbit",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "hasPet": true,
+            "petType": "rabbit",
+            "petWeeklyCareHours": 7
+          }
+        },
+        {
+          "age": 27,
+          "month": 108,
+          "source": "reflection",
+          "nodeId": "reflection-household-direction",
+          "nodeTitle": "Choose your household direction",
+          "category": "family",
+          "branchId": "independent-community",
+          "branchLabel": "Build an independent, connected life",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "householdIntent": "independent-community"
+          }
+        },
+        {
+          "age": 28,
+          "month": 120,
+          "source": "reflection",
+          "nodeId": "reflection-business-or-stability",
+          "nodeTitle": "Choose stability or business growth",
+          "category": "career",
+          "branchId": "formalize-business",
+          "branchLabel": "Formalize and grow the business",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "hasSideGig": false,
+            "businessDirection": "formalized",
+            "businessEntity": true
+          }
+        },
+        {
+          "age": 30,
+          "month": 144,
+          "source": "opportunity",
+          "nodeId": "first-home",
+          "nodeTitle": "Rent or buy?",
+          "category": "housing",
+          "branchId": "buy-modest",
+          "branchLabel": "Buy modest ($240k)",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "homeowner": true
+          }
+        },
+        {
+          "age": 31,
+          "month": 156,
+          "source": "reflection",
+          "nodeId": "reflection-care-and-support",
+          "nodeTitle": "Design care and support",
+          "category": "community",
+          "branchId": "strengthen-network",
+          "branchLabel": "Strengthen your support network",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "carePlan": "support-network"
+          }
+        },
+        {
+          "age": 33,
+          "month": 180,
+          "source": "reflection",
+          "nodeId": "reflection-resilience-plan",
+          "nodeTitle": "Build resilience before the next shock",
+          "category": "health",
+          "branchId": "cash-buffer",
+          "branchLabel": "Build a larger cash buffer",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "resiliencePlan": "cash-buffer"
+          }
+        },
+        {
+          "age": 35,
+          "month": 204,
+          "source": "reflection",
+          "nodeId": "reflection-career-recalibration",
+          "nodeTitle": "Recalibrate your career",
+          "category": "career",
+          "branchId": "deepen-specialty",
+          "branchLabel": "Deepen your specialty",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "careerDirection": "specialist"
+          }
+        },
+        {
+          "age": 37,
+          "month": 228,
+          "source": "reflection",
+          "nodeId": "reflection-location-reset",
+          "nodeTitle": "Reset location and commute",
+          "category": "housing",
+          "branchId": "lower-cost-base",
+          "branchLabel": "Choose a lower-cost home base",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "locationPlan": "lower-cost"
+          }
+        },
+        {
+          "age": 40,
+          "month": 264,
+          "source": "reflection",
+          "nodeId": "reflection-next-chapter",
+          "nodeTitle": "Choose what the next chapter optimizes for",
+          "category": "lifestyle",
+          "branchId": "career-reinvention",
+          "branchLabel": "Begin a career reinvention",
+          "stageBefore": "working",
+          "stageAfter": "working",
+          "flagsAddedOrChanged": {
+            "nextChapter": "career-reinvention"
+          }
+        }
+      ],
+      "quietYears": [
+        29,
+        32,
+        34,
+        36,
+        38,
+        39
+      ],
+      "finalState": {
+        "stage": "working",
+        "flags": {
+          "tookGapYear": true,
+          "wentToWork": true,
+          "track": "sales",
+          "hasCar": true,
+          "certified": true,
+          "hasSideGig": false,
+          "promoted": true,
+          "jobChangeCount": 1,
+          "lastJobChangeMonth": 72,
+          "workPace": "sprint",
+          "hasPet": true,
+          "petType": "rabbit",
+          "petWeeklyCareHours": 7,
+          "householdIntent": "independent-community",
+          "businessDirection": "formalized",
+          "businessEntity": true,
+          "homeowner": true,
+          "carePlan": "support-network",
+          "resiliencePlan": "cash-buffer",
+          "careerDirection": "specialist",
+          "locationPlan": "lower-cost",
+          "nextChapter": "career-reinvention"
+        },
+        "resolvedNodeIds": [
+          "hs-launch",
+          "entry-track",
+          "buy-car",
+          "work-cert",
+          "rng-side-gig",
+          "work-promotion",
+          "reflection-sustainable-work",
+          "rng-pet",
+          "reflection-household-direction",
+          "reflection-business-or-stability",
+          "first-home",
+          "reflection-care-and-support",
+          "reflection-resilience-plan",
+          "reflection-career-recalibration",
+          "reflection-location-reset",
+          "reflection-next-chapter"
+        ],
+        "availableOpportunityIds": [
+          "marriage",
+          "boost-retirement"
+        ]
+      },
+      "coverage": {
+        "decisionCount": 18,
+        "categories": [
+          "career",
+          "community",
+          "education",
+          "family",
+          "health",
+          "housing",
+          "lifestyle"
+        ],
+        "milestoneCount": 3,
+        "opportunityCount": 4,
+        "randomEventCount": 3,
+        "reflectionCount": 8
+      }
+    }
+  ]
+}

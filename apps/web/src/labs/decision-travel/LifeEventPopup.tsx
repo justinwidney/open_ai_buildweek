@@ -53,12 +53,12 @@ export function LifeEventPopup({ node, ctx, age, onChoose, onDismiss, showMap = 
                     key={branch.id}
                     className={`event-option is-${direction} ${inert ? "is-decline" : ""}`}
                     disabled={!elig.eligible}
-                    title={elig.eligible ? undefined : elig.reasons.join(" ")}
                     onClick={() => onChoose(branch)}
                   >
                     <span className="event-option__route">{ROUTE_DIRECTION_LABELS[direction]}</span>
                     <strong>{branch.label}</strong>
-                    <small>{elig.eligible ? branch.description : elig.reasons.join(" ")}</small>
+                    <small>{branch.description}</small>
+                    {!elig.eligible && <em className="event-option__blocked">{elig.reasons.join(" ")}</em>}
                   </button>
                 );
               })}

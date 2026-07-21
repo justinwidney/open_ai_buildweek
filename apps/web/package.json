@@ -6,17 +6,29 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build && node scripts/prepare-sites.mjs",
-    "typecheck": "tsc -b --pretty false"
+    "typecheck": "tsc -b --pretty false",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@control-ai/engine": "workspace:*",
     "@control-ai/shared": "workspace:*",
+    "@react-three/drei": "latest",
+    "@react-three/fiber": "latest",
     "@vitejs/plugin-react": "latest",
     "react": "latest",
     "react-dom": "latest",
-    "three": "latest",
-    "@react-three/fiber": "latest",
-    "@react-three/drei": "latest"
+    "three": "latest"
   },
-  "devDependencies": { "vite": "latest", "typescript": "^5.5.0", "@types/react": "latest", "@types/react-dom": "latest", "@types/three": "latest" }
+  "devDependencies": {
+    "@storybook/addon-a11y": "10.5.3",
+    "@storybook/addon-docs": "10.5.3",
+    "@storybook/react-vite": "10.5.3",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "@types/three": "latest",
+    "storybook": "10.5.3",
+    "typescript": "^5.5.0",
+    "vite": "latest"
+  }
 }

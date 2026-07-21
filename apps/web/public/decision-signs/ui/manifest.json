@@ -1,0 +1,46 @@
+{
+  "source": "finished/ChatGPT Image Jul 20, 2026, 10_15_52 AM.png",
+  "section": "1. UI Pieces",
+  "sprites": [
+    {
+      "id": "rule-long",
+      "file": "rule-long.png",
+      "width": 216,
+      "height": 27,
+      "role": "section divider",
+      "usage": "border-image, tiles horizontally, 12px carved end caps"
+    },
+    {
+      "id": "corner-scroll",
+      "file": "corner-scroll.png",
+      "width": 43,
+      "height": 60,
+      "role": "frame corner",
+      "usage": "top-left orientation; mirror with scaleX/scaleY for the other three"
+    },
+    {
+      "id": "ornament-gem",
+      "file": "ornament-gem.png",
+      "width": 130,
+      "height": 81,
+      "role": "heading ornament",
+      "usage": "centered amethyst flourish above a step title"
+    },
+    {
+      "id": "corner-leaf",
+      "file": "corner-leaf.png",
+      "width": 59,
+      "height": 50,
+      "role": "frame corner, lighter weight",
+      "usage": "inner panels where corner-scroll is too heavy"
+    },
+    {
+      "id": "badge-crest",
+      "file": "badge-crest.png",
+      "width": 93,
+      "height": 103,
+      "role": "age medallion",
+      "usage": "carries the year number in the planner header"
+    }
+  ]
+}

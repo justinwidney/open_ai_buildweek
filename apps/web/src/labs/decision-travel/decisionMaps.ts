@@ -9,12 +9,23 @@ export type DecisionRouteKind =
 
 export type RouteDirection = "left" | "straight" | "right" | "winding";
 
+export interface DecisionPathAnchor {
+  id: string;
+  x: number;
+  y: number;
+  direction: RouteDirection;
+  /** Optional rule-branch binding for deliberately curated scenes. */
+  branchId?: string;
+}
+
 export interface DecisionMap {
   id: string;
   label: string;
   kind: DecisionRouteKind;
   src: string;
   library?: "journey" | "pre-journey";
+  pathCount?: number;
+  paths?: readonly DecisionPathAnchor[];
 }
 
 /** Complete 25-map library, grouped by the meaning of a decision. */
@@ -52,15 +63,15 @@ export const DECISION_MAPS: readonly DecisionMap[] = [
  * backgrounds, so the rule-engine node controls which SVG is shown.
  */
 export const PRE_JOURNEY_MAPS: readonly DecisionMap[] = [
-  { id: "01_forest_threshold", label: "Forest threshold", kind: "fork-both", library: "pre-journey", src: new URL("../../../../../tools/svg_ui/pre_journey_library/svgs/01_forest_threshold.svg", import.meta.url).href },
-  { id: "02_sunlit_clearing", label: "Sunlit clearing", kind: "fork-both", library: "pre-journey", src: new URL("../../../../../tools/svg_ui/pre_journey_library/svgs/02_sunlit_clearing.svg", import.meta.url).href },
-  { id: "03_streamside_choice", label: "Streamside choice", kind: "network", library: "pre-journey", src: new URL("../../../../../tools/svg_ui/pre_journey_library/svgs/03_streamside_choice.svg", import.meta.url).href },
-  { id: "04_two_way_fork", label: "Two-way dirt-path fork", kind: "fork-both", library: "pre-journey", src: new URL("../../../../../tools/svg_ui/pre_journey_library/svgs/04_two_way_fork.svg", import.meta.url).href },
-  { id: "05_path_exits_left", label: "Path exits left", kind: "fork-left", library: "pre-journey", src: new URL("../../../../../tools/svg_ui/pre_journey_library/svgs/05_path_exits_left.svg", import.meta.url).href },
-  { id: "06_path_exits_right", label: "Path exits right", kind: "fork-right", library: "pre-journey", src: new URL("../../../../../tools/svg_ui/pre_journey_library/svgs/06_path_exits_right.svg", import.meta.url).href },
-  { id: "07_left_straight_right", label: "Left / straight / right", kind: "fork-both", library: "pre-journey", src: new URL("../../../../../tools/svg_ui/pre_journey_library/svgs/07_left_straight_right.svg", import.meta.url).href },
-  { id: "08_far_left_near_left_straight", label: "Three-path fan", kind: "network", library: "pre-journey", src: new URL("../../../../../tools/svg_ui/pre_journey_library/svgs/08_far_left_near_left_straight.svg", import.meta.url).href },
-  { id: "09_staged_left_straight_right", label: "Staged three-destination fork", kind: "network", library: "pre-journey", src: new URL("../../../../../tools/svg_ui/pre_journey_library/svgs/09_staged_left_straight_right.svg", import.meta.url).href },
+  { id: "01_forest_threshold", label: "Forest threshold", kind: "fork-both", library: "pre-journey", pathCount: 2, paths: [{ id: "left-trail", x: 41, y: 55, direction: "left" }, { id: "right-trail", x: 61, y: 53, direction: "right" }], src: new URL("../../../../../tools/svg_ui/pre_journey_library/svgs/01_forest_threshold.svg", import.meta.url).href },
+  { id: "02_sunlit_clearing", label: "Sunlit clearing", kind: "fork-both", library: "pre-journey", pathCount: 3, paths: [{ id: "left-meadow", x: 28, y: 52, direction: "left" }, { id: "center-meadow", x: 50, y: 51, direction: "straight" }, { id: "right-meadow", x: 72, y: 52, direction: "right" }], src: new URL("../../../../../tools/svg_ui/pre_journey_library/svgs/02_sunlit_clearing.svg", import.meta.url).href },
+  { id: "03_streamside_choice", label: "Streamside choice", kind: "network", library: "pre-journey", pathCount: 3, paths: [{ id: "stepping-stones", x: 38, y: 57, direction: "left" }, { id: "log-crossing", x: 63, y: 50, direction: "straight" }, { id: "bank-trail", x: 78, y: 43, direction: "right" }], src: new URL("../../../../../tools/svg_ui/pre_journey_library/svgs/03_streamside_choice.svg", import.meta.url).href },
+  { id: "04_two_way_fork", label: "Two-way dirt-path fork", kind: "fork-both", library: "pre-journey", pathCount: 2, paths: [{ id: "left-fork", x: 33, y: 47, direction: "left" }, { id: "right-fork", x: 67, y: 47, direction: "right" }], src: new URL("../../../../../tools/svg_ui/pre_journey_library/svgs/04_two_way_fork.svg", import.meta.url).href },
+  { id: "05_path_exits_left", label: "Path exits left", kind: "fork-left", library: "pre-journey", pathCount: 1, paths: [{ id: "left-exit", x: 35, y: 51, direction: "left" }], src: new URL("../../../../../tools/svg_ui/pre_journey_library/svgs/05_path_exits_left.svg", import.meta.url).href },
+  { id: "06_path_exits_right", label: "Path exits right", kind: "fork-right", library: "pre-journey", pathCount: 1, paths: [{ id: "right-exit", x: 65, y: 51, direction: "right" }], src: new URL("../../../../../tools/svg_ui/pre_journey_library/svgs/06_path_exits_right.svg", import.meta.url).href },
+  { id: "07_left_straight_right", label: "Left / straight / right", kind: "fork-both", library: "pre-journey", pathCount: 3, paths: [{ id: "left-route", x: 24, y: 47, direction: "left" }, { id: "straight-route", x: 50, y: 48, direction: "straight" }, { id: "right-route", x: 76, y: 47, direction: "right" }], src: new URL("../../../../../tools/svg_ui/pre_journey_library/svgs/07_left_straight_right.svg", import.meta.url).href },
+  { id: "08_far_left_near_left_straight", label: "Three-path fan", kind: "network", library: "pre-journey", pathCount: 3, paths: [{ id: "far-left", x: 18, y: 43, direction: "left" }, { id: "near-left", x: 40, y: 51, direction: "winding" }, { id: "straight-route", x: 62, y: 44, direction: "straight" }], src: new URL("../../../../../tools/svg_ui/pre_journey_library/svgs/08_far_left_near_left_straight.svg", import.meta.url).href },
+  { id: "09_staged_left_straight_right", label: "Staged three-destination fork", kind: "network", library: "pre-journey", pathCount: 3, paths: [{ id: "left-route", x: 28, y: 53, direction: "left", branchId: "school" }, { id: "straight-route", x: 55, y: 43, direction: "straight", branchId: "work" }, { id: "right-route", x: 73, y: 39, direction: "right", branchId: "military" }], src: new URL("../../../../../tools/svg_ui/pre_journey_library/svgs/09_staged_left_straight_right.svg", import.meta.url).href },
 ] as const;
 
 function stableHash(value: string): number {
@@ -83,16 +94,31 @@ export function selectDecisionMap(
   seedKey: string,
   options: { preJourney?: boolean; branchCount?: number } = {},
 ): DecisionMap {
-  if (!options.preJourney) return selectRouteMap(kind, seedKey);
+  if (!options.preJourney) {
+    const map = selectRouteMap(kind, seedKey);
+    const branchCount = Math.min(3, Math.max(1, options.branchCount ?? 2));
+    return { ...map, library: "journey", pathCount: branchCount, paths: fallbackPathAnchors(branchCount, kind) };
+  }
 
   const branchCount = options.branchCount ?? 2;
-  const family = branchCount >= 4
-    ? PRE_JOURNEY_MAPS.filter((map) => map.kind === "network")
-    : branchCount === 3
-      ? PRE_JOURNEY_MAPS.filter((map) => map.kind === "fork-both" || map.kind === "network")
-      : PRE_JOURNEY_MAPS.filter((map) => map.kind === kind || (branchCount === 2 && map.id === "04_two_way_fork"));
+  if (seedKey.startsWith("hs-launch:")) return PRE_JOURNEY_MAPS.find((map) => map.id === "09_staged_left_straight_right")!;
+
+  const desiredPaths = Math.min(3, Math.max(1, branchCount));
+  const family = PRE_JOURNEY_MAPS.filter((map) => map.pathCount === desiredPaths);
   const candidates = family.length > 0 ? family : PRE_JOURNEY_MAPS;
   return candidates[stableHash(seedKey) % candidates.length]!;
+}
+
+function fallbackPathAnchors(count: number, kind: DecisionRouteKind): readonly DecisionPathAnchor[] {
+  if (count === 1) return [{ id: "main-road", x: 50, y: 51, direction: kind === "fork-left" ? "left" : kind === "fork-right" ? "right" : "straight" }];
+  if (count === 2) return kind === "fork-left"
+    ? [{ id: "left-road", x: 31, y: 48, direction: "left" }, { id: "main-road", x: 57, y: 54, direction: "straight" }]
+    : [{ id: "main-road", x: 43, y: 54, direction: "straight" }, { id: "right-road", x: 69, y: 48, direction: "right" }];
+  return [
+    { id: "left-road", x: 27, y: 45, direction: "left" },
+    { id: "main-road", x: 50, y: 54, direction: "straight" },
+    { id: "right-road", x: 73, y: 45, direction: "right" },
+  ];
 }
 
 export function directionsForOptions(

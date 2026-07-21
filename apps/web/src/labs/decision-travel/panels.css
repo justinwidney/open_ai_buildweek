@@ -91,24 +91,30 @@
 .ledger li b { color: var(--plum); }
 
 /* Event popup */
-.event-overlay { position: fixed; inset: 0; background: rgba(40, 30, 16, 0.55); backdrop-filter: blur(2px); display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 60; }
-.event-card { width: min(560px, 100%); padding: 24px 26px; }
+/* Top-aligned and scrollable at every width: a 20-branch node (declare-major)
+   builds a card taller than the viewport, and centring it put the first and
+   last options off-screen with no way to reach them. */
+.event-overlay { position: fixed; inset: 0; background: rgba(40, 30, 16, 0.55); backdrop-filter: blur(2px); display: flex; align-items: flex-start; justify-content: center; overflow-y: auto; padding: var(--sp-4); z-index: 60; }
+.event-card { margin: auto 0; width: min(560px, 100%); padding: var(--sp-5); }
 .event-card--with-map { width: min(980px, 100%); }
-.event-card__head { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
-.event-card__layout { display: grid; gap: 22px; grid-template-columns: minmax(0, 1.16fr) minmax(280px, .84fr); }
-.event-card__choice { align-self: center; min-width: 0; }
-.event-card__prompt { font-size: 15px; line-height: 1.55; margin: 0 0 18px; }
-.event-options { display: flex; flex-direction: column; gap: 10px; }
-.event-option { font-family: inherit; position: relative; text-align: left; background: linear-gradient(180deg, #f7f0da, #ecdfbe); border: 1.5px solid var(--frame); border-radius: 10px; padding: 12px 14px 12px 42px; cursor: pointer; display: flex; flex-direction: column; gap: 2px; box-shadow: 0 2px 0 rgba(78, 61, 34, 0.25); transition: transform 0.12s; }
-.event-option:hover { transform: translateY(-1px); filter: brightness(1.03); }
-.event-option strong { font-size: 15px; }
-.event-option small { font-size: 12px; color: var(--ink-soft); }
+.event-card__head { display: flex; align-items: center; gap: var(--sp-4); margin-bottom: var(--sp-4); }
+.event-card__layout { display: grid; gap: var(--sp-5); grid-template-columns: minmax(0, 1.16fr) minmax(280px, .84fr); }
+.event-card__choice { align-self: start; min-width: 0; }
+.event-card__prompt { font-size: var(--text-body); line-height: var(--text-body-lh); margin: 0 0 var(--sp-4); }
+.event-options { display: flex; flex-direction: column; gap: var(--sp-2); }
+.event-option { font-family: inherit; position: relative; text-align: left; background: linear-gradient(180deg, #f7f0da, #ecdfbe); border: 1px solid var(--frame); border-radius: var(--r-3); padding: var(--sp-3) var(--sp-4) var(--sp-3) var(--sp-7); cursor: pointer; display: flex; flex-direction: column; gap: var(--sp-1); box-shadow: 0 2px 0 rgba(78, 61, 34, 0.25); transition: transform 0.12s; }
+.event-option:hover:not(:disabled) { transform: translateY(-1px); filter: brightness(1.03); }
+.event-option strong { font-size: var(--text-body); }
+.event-option small { font-size: var(--text-sm); color: var(--ink-soft); }
+/* The blocking reason is its own line, so it never replaces the description
+   the player is comparing against. */
+.event-option__blocked { color: var(--bad, #9c5a38); font-size: var(--text-sm); font-style: italic; }
 .event-option.is-decline { background: rgba(255, 251, 240, 0.5); }
-.event-option::before { align-items: center; background: rgba(106, 74, 151, .1); border: 1px solid rgba(106, 74, 151, .24); border-radius: 50%; color: var(--plum); content: "↑"; display: flex; font: 700 16px/1 Georgia, serif; height: 24px; justify-content: center; left: 10px; position: absolute; top: 50%; transform: translateY(-50%); width: 24px; }
+.event-option::before { align-items: center; background: rgba(106, 74, 151, .1); border: 1px solid rgba(106, 74, 151, .24); border-radius: 50%; color: var(--plum); content: "↑"; display: flex; font: 700 16px/1 Georgia, serif; height: 24px; justify-content: center; left: var(--sp-2); position: absolute; top: 50%; transform: translateY(-50%); width: 24px; }
 .event-option.is-left::before { content: "←"; }
 .event-option.is-right::before { content: "→"; }
 .event-option.is-winding::before { content: "↝"; }
-.event-option__route { color: var(--plum); font: 700 9px/1.1 system-ui, sans-serif; letter-spacing: .08em; margin-bottom: 2px; text-transform: uppercase; }
+.event-option__route { color: var(--plum); font: 700 var(--text-label)/var(--text-label-lh) system-ui, sans-serif; letter-spacing: var(--track-label); margin-bottom: var(--sp-1); text-transform: uppercase; }
 
 .decision-map { margin: 0; min-width: 0; }
 .decision-map__viewport { aspect-ratio: 600 / 347; background: #78afd2; border: 2px solid var(--frame-dark); border-radius: 12px; box-shadow: 0 8px 20px rgba(60, 44, 20, .25), inset 0 0 0 4px rgba(255, 247, 218, .55); overflow: hidden; position: relative; }
@@ -125,15 +131,18 @@
   .dt-lower { grid-template-columns: 1fr; }
   .stat-grid { grid-template-columns: 1fr 1fr; }
   .setup-fields { grid-template-columns: 1fr; }
-  .event-overlay { align-items: flex-start; overflow-y: auto; }
-  .event-card--with-map { margin: auto 0; }
   .event-card__layout { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 560px) {
-  .event-overlay { padding: 10px; }
-  .event-card { padding: 18px 16px; }
-  .event-card__head { padding-right: 5px; }
-  .event-card__layout { gap: 12px; }
+  .event-overlay { padding: var(--sp-2); }
+  .event-card { padding: var(--sp-4); }
+  .event-card__head { padding-right: var(--sp-1); }
+  .event-card__layout { gap: var(--sp-3); }
   .decision-map figcaption small { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .event-option { transition: none; }
+  .event-option:hover:not(:disabled) { transform: none; }
 }

@@ -1,0 +1,249 @@
+/* Home screen: watercolour drops fall, the road world appears where they land,
+   the pigment dries away, and the only control on the page floats up. */
+
+.home {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  background: var(--journey-color-sky);
+}
+
+.home__stage {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Every timeline holds its opening frame until the art has decoded, so the
+   reveal is never spent animating against an empty stage. */
+.home :is(.home__drop, .home__road--fill, .home__cloud, .home__title, .home__plate, .home__start) {
+  animation-play-state: paused;
+}
+
+.home.is-ready :is(.home__drop, .home__road--fill, .home__cloud, .home__title, .home__plate, .home__start) {
+  animation-play-state: running;
+}
+
+/* ---- The reveal ---- */
+
+/* Alpha, not luminance: the wash's own feathered edge becomes the reveal edge,
+   so the world bleeds in with a painted boundary instead of a cut one. */
+.home__reveal-mask {
+  mask-type: alpha;
+}
+
+/* Each drop blooms outward from its own centre, the way ink spreads into wet
+   paper, so the world underneath is uncovered from the middle out. */
+.home__drop {
+  transform-box: fill-box;
+  transform-origin: center;
+  opacity: 0;
+  animation: home-drop-bloom var(--drop-grow) cubic-bezier(.16, .74, .24, 1) var(--delay) both;
+}
+
+@keyframes home-drop-bloom {
+  from {
+    opacity: 0;
+    transform: scale(.12) rotate(var(--rotate));
+  }
+  30% {
+    opacity: 1;
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(var(--rotate));
+  }
+}
+
+/* The visible pigment blooms on the same beat as its mask twin, then dries off.
+   `home-drop-dry` is listed second so it owns opacity once it starts, while the
+   bloom keyframes keep holding the transform. */
+.home__drop--ink {
+  filter: hue-rotate(var(--hue));
+  animation:
+    home-drop-bloom var(--drop-grow) cubic-bezier(.16, .74, .24, 1) var(--delay) both,
+    home-drop-dry 1800ms ease-in calc(var(--delay) + var(--drop-grow) + 400ms) forwards;
+}
+
+@keyframes home-drop-dry {
+  to {
+    opacity: 0;
+  }
+}
+
+.home__road--fill {
+  opacity: 0;
+  animation: home-road-fill 1800ms ease var(--fill-delay) forwards;
+}
+
+@keyframes home-road-fill {
+  to {
+    opacity: 1;
+  }
+}
+
+/* ---- Sky ---- */
+
+.home__cloud {
+  animation: home-cloud-drift var(--duration) linear var(--offset) infinite;
+}
+
+@keyframes home-cloud-drift {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(var(--travel));
+  }
+}
+
+/* ---- Title ---- */
+
+/* Carried in by the first drop, so the name arrives with the first colour. */
+.home__title {
+  position: absolute;
+  inset: 14vh var(--sp-5) auto var(--sp-5);
+  z-index: var(--journey-layer-world-ui);
+  margin: 0;
+  font-family: var(--journey-font-display);
+  font-size: clamp(34px, 5.6vw, 84px);
+  font-weight: 700;
+  line-height: 1.04;
+  letter-spacing: .04em;
+  text-align: center;
+  text-wrap: balance;
+  color: var(--journey-color-parchment);
+  /* A carved edge plus a deep drop keeps the words legible over any part of the
+     world art as it fades in underneath them. */
+  text-shadow:
+    0 1px 0 rgba(255, 246, 216, .45),
+    0 3px 10px rgba(28, 20, 12, .55),
+    0 10px 34px rgba(24, 16, 10, .5);
+  opacity: 0;
+  animation: home-title-in 1200ms cubic-bezier(.16, .74, .24, 1) var(--title-delay) both;
+}
+
+@keyframes home-title-in {
+  from {
+    opacity: 0;
+    transform: scale(.94);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
+
+/* ---- The one control ---- */
+
+.home__plate {
+  position: absolute;
+  inset: auto 0 18vh 0;
+  z-index: var(--journey-layer-world-ui);
+  display: flex;
+  justify-content: center;
+  opacity: 0;
+  animation: home-plate-enter var(--journey-motion-enter) var(--plate-delay) both;
+}
+
+@keyframes home-plate-enter {
+  from {
+    opacity: 0;
+    transform: translateY(var(--sp-5));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.home__start {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: clamp(280px, 30vw, 430px);
+  aspect-ratio: 302 / 78;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  filter: var(--journey-shadow-sign);
+  animation: home-plate-float 5.5s ease-in-out infinite;
+}
+
+@keyframes home-plate-float {
+  0%, 100% {
+    transform: translateY(-5px);
+  }
+  50% {
+    transform: translateY(6px);
+  }
+}
+
+.home__start-plate {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  transition: filter .25s ease;
+}
+
+.home__start-label {
+  position: relative;
+  font-family: var(--journey-font-display);
+  font-size: clamp(15px, 1.5vw, 21px);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--journey-color-parchment);
+  text-shadow: 0 2px 5px rgba(28, 12, 38, .8);
+  transition: color .25s ease;
+}
+
+.home__start:hover .home__start-plate {
+  filter: brightness(1.08) saturate(1.06);
+}
+
+.home__start:hover .home__start-label {
+  color: #fff6d8;
+}
+
+.home__start:focus-visible {
+  border-radius: var(--r-2);
+  outline: 2px solid var(--journey-color-gold);
+  outline-offset: var(--sp-2);
+}
+
+/* ---- Reduced motion: land on the finished frame ---- */
+
+@media (prefers-reduced-motion: reduce) {
+  .home .home__road--fill {
+    animation: none;
+    opacity: 1;
+  }
+
+  /* The filled backdrop paints over the masked one, so the drops just leave. */
+  .home .home__drop {
+    animation: none;
+    opacity: 0;
+  }
+
+  /* Left paused at their negative offsets, the clouds still sit distributed
+     across the sky rather than stacked off-stage. */
+  .home.is-ready .home__cloud {
+    animation-play-state: paused;
+  }
+
+  .home :is(.home__title, .home__plate) {
+    animation: none;
+    opacity: 1;
+  }
+
+  .home .home__start {
+    animation: none;
+  }
+}

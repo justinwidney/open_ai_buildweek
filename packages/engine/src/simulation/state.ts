@@ -7,7 +7,7 @@ import type { DebtState } from "../debts/index.js";
 import type { FinancialAssetState } from "../assets/index.js";
 import type { PortfolioState } from "../portfolio/index.js";
 import type { PhysicalAssetState } from "../physical-assets/index.js";
-import type { DecisionImportance, StableId, VersionedReference } from "../contracts/index.js";
+import type { DecisionImportance, JsonValue, StableId, VersionedReference } from "../contracts/index.js";
 
 /**
  * A decision is open-ended by design (`domain` is a plain string, not a
@@ -31,6 +31,8 @@ export interface Decision {
   importance?: DecisionImportance;
   /** Links the committed audit record to its preview/compare lifecycle. */
   sessionId?: StableId;
+  /** JSON-safe parameters for replaying custom decisions such as an annual life plan. */
+  inputs?: Readonly<Record<string, JsonValue>>;
 }
 export type DecisionSet = readonly Decision[];
 

@@ -2,6 +2,7 @@ import { cents } from "../money/index.js";
 import type { MonthKey } from "../types/month.js";
 import type { StateMutation } from "../events/mutations.js";
 import type { EventEffect } from "../events/apply.js";
+import type { JsonValue } from "../contracts/values.js";
 
 /**
  * The stable entity ids the life graph assumes exist on the seed snapshot so
@@ -68,6 +69,12 @@ export function setTuition(params: { monthlyDollars: number; month: MonthKey; en
           annualInflationRate: 0.04,
           startMonth: params.month,
           endMonth: params.endMonth,
+          financing: {
+            kind: "student-loan",
+            annualRate: 0.055,
+            termMonths: 120,
+            repaymentStartMonth: params.endMonth ?? params.month + 48,
+          },
         },
       },
     },
@@ -114,6 +121,7 @@ export interface EffectParams {
   importanceLevel?: "major" | "minor";
   comparisonMetricKeys?: readonly string[];
   mutations: StateMutation[];
+  inputs?: Readonly<Record<string, JsonValue>>;
 }
 
 /** Assemble an `EventEffect` (audit decision + mutations) — the shape `applyEvent`/`forkWithEvent` consume. */
@@ -125,6 +133,7 @@ export function buildEffect(params: EffectParams): EventEffect {
       optionId: params.optionId,
       label: params.label,
       effectiveFromMonth: params.month,
+      inputs: params.inputs,
       importance: params.importanceLevel
         ? {
             level: params.importanceLevel,
