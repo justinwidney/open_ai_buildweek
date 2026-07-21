@@ -26,6 +26,22 @@ export async function saveRun(db: Database, params: SaveRunParams): Promise<void
   });
 }
 
+export interface AppendMonthsOptions {
+  /**
+   * Whether to persist a `run_months` header for the result's first
+   * snapshot. Every `RunSimulationResult.snapshots[0]` is the *input*
+   * snapshot the chunk started from, not a month this chunk computed. For a
+   * root run's genesis month that header is genuinely owned here and must be
+   * written; for a branch's fork month it belongs to the parent run and must
+   * not be duplicated into the child (that would violate the "a branch's own
+   * rows never cover a month at or before its fork" invariant). Defaults to
+   * `true` — the caller opts out only when the start snapshot is a borrowed
+   * fork point. `details` never includes the start month, so flow/balance
+   * rows are unaffected either way.
+   */
+  includeFirstSnapshotHeader?: boolean;
+}
+
 /**
  * Persists every snapshot/detail from a `runSimulation` (or worker-chunk)
  * result. Safe to call repeatedly for the same run as later chunks are
@@ -35,17 +51,19 @@ export async function saveRun(db: Database, params: SaveRunParams): Promise<void
  * conflict-guarded since they have no natural unique key and a caller is
  * expected to only append months once each has genuinely been computed.
  */
-export async function appendMonths(db: Database, runId: string, result: RunSimulationResult): Promise<void> {
+export async function appendMonths(db: Database, runId: string, result: RunSimulationResult, options: AppendMonthsOptions = {}): Promise<void> {
   const { snapshots, details } = result;
   if (snapshots.length === 0) return;
 
-  const runMonthRows = snapshots.map((s) => ({
+  const includeFirstSnapshotHeader = options.includeFirstSnapshotHeader ?? true;
+  const headerSnapshots = includeFirstSnapshotHeader ? snapshots : snapshots.slice(1);
+  const runMonthRows = headerSnapshots.map((s) => ({
     runId,
     month: s.month,
     netWorthCents: s.netWorthCents,
     taxBasis: s.taxBasis,
   }));
-  await db.insert(runMonths).values(runMonthRows).onConflictDoNothing();
+  if (runMonthRows.length > 0) await db.insert(runMonths).values(runMonthRows).onConflictDoNothing();
 
   const flowRows = details.flatMap((d) =>
     d.flows.map((f) => ({
