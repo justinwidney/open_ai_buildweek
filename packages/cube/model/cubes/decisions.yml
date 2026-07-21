@@ -1,0 +1,47 @@
+cubes:
+  - name: decisions
+    sql_table: decisions
+    description: >-
+      The audit trail of choices recorded on a run (change job, buy a house).
+      A decision's effect on which incomes/expenses/debts exist is applied by
+      the caller that builds the next snapshot — this table only records that
+      it happened and from which month.
+
+    joins:
+      - name: runs
+        sql: "{CUBE}.run_id = {runs}.id"
+        relationship: many_to_one
+
+    dimensions:
+      - name: id
+        sql: id
+        type: string
+        primary_key: true
+
+      - name: run_id
+        sql: run_id
+        type: string
+
+      - name: month
+        sql: month
+        type: number
+
+      - name: effective_from_month
+        sql: effective_from_month
+        type: number
+
+      - name: domain
+        sql: domain
+        type: string
+
+      - name: option_id
+        sql: option_id
+        type: string
+
+      - name: label
+        sql: label
+        type: string
+
+    measures:
+      - name: count
+        type: count

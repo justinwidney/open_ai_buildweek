@@ -1,0 +1,69 @@
+views:
+  # "Net worth over time for run X," and "how a run and its branch diverge"
+  # (query two run ids, group by month, compare the net_worth line). Centered
+  # on run_months at its natural grain, with run/branch metadata joined in.
+  - name: life_projection
+    description: A run's net worth month by month, with its run/branch metadata.
+    cubes:
+      - join_path: run_months
+        includes:
+          - month
+          - run_id
+          - net_worth
+          - min_net_worth
+          - net_worth_cents
+          - computed_at
+          - count
+      - join_path: run_months.runs
+        prefix: true
+        includes:
+          - label
+          - status
+          - parent_run_id
+          - fork_month
+          - is_branch
+
+  # "Income breakdown by view over time," "spending over time." Kept as its
+  # own view rather than merged into life_projection because flows are a
+  # different grain (many rows per run+month) than net worth (one row) —
+  # combining both fact tables in a single query would fan out and double-count.
+  - name: cash_flows
+    description: Monthly income/expense/debt flows by domain and named view.
+    cubes:
+      - join_path: flow_line_items
+        includes:
+          - month
+          - run_id
+          - domain
+          - view_key
+          - entity_id
+          - entity_label
+          - amount
+          - amount_cents
+          - count
+      - join_path: flow_line_items.runs
+        prefix: true
+        includes:
+          - label
+          - status
+
+  # "Portfolio value over time," "remaining mortgage over time." Point-in-time
+  # stocks; always constrain to a month when reading a balance.
+  - name: entity_balances
+    description: Point-in-time balances by domain and metric (portfolio value, debt remaining, etc.).
+    cubes:
+      - join_path: balance_snapshots
+        includes:
+          - month
+          - run_id
+          - domain
+          - metric_key
+          - entity_id
+          - balance
+          - balance_cents
+          - count
+      - join_path: balance_snapshots.runs
+        prefix: true
+        includes:
+          - label
+          - status

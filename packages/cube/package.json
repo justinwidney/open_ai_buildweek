@@ -4,6 +4,7 @@
   "private": true,
   "description": "Cube Core data model (YAML) exposing simulation runs as queryable measures/dimensions. Schema-only scaffold; no server wired up yet.",
   "scripts": {
-    "dev": "echo 'Not wired up yet: install cubejs-cli and point cube.config.js at a running Postgres instance. See README.md.' && exit 0"
+    "dev": "echo 'To run the Cube server, install cube and point cube.js at a running Postgres instance holding @control-ai/db schema. See README.md.' && exit 0",
+    "test": "node --test test/model.test.mjs"
   }
 }

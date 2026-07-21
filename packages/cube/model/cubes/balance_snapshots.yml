@@ -1,0 +1,60 @@
+cubes:
+  - name: balance_snapshots
+    sql_table: balance_snapshots
+    description: >-
+      Long/tidy point-in-time stocks across every domain (debt remaining
+      balance, financial-asset balance, portfolio balance/cost basis,
+      physical-asset value) via a domain + metric_key pair. The grain behind
+      "portfolio value over time" or "remaining mortgage over time." Each row
+      is already a balance for one entity at one month; summing across
+      entities within a month gives a category total (e.g. total debt).
+
+    joins:
+      - name: runs
+        sql: "{CUBE}.run_id = {runs}.id"
+        relationship: many_to_one
+
+    dimensions:
+      - name: id
+        sql: id
+        type: number
+        primary_key: true
+
+      - name: run_id
+        sql: run_id
+        type: string
+
+      - name: month
+        sql: month
+        type: number
+
+      - name: domain
+        sql: domain
+        type: string
+        description: debt | financialAsset | portfolio | physicalAsset.
+
+      - name: metric_key
+        sql: metric_key
+        type: string
+        description: e.g. remainingBalance, balance, costBasis, value.
+
+      - name: entity_id
+        sql: entity_id
+        type: string
+
+    measures:
+      - name: count
+        type: count
+
+      - name: balance
+        sql: "{CUBE}.amount_cents / 100.0"
+        type: sum
+        description: >-
+          Summed balance in dollars. Sum across entities within one month +
+          metric_key gives a category total (e.g. total portfolio value);
+          always constrain to a single month when reading a stock, since
+          summing one entity's balance across months is not meaningful.
+
+      - name: balance_cents
+        sql: amount_cents
+        type: sum

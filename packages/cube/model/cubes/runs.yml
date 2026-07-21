@@ -1,0 +1,54 @@
+cubes:
+  - name: runs
+    sql_table: runs
+    description: >-
+      One simulated life (or a branch of one). A branch carries a
+      parent_run_id and the fork_month it diverged at; a root run has both
+      null. Mirrors @control-ai/db's `runs` table.
+
+    dimensions:
+      - name: id
+        sql: id
+        type: string
+        primary_key: true
+        public: true
+
+      - name: parent_run_id
+        sql: parent_run_id
+        type: string
+        description: The run this one branched from, or null for a root run.
+
+      - name: fork_month
+        sql: fork_month
+        type: number
+        description: The month a branch diverged from its parent, or null for a root run.
+
+      - name: label
+        sql: label
+        type: string
+
+      - name: status
+        sql: status
+        type: string
+        description: draft | running | done | error.
+
+      - name: is_branch
+        sql: "CASE WHEN {CUBE}.parent_run_id IS NULL THEN FALSE ELSE TRUE END"
+        type: boolean
+
+      - name: created_at
+        sql: created_at
+        type: time
+
+      - name: updated_at
+        sql: updated_at
+        type: time
+
+    measures:
+      - name: count
+        type: count
+
+      - name: branch_count
+        type: count
+        filters:
+          - sql: "{CUBE}.parent_run_id IS NOT NULL"
