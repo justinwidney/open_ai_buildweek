@@ -67,14 +67,12 @@ function DecisionTravelLab() {
   async function begin() {
     setBusy(true);
     try {
-      const seed = seedFromSettings(settings);
-      const base = runBaseline(settings);
-      const runId = await createLife(settings, base, seed);
-      const withRun = { ...base, runId };
+      // The run is created first so every snapshot carries the real run id.
+      const { journey: fresh } = await createLife(settings, seedFromSettings(settings));
       firedRef.current = new Set();
       persistedThroughRef.current = 0;
-      setBaseline(withRun);
-      setJourney(withRun);
+      setBaseline(fresh);
+      setJourney(fresh);
       setMarkerMonth(0);
       setPending(null);
       await refreshSaved();

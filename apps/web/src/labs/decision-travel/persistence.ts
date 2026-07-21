@@ -85,18 +85,25 @@ export async function listSavedLives(): Promise<SavedLife[]> {
 }
 
 /**
- * Creates a run for a new life and stores its opening month.
+ * Creates a run for a new life and returns the path simulated under it.
+ *
+ * The run is created *before* the path is simulated so every snapshot is
+ * stamped with the real run id. Building the path first and attaching the id
+ * afterwards leaves `LifeStateSnapshot.runId` reading `"life"`, which then
+ * disagrees with the same life after a reload — a discrepancy that survives
+ * into any snapshot written to storage.
  *
  * Only month 0 is persisted up front even though the whole horizon is already
  * computed: months are appended as the user travels, which makes the stored
  * range double as the progress marker (`getLatestMonth`) without inventing a
  * field for it.
  */
-export async function createLife(settings: LifeSettings, journey: JourneyPath, seed: RootSeed): Promise<string> {
+export async function createLife(settings: LifeSettings, seed: RootSeed): Promise<{ runId: string; journey: JourneyPath }> {
   const runId = await runStore.createRun({ label: `Life from age ${settings.age}`, rootSeed: seed, returnsStrategy: RETURNS_STRATEGY });
+  const journey = runBaseline(settings, runId);
   await persistThrough(runId, journey, 0, 0);
   await runStore.updateRunStatus(runId, "running");
-  return runId;
+  return { runId, journey };
 }
 
 /**
