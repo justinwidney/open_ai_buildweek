@@ -6,8 +6,9 @@ import {
   type StoredDecision,
   type StoredRun,
 } from "@control-ai/shared/sim";
-import { HORIZON, RETURNS_STRATEGY, applyDecision, runBaseline, settingsFromSeed, type JourneyPath, type JourneyStep, type LifeSettings } from "./pathModel";
-import { findOption } from "./lifeEvents";
+import { findBranch, findNode } from "@control-ai/engine";
+import { HORIZON, RETURNS_STRATEGY, applyDecision, runBaseline, settingsFromSeed, travelContext, type JourneyPath, type JourneyStep, type LifeSettings } from "./pathModel";
+import { LIFE_GRAPH } from "./journeyGraph";
 
 /**
  * Saving and resuming a life, on top of `@control-ai/shared/sim`'s
@@ -134,11 +135,11 @@ export async function persistThrough(runId: string, journey: JourneyPath, fromMo
 /** Records a fork on the run and rewrites every month it changed. */
 export async function persistDecision(runId: string, journey: JourneyPath, step: JourneyStep, throughMonth: number): Promise<void> {
   const decision: Omit<StoredDecision, "runId"> = {
-    // The catalog ids are what `restoreJourney` replays from, so they are the id.
+    // The graph ids are what `restoreJourney` replays from, so they are the id.
     id: encodeStepId(step),
     month: step.month,
     domain: "life-event",
-    optionId: step.optionId,
+    optionId: step.branchId,
     label: step.label,
     effectiveFromMonth: step.month,
   };
@@ -148,11 +149,12 @@ export async function persistDecision(runId: string, journey: JourneyPath, step:
 
 /**
  * Rebuilds a saved life by re-running the engine from its seed and replaying
- * every stored decision in order. Returns the path plus how far the user had
- * travelled and which events have already fired (so a scheduled milestone does
- * not offer itself twice).
+ * every stored decision in order. Both the money path *and* the life context
+ * (stage/flags) are reconstructed by re-walking the graph — `applyDecision`
+ * folds each `(nodeId, branchId)` back into the running context, exactly as the
+ * live session did.
  */
-export async function restoreJourney(life: SavedLife): Promise<{ journey: JourneyPath; baseline: JourneyPath; fired: Set<string> }> {
+export async function restoreJourney(life: SavedLife): Promise<{ journey: JourneyPath; baseline: JourneyPath }> {
   const baseline = runBaseline(life.settings, life.run.id);
   const decisions = await runStore.listDecisions(life.run.id);
   const steps = decisions
@@ -161,17 +163,18 @@ export async function restoreJourney(life: SavedLife): Promise<{ journey: Journe
     .sort((a, b) => a.month - b.month);
 
   let journey = baseline;
-  const fired = new Set<string>();
   for (const step of steps) {
-    fired.add(step.eventId);
-    const option = findOption(step.eventId, step.optionId);
-    // A declined option (`build: null`) still counts as fired but changes
-    // nothing; an option removed from the catalog since the save is skipped
-    // rather than throwing, so an old save stays loadable.
-    if (!option?.build) continue;
-    journey = applyDecision(journey, step.month, option.build(step.month), step);
+    const node = findNode(LIFE_GRAPH, step.nodeId);
+    const branch = node ? findBranch(LIFE_GRAPH, step.nodeId, step.branchId) : null;
+    // A node/branch removed from the graph since the save is skipped rather than
+    // throwing, so an older save stays loadable.
+    if (!node || !branch) continue;
+    // Advance the context to the decision month before resolving, as travel does live.
+    journey = applyDecision(travelContext(journey, step.month, life.settings.age + Math.round(step.month / 12)), step.month, node, branch);
   }
-  return { journey, baseline, fired };
+  // Land the context at the furthest point the user had travelled.
+  journey = travelContext(journey, life.progressMonth, life.settings.age + Math.round(life.progressMonth / 12));
+  return { journey, baseline };
 }
 
 export async function deleteLife(runId: string): Promise<void> {
@@ -185,13 +188,13 @@ export async function deleteLife(runId: string): Promise<void> {
  * decision replayable rather than merely readable.
  */
 function encodeStepId(step: JourneyStep): string {
-  return `${step.eventId}#${step.optionId}@${step.month}`;
+  return `${step.nodeId}#${step.branchId}@${step.month}`;
 }
 
 function decodeStepId(id: string, label: string): JourneyStep | null {
   const match = /^(.+)#(.+)@(\d+)$/.exec(id);
   if (!match) return null;
-  return { eventId: match[1]!, optionId: match[2]!, month: Number(match[3]), label };
+  return { nodeId: match[1]!, branchId: match[2]!, month: Number(match[3]), label };
 }
 
 /** Storage health, for the footer indicator. `kind === "memory"` means nothing is really being saved. */

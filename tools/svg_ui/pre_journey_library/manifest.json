@@ -1,0 +1,205 @@
+{
+  "schema_version": 1,
+  "generation_mode": "OpenAI built-in image generation with three style references",
+  "normalized_canvas": [
+    1200,
+    694
+  ],
+  "vector_canvas": [
+    1200,
+    694
+  ],
+  "trace_settings": {
+    "filter_speckle": 8,
+    "color_precision": 7,
+    "layer_difference": 16,
+    "corner_threshold": 60,
+    "length_threshold": 4.0,
+    "splice_threshold": 45,
+    "path_precision": 2
+  },
+  "prompt_set": "GENERATION_PROMPTS.md",
+  "contact_sheet": "contact_sheet.png",
+  "items": [
+    {
+      "id": "01_forest_threshold",
+      "title": "Forest threshold",
+      "decision_language": "two faint natural foot-trails through an old pine forest",
+      "stage": "pre-journey",
+      "route_selected": false,
+      "castle_scale": "tiny distant horizon landmark",
+      "canvas": [
+        1200,
+        694
+      ],
+      "source_size": [
+        1672,
+        941
+      ],
+      "source_raster": "rasters/01_forest_threshold.png",
+      "normalized_png": "normalized/01_forest_threshold.png",
+      "svg": "svgs/01_forest_threshold.svg",
+      "svg_paths": 4941
+    },
+    {
+      "id": "02_sunlit_clearing",
+      "title": "Sunlit clearing",
+      "decision_language": "three subtle options across an open highland meadow",
+      "stage": "pre-journey",
+      "route_selected": false,
+      "castle_scale": "tiny distant horizon landmark",
+      "canvas": [
+        1200,
+        694
+      ],
+      "source_size": [
+        1672,
+        941
+      ],
+      "source_raster": "rasters/02_sunlit_clearing.png",
+      "normalized_png": "normalized/02_sunlit_clearing.png",
+      "svg": "svgs/02_sunlit_clearing.svg",
+      "svg_paths": 4602
+    },
+    {
+      "id": "03_streamside_choice",
+      "title": "Streamside choice",
+      "decision_language": "stepping stones, a log crossing, and a faint bank trail",
+      "stage": "pre-journey",
+      "route_selected": false,
+      "castle_scale": "tiny distant horizon landmark",
+      "canvas": [
+        1200,
+        694
+      ],
+      "source_size": [
+        1672,
+        941
+      ],
+      "source_raster": "rasters/03_streamside_choice.png",
+      "normalized_png": "normalized/03_streamside_choice.png",
+      "svg": "svgs/03_streamside_choice.svg",
+      "svg_paths": 4869
+    },
+    {
+      "id": "04_two_way_fork",
+      "title": "Two-way dirt-path fork",
+      "decision_language": "one foreground dirt path splitting into equal left and right choices",
+      "stage": "pre-journey",
+      "route_selected": false,
+      "castle_scale": "tiny distant horizon landmark",
+      "canvas": [
+        1200,
+        694
+      ],
+      "source_size": [
+        1649,
+        954
+      ],
+      "source_raster": "rasters/04_two_way_fork.png",
+      "normalized_png": "normalized/04_two_way_fork.png",
+      "svg": "svgs/04_two_way_fork.svg",
+      "svg_paths": 4709
+    },
+    {
+      "id": "05_path_exits_left",
+      "title": "Path exits left",
+      "decision_language": "one continuous dirt path curving beyond the left edge",
+      "stage": "pre-journey",
+      "route_selected": false,
+      "castle_scale": "tiny distant horizon landmark",
+      "canvas": [
+        1200,
+        694
+      ],
+      "source_size": [
+        1649,
+        954
+      ],
+      "source_raster": "rasters/05_path_exits_left.png",
+      "normalized_png": "normalized/05_path_exits_left.png",
+      "svg": "svgs/05_path_exits_left.svg",
+      "svg_paths": 4824
+    },
+    {
+      "id": "06_path_exits_right",
+      "title": "Path exits right",
+      "decision_language": "one continuous dirt path curving beyond the right edge",
+      "stage": "pre-journey",
+      "route_selected": false,
+      "castle_scale": "tiny distant horizon landmark",
+      "canvas": [
+        1200,
+        694
+      ],
+      "source_size": [
+        1648,
+        954
+      ],
+      "source_raster": "rasters/06_path_exits_right.png",
+      "normalized_png": "normalized/06_path_exits_right.png",
+      "svg": "svgs/06_path_exits_right.svg",
+      "svg_paths": 4607
+    },
+    {
+      "id": "07_left_straight_right",
+      "title": "Left / straight / right",
+      "decision_language": "one junction with balanced left, straight, and right destinations",
+      "stage": "pre-journey",
+      "route_selected": false,
+      "castle_scale": "tiny distant horizon landmark",
+      "canvas": [
+        1200,
+        694
+      ],
+      "source_size": [
+        1649,
+        954
+      ],
+      "source_raster": "rasters/07_left_straight_right.png",
+      "normalized_png": "normalized/07_left_straight_right.png",
+      "svg": "svgs/07_left_straight_right.svg",
+      "svg_paths": 4798
+    },
+    {
+      "id": "08_far_left_near_left_straight",
+      "title": "Far-left / near-left / straight",
+      "decision_language": "an asymmetric three-path fan with two distinct left choices",
+      "stage": "pre-journey",
+      "route_selected": false,
+      "castle_scale": "tiny distant horizon landmark",
+      "canvas": [
+        1200,
+        694
+      ],
+      "source_size": [
+        1649,
+        954
+      ],
+      "source_raster": "rasters/08_far_left_near_left_straight.png",
+      "normalized_png": "normalized/08_far_left_near_left_straight.png",
+      "svg": "svgs/08_far_left_near_left_straight.svg",
+      "svg_paths": 5056
+    },
+    {
+      "id": "09_staged_left_straight_right",
+      "title": "Staged three-destination fork",
+      "decision_language": "a near left fork followed later by a separate straight/right fork",
+      "stage": "pre-journey",
+      "route_selected": false,
+      "castle_scale": "tiny distant horizon landmark",
+      "canvas": [
+        1200,
+        694
+      ],
+      "source_size": [
+        1649,
+        954
+      ],
+      "source_raster": "rasters/09_staged_left_straight_right.png",
+      "normalized_png": "normalized/09_staged_left_straight_right.png",
+      "svg": "svgs/09_staged_left_straight_right.svg",
+      "svg_paths": 4708
+    }
+  ]
+}

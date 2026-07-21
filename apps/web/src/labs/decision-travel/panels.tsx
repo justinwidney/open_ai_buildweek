@@ -3,6 +3,7 @@ import {
   createMonteCarloReturnsStrategy,
   evaluateBudget,
   evaluateGoal,
+  recommendedBudget,
   referenceData2026,
   runMonteCarloForecast,
   cents,
@@ -13,6 +14,7 @@ import {
 } from "@control-ai/engine";
 import { fmtMoney, fmtMoneyFull, fmtPct } from "./format";
 import { HORIZON, type JourneyPath } from "./pathModel";
+import { contextWithFinances } from "./journeyGraph";
 import { ForecastBandsChart, NetWorthChart } from "./charts";
 
 function Stat({ label, value, tone }: { label: string; value: string; tone?: "good" | "bad" }) {
@@ -91,18 +93,25 @@ export function TaxPanel({ statement }: PanelProps) {
   );
 }
 
-export function BudgetPanel({ statement }: PanelProps) {
-  const [totalCap, setTotalCap] = useState(6000);
-  const [savingsTarget, setSavingsTarget] = useState(20);
-  const report = useMemo(
-    () => evaluateBudget({ totalMonthlySpendingCents: cents(totalCap), savingsRateTarget: savingsTarget / 100, lines: [{ key: "discretionary", match: "category", limitCents: cents(1200), label: "Discretionary" }] }, statement),
-    [totalCap, savingsTarget, statement],
-  );
+export function BudgetPanel({ statement, journey }: PanelProps) {
+  const rec = useMemo(() => recommendedBudget(contextWithFinances(journey.context, statement)), [journey.context, statement]);
+  const report = useMemo(() => evaluateBudget(rec.target, statement), [rec, statement]);
+  const maxPct = Math.max(...rec.categories.map((c) => c.pctOfTakeHome), 1);
   return (
     <div className="panel-body">
-      <div className="headline"><span className="eyebrow">Budget vs actual</span><h2 className={report.onTrack ? "is-good" : "is-bad"}>{report.onTrack ? "On track" : "Over budget"}</h2></div>
-      <label className="slider">Monthly spending cap: <b>{fmtMoneyFull(cents(totalCap))}</b><input type="range" min={2000} max={15000} step={100} value={totalCap} onChange={(e) => setTotalCap(+e.target.value)} /></label>
-      <label className="slider">Savings-rate target: <b>{savingsTarget}%</b><input type="range" min={0} max={40} step={1} value={savingsTarget} onChange={(e) => setSavingsTarget(+e.target.value)} /></label>
+      <div className="headline"><span className="eyebrow">Recommended budget</span><h2>{rec.headline}</h2></div>
+      <p className="note">{rec.rationale}</p>
+      <p className="dt-sub">Based on take-home of {fmtMoneyFull(rec.monthlyTakeHomeCents)}/mo · target savings {rec.savingsRatePct}%</p>
+
+      <span className="eyebrow" style={{ display: "block", marginTop: 10 }}>Suggested monthly split</span>
+      {rec.categories.map((c) => (
+        <div key={c.key} className="budget-row">
+          <div className="budget-row__head"><span>{c.label}</span><b>{fmtMoney(c.monthlyCents)} · {c.pctOfTakeHome}%</b></div>
+          <Meter fraction={c.pctOfTakeHome / maxPct} tone={c.key === "savings" ? "good" : "plum"} />
+        </div>
+      ))}
+
+      <span className="eyebrow" style={{ display: "block", marginTop: 14 }}>How you're actually tracking</span>
       {report.totalSpending && (
         <div className="budget-row">
           <div className="budget-row__head"><span>Total spending</span><b className={report.totalSpending.overBudget ? "is-bad" : "is-good"}>{fmtMoney(report.totalSpending.actualCents)} / {fmtMoney(report.totalSpending.limitCents)}</b></div>
@@ -111,11 +120,10 @@ export function BudgetPanel({ statement }: PanelProps) {
       )}
       {report.savingsRate && (
         <div className="budget-row">
-          <div className="budget-row__head"><span>Savings rate</span><b className={report.savingsRate.met ? "is-good" : "is-bad"}>{fmtPct(report.savingsRate.actualRate)} vs {fmtPct(report.savingsRate.targetRate)}</b></div>
+          <div className="budget-row__head"><span>Savings rate</span><b className={report.savingsRate.met ? "is-good" : "is-bad"}>{fmtPct(report.savingsRate.actualRate)} vs {fmtPct(report.savingsRate.targetRate)} target</b></div>
           <Meter fraction={report.savingsRate.actualRate / Math.max(0.01, report.savingsRate.targetRate)} tone={report.savingsRate.met ? "good" : "bad"} />
         </div>
       )}
-      {report.overBudgetLines.length > 0 && <p className="note is-bad">Over on: {report.overBudgetLines.map((l) => `${l.label} (+${fmtMoney(l.varianceCents)})`).join(", ")}</p>}
     </div>
   );
 }

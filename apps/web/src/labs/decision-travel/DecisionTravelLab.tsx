@@ -1,11 +1,11 @@
 import { StrictMode, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { createRandomSource } from "@control-ai/engine";
+import { createRandomSource, type DecisionBranch, type DecisionNode } from "@control-ai/engine";
 import "../lab.css";
 import "./theme.css";
 import "./panels.css";
 import { DEFAULT_SETTINGS, STOP_MONTHS, STOPS, applyDecision, runBaseline, seedFromSettings, statementAt, type JourneyPath, type LifeSettings } from "./pathModel";
-import { eventForAge, type EventOption, type LifeEvent } from "./lifeEvents";
+import { contextWithFinances, decisionsAt, evaluateYear, isInertBranch, nodeEmoji, stageMeta } from "./journeyGraph";
 import { LifeEventPopup } from "./LifeEventPopup";
 import { AccountsPanel, BudgetPanel, ForecastPanel, GoalsPanel, OverviewPanel, TaxPanel } from "./panels";
 import { fmtMoney } from "./format";
@@ -20,8 +20,8 @@ const TABS = [
   { id: "forecast", label: "Forecast", Panel: ForecastPanel },
 ] as const;
 
-interface PendingEvent {
-  event: LifeEvent;
+interface PendingDecision {
+  node: DecisionNode;
   age: number;
   month: number;
 }
@@ -42,11 +42,10 @@ function DecisionTravelLab() {
   const [journey, setJourney] = useState<JourneyPath | null>(null);
   const [markerMonth, setMarkerMonth] = useState(0);
   const [tab, setTab] = useState<(typeof TABS)[number]["id"]>("overview");
-  const [pending, setPending] = useState<PendingEvent | null>(null);
+  const [pending, setPending] = useState<PendingDecision | null>(null);
   const [saved, setSaved] = useState<SavedLife[]>([]);
   const [busy, setBusy] = useState(false);
   const [storageVersion, setStorageVersion] = useState(0);
-  const firedRef = useRef<Set<string>>(new Set());
   const roadRef = useRef<HTMLDivElement>(null);
   /** Highest month whose data has been written, so travelling only ever appends the newly revealed range. */
   const persistedThroughRef = useRef(0);
@@ -54,6 +53,7 @@ function DecisionTravelLab() {
   const startAge = settings.age;
   const stopIndex = Math.round(markerMonth / STOP_MONTHS);
   const ageNow = startAge + stopIndex;
+  const atFrontier = markerMonth >= persistedThroughRef.current;
 
   const refreshSaved = useCallback(async () => {
     setSaved(await listSavedLives());
@@ -69,13 +69,15 @@ function DecisionTravelLab() {
     try {
       // The run is created first so every snapshot carries the real run id.
       const { journey: fresh } = await createLife(settings, seedFromSettings(settings));
-      firedRef.current = new Set();
       persistedThroughRef.current = 0;
       setBaseline(fresh);
       setJourney(fresh);
       setMarkerMonth(0);
       setPending(null);
       await refreshSaved();
+      // A brand-new 18-year-old faces the root milestone immediately.
+      const { milestone } = decisionsAt(fresh.context);
+      if (milestone) setPending({ node: milestone, age: settings.age, month: 0 });
     } finally {
       setBusy(false);
     }
@@ -86,7 +88,6 @@ function DecisionTravelLab() {
     setBusy(true);
     try {
       const restored = await restoreJourney(life);
-      firedRef.current = restored.fired;
       persistedThroughRef.current = life.progressMonth;
       setSettings(life.settings);
       setBaseline(restored.baseline);
@@ -116,12 +117,23 @@ function DecisionTravelLab() {
     roadRef.current?.querySelector<HTMLElement>(`[data-stop="${index}"]`)?.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
   }
 
+  /** Move the marker to a stop, syncing the clock and this year's finances so money-gated decisions evaluate correctly. */
+  function goToStop(index: number, currentJourney: JourneyPath): JourneyPath {
+    const month = index * STOP_MONTHS;
+    setMarkerMonth(month);
+    scrollToStop(index);
+    const stmt = statementAt(currentJourney, month, startAge);
+    const synced = { ...currentJourney, context: contextWithFinances({ ...currentJourney.context, month, ageYears: startAge + index }, stmt) };
+    setJourney(synced);
+    return synced;
+  }
+
   function travel(delta: number) {
     if (!journey) return;
     const next = Math.max(0, Math.min(STOPS, stopIndex + delta));
     const nextMonth = next * STOP_MONTHS;
-    setMarkerMonth(nextMonth);
-    scrollToStop(next);
+    const age = startAge + next;
+    const synced = goToStop(next, journey);
     if (delta <= 0) return;
 
     // Extend the stored range to cover the year just revealed. The stored range
@@ -132,37 +144,48 @@ function DecisionTravelLab() {
       void persistThrough(journey.runId, journey, from, nextMonth).then(() => setStorageVersion((v) => v + 1));
     }
 
-    const age = startAge + next;
-    const src = createRandomSource(`evt-${settings.age}-${age}`);
-    const ev = eventForAge(age, firedRef.current, () => src.next());
-    if (ev) setPending({ event: ev, age, month: nextMonth });
+    // Evaluate the year: a forced milestone wins, else a random "life happens" event may fire.
+    const src = createRandomSource(`${journey.runId ?? "life"}-evt-${age}`);
+    const { forced } = evaluateYear(synced.context, () => src.next());
+    if (forced) setPending({ node: forced, age, month: nextMonth });
   }
 
-  function choose(opt: EventOption) {
+  /** Apply a chosen branch (or dismiss an optional one), then chain to any milestone it unlocks at the same age. */
+  function choose(branch: DecisionBranch) {
     if (!pending || !journey) return;
-    firedRef.current.add(pending.event.id);
-    setPending(null);
+    const { node, month, age } = pending;
 
-    if (!opt.build) return; // Declined — the path is unchanged, so there is nothing to persist.
+    // "Maybe later" / decline on an optional opportunity: leave it open for a future year.
+    if (isInertBranch(branch)) {
+      setPending(null);
+      return;
+    }
 
-    const next = applyDecision(journey, pending.month, opt.build(pending.month), { eventId: pending.event.id, optionId: opt.id });
-    setJourney(next);
-    const step = next.history[next.history.length - 1]!;
-    if (next.runId) {
+    const next = applyDecision(journey, month, node, branch);
+    // Refresh finances against the just-changed path so chained checks and the opportunity list are current.
+    const withFin = { ...next, context: contextWithFinances(next.context, statementAt(next, month, startAge)) };
+    setJourney(withFin);
+    const step = withFin.history[withFin.history.length - 1]!;
+    if (withFin.runId) {
       // A fork rewrites every month from here on, so re-persist the range already
       // stored; `appendMonths` is idempotent per month, so this overwrites rather than duplicates.
-      void persistDecision(next.runId, next, step, persistedThroughRef.current).then(() => setStorageVersion((v) => v + 1));
+      void persistDecision(withFin.runId, withFin, step, persistedThroughRef.current).then(() => setStorageVersion((v) => v + 1));
     }
+
+    // Chain: choosing a path (school) immediately surfaces its first milestone (declare a major).
+    const { milestone } = decisionsAt(withFin.context);
+    setPending(milestone ? { node: milestone, age, month } : null);
   }
 
   const statement = useMemo(() => (journey ? statementAt(journey, markerMonth, startAge) : null), [journey, markerMonth, startAge]);
+  const opportunities = useMemo(() => (journey && atFrontier ? decisionsAt(journey.context).opportunities : []), [journey, atFrontier]);
 
   if (!journey || !baseline) {
     return (
       <main className="dt-app setup">
         <div className="scroll setup-card">
-          <div className="event-card__head"><div className="crest">♛</div><div><span className="eyebrow">Financial pathway simulator</span><h1 className="dt-title">Begin a life</h1></div></div>
-          <p className="dt-sub">Set your starting point, then travel year by year. As you age, forks in the road appear — some at life's usual milestones, some by chance — and every choice reshapes your path.</p>
+          <div className="event-card__head"><div className="crest">♛</div><div><span className="eyebrow">Life pathway simulator</span><h1 className="dt-title">Begin a life</h1></div></div>
+          <p className="dt-sub">You've just finished high school. Choose a road — college, work, a trade, the military, or a gap year — then travel year by year. Big moments demand a decision; the quiet years simply roll on.</p>
 
           {saved.length > 0 && (
             <div className="saved-lives">
@@ -188,8 +211,8 @@ function DecisionTravelLab() {
               ["age", "Starting age", 1],
               ["monthlyIncome", "Monthly income", 100],
               ["monthlyExpenses", "Monthly expenses", 100],
-              ["startingCash", "Starting cash", 1000],
-              ["startingInvestments", "Starting investments", 1000],
+              ["startingCash", "Starting cash", 500],
+              ["startingInvestments", "Starting investments", 500],
               ["deferralPct", "401(k) deferral %", 1],
             ] as const).map(([key, label, step]) => (
               <label key={key}>{label}<input type="number" step={step} value={settings[key]} onChange={(e) => setSettings({ ...settings, [key]: +e.target.value })} /></label>
@@ -204,13 +227,14 @@ function DecisionTravelLab() {
 
   const ActivePanel = TABS.find((t) => t.id === tab)!.Panel;
   const forkMonths = new Set(journey.history.map((h) => h.month));
+  const stage = stageMeta(journey.context.stage);
 
   return (
     <main className="dt-app">
       <header className="dt-header scroll">
         <div className="event-card__head" style={{ marginBottom: 0 }}>
           <div className="crest">♛</div>
-          <div><span className="eyebrow">Age {ageNow}</span><h1 className="dt-title">Your pathway</h1></div>
+          <div><span className="eyebrow">Age {ageNow} · {stage.emoji} {stage.label}</span><h1 className="dt-title">Your pathway</h1></div>
         </div>
         <div className="dt-header__nw"><span className="eyebrow">Net worth</span><b>{fmtMoney(journey.snapshots[markerMonth]?.netWorthCents ?? 0)}</b></div>
         <button className="ornate-btn" onClick={leaveToSetup}>Saved lives</button>
@@ -221,7 +245,7 @@ function DecisionTravelLab() {
           const month = i * STOP_MONTHS;
           const nw = journey.snapshots[month]?.netWorthCents ?? 0;
           return (
-            <button key={i} data-stop={i} className={`stop ${i === stopIndex ? "is-here" : ""} ${i < stopIndex ? "is-past" : ""}`} onClick={() => { setMarkerMonth(month); scrollToStop(i); }}>
+            <button key={i} data-stop={i} className={`stop ${i === stopIndex ? "is-here" : ""} ${i < stopIndex ? "is-past" : ""}`} onClick={() => goToStop(i, journey)}>
               <span className="stop__nw">{fmtMoney(nw)}</span>
               <span className="platform">{i === stopIndex && <span className="traveller">🧍</span>}{forkMonths.has(month) && <span className="forkflag">⚑</span>}</span>
               <span className="stop__age">{startAge + i}</span>
@@ -234,6 +258,19 @@ function DecisionTravelLab() {
         <button className="ornate-btn" disabled={stopIndex <= 0} onClick={() => travel(-1)}>◀ Look back</button>
         <button className="ornate-btn is-primary" disabled={stopIndex >= STOPS} onClick={() => travel(1)}>Travel a year ▶</button>
       </section>
+
+      {opportunities.length > 0 && (
+        <section className="dt-opportunities">
+          <span className="eyebrow">Opportunities open to you now</span>
+          <div className="dt-opportunities__row">
+            {opportunities.map((node) => (
+              <button key={node.id} className="ornate-btn dt-opportunity" onClick={() => setPending({ node, age: ageNow, month: markerMonth })}>
+                {nodeEmoji(node)} {node.title}
+              </button>
+            ))}
+          </div>
+        </section>
+      )}
 
       <section className="dt-lower">
         <div className="scroll module">
@@ -253,7 +290,15 @@ function DecisionTravelLab() {
         </aside>
       </section>
 
-      {pending && <LifeEventPopup event={pending.event} age={pending.age} onChoose={choose} />}
+      {pending && (
+        <LifeEventPopup
+          node={pending.node}
+          ctx={{ ...journey.context, month: pending.month }}
+          age={pending.age}
+          onChoose={choose}
+          onDismiss={pending.node.trigger === "opportunity" ? () => setPending(null) : undefined}
+        />
+      )}
     </main>
   );
 }

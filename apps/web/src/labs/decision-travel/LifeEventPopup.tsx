@@ -1,20 +1,22 @@
-import type { EventOption, LifeEvent } from "./lifeEvents";
-import {
-  directionsForOptions,
-  ROUTE_DIRECTION_LABELS,
-  selectDecisionMap,
-} from "./decisionMaps";
+import { branchEligibility, type DecisionBranch, type DecisionNode, type LifeContext } from "@control-ai/engine";
+import { directionsForOptions, ROUTE_DIRECTION_LABELS, selectRouteMap } from "./decisionMaps";
+import { isInertBranch, nodeEmoji, routeKindForNode } from "./journeyGraph";
 
 interface LifeEventPopupProps {
-  event: LifeEvent;
+  node: DecisionNode;
+  ctx: LifeContext;
   age: number;
-  onChoose: (option: EventOption) => void;
+  onChoose: (branch: DecisionBranch) => void;
+  /** Dismiss without choosing — only offered for optional opportunities. */
+  onDismiss?: () => void;
   showMap?: boolean;
 }
 
-export function LifeEventPopup({ event, age, onChoose, showMap = true }: LifeEventPopupProps) {
-  const decisionMap = selectDecisionMap(event, age);
-  const directions = directionsForOptions(event.options, event.routeKind);
+export function LifeEventPopup({ node, ctx, age, onChoose, onDismiss, showMap = true }: LifeEventPopupProps) {
+  const routeKind = routeKindForNode(node);
+  const decisionMap = selectRouteMap(routeKind, `${node.id}:${age}`);
+  const directions = directionsForOptions(node.branches.length, routeKind);
+  const isOpportunity = node.trigger === "opportunity";
 
   return (
     <div className="event-overlay" role="presentation">
@@ -22,8 +24,8 @@ export function LifeEventPopup({ event, age, onChoose, showMap = true }: LifeEve
         <div className="event-card__head">
           <div className="crest">♛</div>
           <div>
-            <span className="eyebrow">{event.kind === "scheduled" ? `A crossroads · age ${age}` : `An unexpected turn · age ${age}`}</span>
-            <h2 className="dt-title" id="decision-event-title">{event.emoji} {event.title}</h2>
+            <span className="eyebrow">{isOpportunity ? `An opportunity · age ${age}` : `A crossroads · age ${age}`}</span>
+            <h2 className="dt-title" id="decision-event-title">{nodeEmoji(node)} {node.title}</h2>
           </div>
         </div>
 
@@ -31,28 +33,39 @@ export function LifeEventPopup({ event, age, onChoose, showMap = true }: LifeEve
           {showMap && <figure className="decision-map">
             <div className="decision-map__viewport">
               <img src={decisionMap.src} alt={`${decisionMap.label} watercolor route map`} />
-              <span className={`decision-map__kind is-${event.routeKind}`}>{decisionMap.label}</span>
+              <span className={`decision-map__kind is-${routeKind}`}>{decisionMap.label}</span>
             </div>
             <figcaption>
-              <span><b>Route preview</b> {event.routeKind.replaceAll("-", " ")}</span>
+              <span><b>Route preview</b> {routeKind.replaceAll("-", " ")}</span>
               <small>{decisionMap.id.replaceAll("_", " ")}</small>
             </figcaption>
           </figure>}
 
           <div className="event-card__choice">
-            <p className="event-card__prompt">{event.prompt}</p>
+            <p className="event-card__prompt">{node.prompt}</p>
             <div className="event-options">
-              {event.options.map((opt, index) => {
+              {node.branches.map((branch, index) => {
                 const direction = directions[index] ?? "winding";
+                const elig = branchEligibility(branch, ctx);
+                const inert = isInertBranch(branch);
                 return (
-                  <button key={opt.id} className={`event-option is-${direction} ${opt.build === null ? "is-decline" : ""}`} onClick={() => onChoose(opt)}>
+                  <button
+                    key={branch.id}
+                    className={`event-option is-${direction} ${inert ? "is-decline" : ""}`}
+                    disabled={!elig.eligible}
+                    title={elig.eligible ? undefined : elig.reasons.join(" ")}
+                    onClick={() => onChoose(branch)}
+                  >
                     <span className="event-option__route">{ROUTE_DIRECTION_LABELS[direction]}</span>
-                    <strong>{opt.label}</strong>
-                    <small>{opt.description}</small>
+                    <strong>{branch.label}</strong>
+                    <small>{elig.eligible ? branch.description : elig.reasons.join(" ")}</small>
                   </button>
                 );
               })}
             </div>
+            {isOpportunity && onDismiss && (
+              <button className="ornate-btn event-card__dismiss" onClick={onDismiss}>Maybe later</button>
+            )}
           </div>
         </div>
       </div>

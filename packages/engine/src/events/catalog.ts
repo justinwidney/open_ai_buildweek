@@ -106,6 +106,68 @@ export function buyHome(params: BuyHomeParams): EventEffect {
   };
 }
 
+export interface BuyCarParams {
+  id: string;
+  label?: string;
+  priceCents: Cents;
+  /** Cash paid up front; the remainder (if any) becomes an auto loan. Defaults to the full price (cash purchase). */
+  downPaymentCents?: Cents;
+  loanAnnualRate?: number;
+  loanTermMonths?: number;
+  monthlyInsuranceCents: Cents;
+  /** Cars lose value: a negative net rate. Defaults to −15%/yr. */
+  annualDepreciationRate?: number;
+  effectiveFromMonth: MonthKey;
+  cashAssetId?: string;
+}
+
+/**
+ * Buy a car: cash out for the down payment, an optional auto loan for the rest,
+ * a depreciating physical asset, and a recurring insurance expense. The mirror
+ * of `buyHome` for a wasting asset.
+ */
+export function buyCar(params: BuyCarParams): EventEffect {
+  const label = params.label ?? "Car";
+  const down = params.downPaymentCents ?? params.priceCents;
+  const financedCents = Math.max(0, params.priceCents - down);
+  const loanId = `${params.id}-loan`;
+  const mutations: StateMutation[] = [
+    { kind: "adjustCash", deltaCents: -down, assetId: params.cashAssetId },
+    {
+      kind: "addPhysicalAsset",
+      asset: {
+        config: {
+          id: params.id,
+          label,
+          purchasePriceCents: params.priceCents,
+          purchaseMonth: params.effectiveFromMonth,
+          annualValueChangeRate: params.annualDepreciationRate ?? -0.15,
+          monthlyUpkeepCents: params.monthlyInsuranceCents,
+          linkedDebtId: financedCents > 0 ? loanId : undefined,
+        },
+      },
+    },
+  ];
+  if (financedCents > 0) {
+    mutations.splice(1, 0, {
+      kind: "addDebt",
+      debt: initialDebtState({
+        id: loanId,
+        label: `${label} loan`,
+        originalPrincipalCents: financedCents,
+        annualRate: params.loanAnnualRate ?? 0.07,
+        termMonths: params.loanTermMonths ?? 60,
+        startMonth: params.effectiveFromMonth,
+        monthlyEscrowCents: 0,
+      }),
+    });
+  }
+  return {
+    decision: { id: `buy-car:${params.id}`, domain: "lifestyle", optionId: params.id, label: `Buy ${label}`, effectiveFromMonth: params.effectiveFromMonth },
+    mutations,
+  };
+}
+
 /** Marriage: change filing status, optionally add a spouse's income and a one-time wedding cost. */
 export function marry(params: {
   effectiveFromMonth: MonthKey;

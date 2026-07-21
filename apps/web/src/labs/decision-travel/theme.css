@@ -101,3 +101,37 @@
 .dt-title { font-size: 22px; letter-spacing: 0.5px; margin: 0; }
 .dt-sub { color: var(--ink-soft); font-size: 13px; }
 .eyebrow { text-transform: uppercase; letter-spacing: 1.5px; font-size: 11px; color: var(--ink-soft); }
+
+/* ---- Opportunities (optional, rule-engine-surfaced side quests) ---- */
+.dt-opportunities {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 14px;
+}
+.dt-opportunities__row,
+.journey-hud__opps-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.dt-opportunity {
+  font-size: 13px;
+  padding: 6px 12px;
+}
+.journey-hud__opportunities {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 8px 0;
+}
+.event-card__dismiss {
+  margin-top: 10px;
+  align-self: flex-start;
+  font-size: 13px;
+}
+.event-option:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  filter: grayscale(0.4);
+}

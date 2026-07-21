@@ -24,9 +24,14 @@ export type StateMutation =
   | { kind: "addIncome"; income: IncomeState }
   | { kind: "removeIncome"; id: string }
   | { kind: "patchIncomeConfig"; id: string; patch: Partial<Omit<IncomeSourceConfig, "id">> }
+  // Multiply one income's base gross by a factor — a raise (>1) or a pay cut (<1) — without
+  // needing to know its current amount. Only touches the named source, so a spouse's income is untouched.
+  | { kind: "scaleIncome"; id: string; factor: number }
   | { kind: "addExpense"; expense: ExpenseState }
   | { kind: "removeExpense"; id: string }
   | { kind: "patchExpenseConfig"; id: string; patch: Partial<Omit<ExpenseConfig, "id">> }
+  // Multiply one expense's base amount — a rent hike (>1) or a belt-tightening cut (<1) — without needing its current amount.
+  | { kind: "scaleExpense"; id: string; factor: number }
   | { kind: "addDebt"; debt: DebtState }
   | { kind: "removeDebt"; id: string }
   | { kind: "addFinancialAsset"; asset: FinancialAssetState }
@@ -50,12 +55,22 @@ function applyOne(snapshot: LifeStateSnapshot, m: StateMutation): LifeStateSnaps
       return { ...snapshot, incomes: snapshot.incomes.filter((s) => s.config.id !== m.id) };
     case "patchIncomeConfig":
       return { ...snapshot, incomes: snapshot.incomes.map((s) => (s.config.id === m.id ? { ...s, config: { ...s.config, ...m.patch } } : s)) };
+    case "scaleIncome":
+      return {
+        ...snapshot,
+        incomes: snapshot.incomes.map((s) => (s.config.id === m.id ? { ...s, config: { ...s.config, baseMonthlyGrossCents: Math.round(s.config.baseMonthlyGrossCents * m.factor) } } : s)),
+      };
     case "addExpense":
       return { ...snapshot, expenses: [...snapshot.expenses, m.expense] };
     case "removeExpense":
       return { ...snapshot, expenses: snapshot.expenses.filter((s) => s.config.id !== m.id) };
     case "patchExpenseConfig":
       return { ...snapshot, expenses: snapshot.expenses.map((s) => (s.config.id === m.id ? { ...s, config: { ...s.config, ...m.patch } } : s)) };
+    case "scaleExpense":
+      return {
+        ...snapshot,
+        expenses: snapshot.expenses.map((s) => (s.config.id === m.id ? { ...s, config: { ...s.config, baseMonthlyAmountCents: Math.round(s.config.baseMonthlyAmountCents * m.factor) } } : s)),
+      };
     case "addDebt":
       return { ...snapshot, debts: [...snapshot.debts, m.debt] };
     case "removeDebt":

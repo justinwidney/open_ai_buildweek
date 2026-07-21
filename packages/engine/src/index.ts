@@ -22,6 +22,7 @@ export * from "./returns/index.js";
 export * from "./portfolio/index.js";
 export * from "./simulation/index.js";
 export * from "./events/index.js";
+export * from "./rules/index.js";
 export * from "./forecast/index.js";
 export * from "./statement/index.js";
 export * from "./budget/index.js";

@@ -6,9 +6,11 @@ export {
   changeContributionRate,
   changeJob,
   buyHome,
+  buyCar,
   marry,
   haveChild,
   receiveWindfall,
   relocate,
   type BuyHomeParams,
+  type BuyCarParams,
 } from "./catalog.js";
