@@ -1,0 +1,20 @@
+### Home
+Welcome to Conquer Your Path — a life-decision simulator that turns the next few decades of your life into a single, playable journey. Every choice you're about to see, from your first job to your first apartment, plays out on one continuous map.
+
+### Onboarding
+Before the first crossroads, we ask two things: where you are today, and what you're starting with. Your age sets the timeline, and your current net worth becomes the opening balance at month zero — before school, work, or any other path changes it.
+
+### Decision Journey
+This is the journey itself. As you move forward in time, the road forks at real milestones — a new job, a move, a major purchase — and each choice reshapes the path ahead. The heads-up display keeps your current age, direction, and next open decision always in view.
+
+### Design tokens
+Underneath every screen is a shared set of design tokens — color, type, spacing, and radius — kept consistent so the whole experience reads as one connected world, not a patchwork of separate screens.
+
+### Year planner
+The year planner breaks a single year down into direction, budget, and a month-by-month timetable, so a decision that plays out over twelve months stays easy to follow instead of becoming a wall of numbers.
+
+### Decision cards
+Career, education, and lifestyle choices all show up as the same card format — five across on desktop, three in a compact layout — so comparing a job offer to a college major or a new pet feels like the same simple decision each time.
+
+### Charter cards
+And every path starts with a charter card: the role you're stepping into, laid out with its costs and commitments up front, so you know exactly what you're signing up for before you take the first step.

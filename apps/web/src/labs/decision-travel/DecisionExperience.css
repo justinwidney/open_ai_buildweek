@@ -417,6 +417,8 @@
   width: min(460px, 48dvh, calc(100vw - 32px));
 }
 .role-three-card.is-dragging { cursor: grabbing; }
+.role-three-card--loading { align-items: center; background: radial-gradient(circle, rgba(244, 224, 170, .16), transparent 68%); color: #f8e5b6; cursor: wait; display: flex; justify-content: center; }
+.role-three-card--loading span { font: 800 var(--text-label)/1 var(--journey-font-ui); letter-spacing: var(--track-label); text-transform: uppercase; }
 .role-three-card canvas { filter: drop-shadow(0 26px 22px rgba(8, 15, 14, .34)); }
 .role-three-card:focus-visible::after { border: 2px solid var(--journey-color-gold); border-radius: var(--journey-radius-window); content: ""; inset: var(--sp-4); pointer-events: none; position: absolute; }
 

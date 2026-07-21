@@ -11,3 +11,10 @@ storybook-static/
 .venv-svg/
 tools/svg_grouper/debug/node_modules/
 tools/svg_grouper/debug/home-preview/
+
+# Generated recording pipeline output (audio/video are regenerated, not source)
+tools/app-recording/node_modules/
+tools/app-recording/audio/
+tools/app-recording/video/
+tools/app-recording/clips/
+tools/app-recording/*.mp4

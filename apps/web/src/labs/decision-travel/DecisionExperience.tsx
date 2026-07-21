@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type CSSProperties } from "react";
+import { lazy, Suspense, useEffect, useMemo, useState, type CSSProperties } from "react";
 import {
   branchEligibility,
   type DecisionBranch,
@@ -18,8 +18,13 @@ import { isInertBranch, nodeEmoji } from "./journeyGraph";
 import { isLifestyleDecisionNode } from "./lifestyleDecisions";
 import { LifestyleYearPlanner, plannerStepsForAge } from "./planner/LifestyleYearPlanner";
 import { PLANNER_STEP_BLURBS, PLANNER_STEP_TITLES, type PlannerStepId } from "./planner/plannerModel";
-import { RoleThreeCard } from "./RoleThreeCard";
 import "./DecisionExperience.css";
+
+// Three.js, React Three Fiber, and Drei are only needed after a player opens
+// an interactive commitment card. Keep them out of the SVG journey path.
+const RoleThreeCard = lazy(() =>
+  import("./RoleThreeCard").then((module) => ({ default: module.RoleThreeCard })),
+);
 
 interface DecisionExperienceProps {
   node: DecisionNode;
@@ -260,26 +265,28 @@ function PathCommitmentCard({ item, age, onBack, onConfirm }: { item: ExplorerIt
         <button className="role-startup__back" type="button" onClick={onBack}><span>←</span> Back to {isMajor ? "programs" : isPet ? "pets" : "roles"}</button>
 
         <div className="role-startup__stage">
-          <RoleThreeCard
-            artworkSrc={details.artwork?.src ?? (isMajor ? "/role-cards/majors/liberal-arts.svg" : isPet ? "/role-cards/pets/adult-dog.svg" : "/role-cards/roles/retail.svg")}
-            title={branch.label}
-            category={details.category}
-            outlook={details.outlook}
-            note={details.note}
-            startupSummary={details.startupSummary ?? (isMajor
-              ? "Plan for the tuition, materials, and practical requirements across this degree."
-              : "Prepare the equipment and credentials needed to begin this role.")}
-            startupItems={details.startupItems ?? []}
-            cost={details.cost}
-            timeLabel={details.timeLabel}
-            startingSalary={details.startingSalary}
-            provisionsLabel={isPet ? "ADOPTION PROVISIONS" : undefined}
-            costQuestion={isPet ? `Why this homecoming starts at ${money(details.cost)}` : undefined}
-            leftFooterLabel={isPet ? "WEEKLY CARE" : undefined}
-            leftFooterValue={isPet ? `${details.weeklyHours ?? 0} hours` : undefined}
-            rightFooterLabel={isPet ? "ONGOING COST" : undefined}
-            rightFooterValue={isPet ? `${money(details.monthlyCost ?? 0)}/mo` : undefined}
-          />
+          <Suspense fallback={<div className="role-three-card role-three-card--loading" role="status"><span>Preparing interactive card…</span></div>}>
+            <RoleThreeCard
+              artworkSrc={details.artwork?.src ?? (isMajor ? "/role-cards/majors/liberal-arts.svg" : isPet ? "/role-cards/pets/adult-dog.svg" : "/role-cards/roles/retail.svg")}
+              title={branch.label}
+              category={details.category}
+              outlook={details.outlook}
+              note={details.note}
+              startupSummary={details.startupSummary ?? (isMajor
+                ? "Plan for the tuition, materials, and practical requirements across this degree."
+                : "Prepare the equipment and credentials needed to begin this role.")}
+              startupItems={details.startupItems ?? []}
+              cost={details.cost}
+              timeLabel={details.timeLabel}
+              startingSalary={details.startingSalary}
+              provisionsLabel={isPet ? "ADOPTION PROVISIONS" : undefined}
+              costQuestion={isPet ? `Why this homecoming starts at ${money(details.cost)}` : undefined}
+              leftFooterLabel={isPet ? "WEEKLY CARE" : undefined}
+              leftFooterValue={isPet ? `${details.weeklyHours ?? 0} hours` : undefined}
+              rightFooterLabel={isPet ? "ONGOING COST" : undefined}
+              rightFooterValue={isPet ? `${money(details.monthlyCost ?? 0)}/mo` : undefined}
+            />
+          </Suspense>
 
           <div className="role-startup__actions">
             <button type="button" className="role-startup__confirm" onClick={onConfirm}>
