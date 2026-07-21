@@ -1,0 +1,73 @@
+cubes:
+  - name: flow_line_items
+    sql_table: flow_line_items
+    description: >-
+      Long/tidy monthly cash flows across every domain (income, expense,
+      debt) via a domain + view_key pair, so a new domain or named view is a
+      new column value, never a migration. This is the grain behind "income
+      breakdown by view over time" and "spending over time." amount_cents is
+      a per-month flow, so summing across a period is meaningful.
+
+    joins:
+      - name: runs
+        sql: "{CUBE}.run_id = {runs}.id"
+        relationship: many_to_one
+
+    dimensions:
+      - name: id
+        sql: id
+        type: number
+        primary_key: true
+
+      - name: run_id
+        sql: run_id
+        type: string
+
+      - name: month
+        sql: month
+        type: number
+
+      # The value sets below are the canonical vocabulary from
+      # @control-ai/shared/sim (FLOW_DOMAINS / FLOW_VIEW_KEYS_BY_DOMAIN), and
+      # test/model.test.mjs fails if they drift from it. They are listed in
+      # full rather than abbreviated because these strings are what a query
+      # filters on — an out-of-date list here sends someone hunting for a
+      # measure that silently matches nothing.
+      - name: domain
+        sql: domain
+        type: string
+        description: "Values: income | expense | debt."
+
+      - name: view_key
+        sql: view_key
+        type: string
+        description: >-
+          The named view of the amount.
+          Values (income): gross | afterPayrollDeductions | afterTax | taxFree |
+          socialSecurityWage | takeHome | federalTax | stateTax | fica.
+          Values (expense): total | outOfPocket.
+          Values (debt): totalPayment | principalPortion | interestPortion | escrowPortion.
+          Note that income's `gross` and `takeHome` overlap by design (takeHome is
+          net of tax and deferrals), so summing across every view key double-counts —
+          always filter to one view key when totalling.
+
+      - name: entity_id
+        sql: entity_id
+        type: string
+
+      - name: entity_label
+        sql: entity_label
+        type: string
+
+    measures:
+      - name: count
+        type: count
+
+      - name: amount
+        sql: "{CUBE}.amount_cents / 100.0"
+        type: sum
+        description: Summed flow amount in dollars over the selected period/grouping.
+
+      - name: amount_cents
+        sql: amount_cents
+        type: sum

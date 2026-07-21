@@ -1,0 +1,64 @@
+{
+  "schema_version": 2,
+  "source": "tools/svg_ui/fork_world_kit/references/reference_fork_near_right.png",
+  "canvas": {
+    "width": 1649,
+    "height": 954
+  },
+  "method": "warm-road-mask + horizontal-run divergence",
+  "road_mask": {
+    "coverage": 0.09357,
+    "bbox": {
+      "pixels": [
+        694,
+        137,
+        1617,
+        950
+      ],
+      "normalized": [
+        0.4209,
+        0.1436,
+        0.9806,
+        0.9958
+      ]
+    }
+  },
+  "fork_candidates": [
+    {
+      "id": "candidate-fork-01",
+      "status": "candidate-needs-review",
+      "junction": [
+        0.6656,
+        0.6782
+      ],
+      "junction_pixels": [
+        1097.5,
+        647
+      ],
+      "sides": [
+        "left",
+        "right"
+      ],
+      "arm_centers": [
+        0.5667,
+        0.8302
+      ],
+      "bbox": {
+        "pixels": [
+          739,
+          479,
+          1617,
+          647
+        ],
+        "normalized": [
+          0.4482,
+          0.5021,
+          0.9806,
+          0.6782
+        ]
+      },
+      "confidence": 0.845
+    }
+  ],
+  "review_note": "Raster candidates are evidence, not authoritative graph edges. Use trusted spline metadata for generated SVGs."
+}

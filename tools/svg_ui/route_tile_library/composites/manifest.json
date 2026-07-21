@@ -1,0 +1,960 @@
+{
+  "schema_version": 1,
+  "generation_mode": "delta compositing from image-generated masters, no model",
+  "base": "01_straight",
+  "tiles": [
+    {
+      "schema_version": 1,
+      "id": "val_22_reconstruction",
+      "label": "VALIDATION: rebuild 22 from 06+12",
+      "topology": "Composite of 06_near_exit_left:L0, 12_far_exit_right:R2 over 01_straight.",
+      "sockets": [
+        "B0",
+        "T0",
+        "L0",
+        "R2"
+      ],
+      "socket_contract": {
+        "B0": {
+          "edge": "bottom",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.16
+        },
+        "T0": {
+          "edge": "top",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.035
+        },
+        "L0": {
+          "edge": "left",
+          "center": 0.56,
+          "direction": "horizontal",
+          "road_width": 0.028
+        },
+        "R2": {
+          "edge": "right",
+          "center": 0.375,
+          "direction": "horizontal",
+          "road_width": 0.016
+        }
+      },
+      "parts": [
+        [
+          "06_near_exit_left",
+          "L0"
+        ],
+        [
+          "12_far_exit_right",
+          "R2"
+        ]
+      ],
+      "base": "01_straight",
+      "normalized_png": "composites/normalized/val_22_reconstruction.png",
+      "svg": "composites/svgs/val_22_reconstruction.svg",
+      "svg_paths": 760,
+      "seam_report": {
+        "L0": {
+          "measured_center": 0.5598,
+          "target_center": 0.56,
+          "snapped_center": 0.5598,
+          "target_width": 0.028,
+          "snapped_width": 0.0274
+        },
+        "R2": {
+          "measured_center": 0.3754,
+          "target_center": 0.375,
+          "snapped_center": 0.371,
+          "target_width": 0.016,
+          "snapped_width": 0.0216
+        }
+      },
+      "connectivity": {
+        "B0": true,
+        "T0": true,
+        "L0": true,
+        "R2": true
+      },
+      "flush": true
+    },
+    {
+      "schema_version": 1,
+      "id": "26_near_left_mid_right",
+      "label": "Near-left and mid-right exits",
+      "topology": "Composite of 06_near_exit_left:L0, 10_mid_exit_right:R1 over 01_straight.",
+      "sockets": [
+        "B0",
+        "T0",
+        "L0",
+        "R1"
+      ],
+      "socket_contract": {
+        "B0": {
+          "edge": "bottom",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.16
+        },
+        "T0": {
+          "edge": "top",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.035
+        },
+        "L0": {
+          "edge": "left",
+          "center": 0.56,
+          "direction": "horizontal",
+          "road_width": 0.028
+        },
+        "R1": {
+          "edge": "right",
+          "center": 0.51,
+          "direction": "horizontal",
+          "road_width": 0.013
+        }
+      },
+      "parts": [
+        [
+          "06_near_exit_left",
+          "L0"
+        ],
+        [
+          "10_mid_exit_right",
+          "R1"
+        ]
+      ],
+      "base": "01_straight",
+      "normalized_png": "composites/normalized/26_near_left_mid_right.png",
+      "svg": "composites/svgs/26_near_left_mid_right.svg",
+      "svg_paths": 754,
+      "seam_report": {
+        "L0": {
+          "measured_center": 0.5598,
+          "target_center": 0.56,
+          "snapped_center": 0.5598,
+          "target_width": 0.028,
+          "snapped_width": 0.0274
+        },
+        "R1": {
+          "measured_center": 0.5101,
+          "target_center": 0.51,
+          "snapped_center": 0.5094,
+          "target_width": 0.013,
+          "snapped_width": 0.013
+        }
+      },
+      "connectivity": {
+        "B0": true,
+        "T0": true,
+        "L0": true,
+        "R1": true
+      },
+      "flush": true
+    },
+    {
+      "schema_version": 1,
+      "id": "27_mid_left_near_right",
+      "label": "Mid-left and near-right exits",
+      "topology": "Composite of 09_mid_exit_left:L1, 07_near_exit_right:R0 over 01_straight.",
+      "sockets": [
+        "B0",
+        "T0",
+        "L1",
+        "R0"
+      ],
+      "socket_contract": {
+        "B0": {
+          "edge": "bottom",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.16
+        },
+        "T0": {
+          "edge": "top",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.035
+        },
+        "L1": {
+          "edge": "left",
+          "center": 0.51,
+          "direction": "horizontal",
+          "road_width": 0.013
+        },
+        "R0": {
+          "edge": "right",
+          "center": 0.56,
+          "direction": "horizontal",
+          "road_width": 0.028
+        }
+      },
+      "parts": [
+        [
+          "09_mid_exit_left",
+          "L1"
+        ],
+        [
+          "07_near_exit_right",
+          "R0"
+        ]
+      ],
+      "base": "01_straight",
+      "normalized_png": "composites/normalized/27_mid_left_near_right.png",
+      "svg": "composites/svgs/27_mid_left_near_right.svg",
+      "svg_paths": 739,
+      "seam_report": {
+        "L1": {
+          "measured_center": 0.5101,
+          "target_center": 0.51,
+          "snapped_center": 0.5101,
+          "target_width": 0.013,
+          "snapped_width": 0.0115
+        },
+        "R0": {
+          "measured_center": 0.5605,
+          "target_center": 0.56,
+          "snapped_center": 0.5598,
+          "target_width": 0.028,
+          "snapped_width": 0.0274
+        }
+      },
+      "connectivity": {
+        "B0": true,
+        "T0": true,
+        "L1": true,
+        "R0": true
+      },
+      "flush": true
+    },
+    {
+      "schema_version": 1,
+      "id": "28_mid_left_far_right",
+      "label": "Mid-left and far-right exits",
+      "topology": "Composite of 09_mid_exit_left:L1, 12_far_exit_right:R2 over 01_straight.",
+      "sockets": [
+        "B0",
+        "T0",
+        "L1",
+        "R2"
+      ],
+      "socket_contract": {
+        "B0": {
+          "edge": "bottom",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.16
+        },
+        "T0": {
+          "edge": "top",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.035
+        },
+        "L1": {
+          "edge": "left",
+          "center": 0.51,
+          "direction": "horizontal",
+          "road_width": 0.013
+        },
+        "R2": {
+          "edge": "right",
+          "center": 0.375,
+          "direction": "horizontal",
+          "road_width": 0.016
+        }
+      },
+      "parts": [
+        [
+          "09_mid_exit_left",
+          "L1"
+        ],
+        [
+          "12_far_exit_right",
+          "R2"
+        ]
+      ],
+      "base": "01_straight",
+      "normalized_png": "composites/normalized/28_mid_left_far_right.png",
+      "svg": "composites/svgs/28_mid_left_far_right.svg",
+      "svg_paths": 729,
+      "seam_report": {
+        "L1": {
+          "measured_center": 0.5101,
+          "target_center": 0.51,
+          "snapped_center": 0.5101,
+          "target_width": 0.013,
+          "snapped_width": 0.0115
+        },
+        "R2": {
+          "measured_center": 0.3754,
+          "target_center": 0.375,
+          "snapped_center": 0.371,
+          "target_width": 0.016,
+          "snapped_width": 0.0216
+        }
+      },
+      "connectivity": {
+        "B0": true,
+        "T0": true,
+        "L1": true,
+        "R2": true
+      },
+      "flush": true
+    },
+    {
+      "schema_version": 1,
+      "id": "29_far_left_near_right",
+      "label": "Far-left and near-right exits",
+      "topology": "Composite of 11_far_exit_left:L2, 07_near_exit_right:R0 over 01_straight.",
+      "sockets": [
+        "B0",
+        "T0",
+        "L2",
+        "R0"
+      ],
+      "socket_contract": {
+        "B0": {
+          "edge": "bottom",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.16
+        },
+        "T0": {
+          "edge": "top",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.035
+        },
+        "L2": {
+          "edge": "left",
+          "center": 0.375,
+          "direction": "horizontal",
+          "road_width": 0.016
+        },
+        "R0": {
+          "edge": "right",
+          "center": 0.56,
+          "direction": "horizontal",
+          "road_width": 0.028
+        }
+      },
+      "parts": [
+        [
+          "11_far_exit_left",
+          "L2"
+        ],
+        [
+          "07_near_exit_right",
+          "R0"
+        ]
+      ],
+      "base": "01_straight",
+      "normalized_png": "composites/normalized/29_far_left_near_right.png",
+      "svg": "composites/svgs/29_far_left_near_right.svg",
+      "svg_paths": 751,
+      "seam_report": {
+        "L2": {
+          "measured_center": 0.3754,
+          "target_center": 0.375,
+          "snapped_center": 0.3754,
+          "target_width": 0.016,
+          "snapped_width": 0.0159
+        },
+        "R0": {
+          "measured_center": 0.5605,
+          "target_center": 0.56,
+          "snapped_center": 0.5598,
+          "target_width": 0.028,
+          "snapped_width": 0.0274
+        }
+      },
+      "connectivity": {
+        "B0": true,
+        "T0": true,
+        "L2": true,
+        "R0": true
+      },
+      "flush": true
+    },
+    {
+      "schema_version": 1,
+      "id": "30_far_left_mid_right",
+      "label": "Far-left and mid-right exits",
+      "topology": "Composite of 11_far_exit_left:L2, 10_mid_exit_right:R1 over 01_straight.",
+      "sockets": [
+        "B0",
+        "T0",
+        "L2",
+        "R1"
+      ],
+      "socket_contract": {
+        "B0": {
+          "edge": "bottom",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.16
+        },
+        "T0": {
+          "edge": "top",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.035
+        },
+        "L2": {
+          "edge": "left",
+          "center": 0.375,
+          "direction": "horizontal",
+          "road_width": 0.016
+        },
+        "R1": {
+          "edge": "right",
+          "center": 0.51,
+          "direction": "horizontal",
+          "road_width": 0.013
+        }
+      },
+      "parts": [
+        [
+          "11_far_exit_left",
+          "L2"
+        ],
+        [
+          "10_mid_exit_right",
+          "R1"
+        ]
+      ],
+      "base": "01_straight",
+      "normalized_png": "composites/normalized/30_far_left_mid_right.png",
+      "svg": "composites/svgs/30_far_left_mid_right.svg",
+      "svg_paths": 722,
+      "seam_report": {
+        "L2": {
+          "measured_center": 0.3754,
+          "target_center": 0.375,
+          "snapped_center": 0.3754,
+          "target_width": 0.016,
+          "snapped_width": 0.0159
+        },
+        "R1": {
+          "measured_center": 0.5101,
+          "target_center": 0.51,
+          "snapped_center": 0.5094,
+          "target_width": 0.013,
+          "snapped_width": 0.013
+        }
+      },
+      "connectivity": {
+        "B0": true,
+        "T0": true,
+        "L2": true,
+        "R1": true
+      },
+      "flush": true
+    },
+    {
+      "schema_version": 1,
+      "id": "31_left_near_and_far",
+      "label": "Same-side double: near-left and far-left",
+      "topology": "Composite of 06_near_exit_left:L0, 11_far_exit_left:L2 over 01_straight.",
+      "sockets": [
+        "B0",
+        "T0",
+        "L0",
+        "L2"
+      ],
+      "socket_contract": {
+        "B0": {
+          "edge": "bottom",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.16
+        },
+        "T0": {
+          "edge": "top",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.035
+        },
+        "L0": {
+          "edge": "left",
+          "center": 0.56,
+          "direction": "horizontal",
+          "road_width": 0.028
+        },
+        "L2": {
+          "edge": "left",
+          "center": 0.375,
+          "direction": "horizontal",
+          "road_width": 0.016
+        }
+      },
+      "parts": [
+        [
+          "06_near_exit_left",
+          "L0"
+        ],
+        [
+          "11_far_exit_left",
+          "L2"
+        ]
+      ],
+      "base": "01_straight",
+      "normalized_png": "composites/normalized/31_left_near_and_far.png",
+      "svg": "composites/svgs/31_left_near_and_far.svg",
+      "svg_paths": 761,
+      "seam_report": {
+        "L0": {
+          "measured_center": 0.5598,
+          "target_center": 0.56,
+          "snapped_center": 0.5598,
+          "target_width": 0.028,
+          "snapped_width": 0.0274
+        },
+        "L2": {
+          "measured_center": 0.3804,
+          "target_center": 0.375,
+          "snapped_center": 0.3754,
+          "target_width": 0.016,
+          "snapped_width": 0.0159
+        }
+      },
+      "connectivity": {
+        "B0": true,
+        "T0": true,
+        "L0": true,
+        "L2": true
+      },
+      "flush": true
+    },
+    {
+      "schema_version": 1,
+      "id": "32_near_hub_far_right",
+      "label": "Triple: near hub both sides plus far-right",
+      "topology": "Composite of 08_near_exits_both:L0, 08_near_exits_both:R0, 12_far_exit_right:R2 over 01_straight.",
+      "sockets": [
+        "B0",
+        "T0",
+        "L0",
+        "R0",
+        "R2"
+      ],
+      "socket_contract": {
+        "B0": {
+          "edge": "bottom",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.16
+        },
+        "T0": {
+          "edge": "top",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.035
+        },
+        "L0": {
+          "edge": "left",
+          "center": 0.56,
+          "direction": "horizontal",
+          "road_width": 0.028
+        },
+        "R0": {
+          "edge": "right",
+          "center": 0.56,
+          "direction": "horizontal",
+          "road_width": 0.028
+        },
+        "R2": {
+          "edge": "right",
+          "center": 0.375,
+          "direction": "horizontal",
+          "road_width": 0.016
+        }
+      },
+      "parts": [
+        [
+          "08_near_exits_both",
+          "L0"
+        ],
+        [
+          "08_near_exits_both",
+          "R0"
+        ],
+        [
+          "12_far_exit_right",
+          "R2"
+        ]
+      ],
+      "base": "01_straight",
+      "normalized_png": "composites/normalized/32_near_hub_far_right.png",
+      "svg": "composites/svgs/32_near_hub_far_right.svg",
+      "svg_paths": 786,
+      "seam_report": {
+        "L0": {
+          "measured_center": 0.5584,
+          "target_center": 0.56,
+          "snapped_center": 0.5591,
+          "target_width": 0.028,
+          "snapped_width": 0.0288
+        },
+        "R0": {
+          "measured_center": 0.5591,
+          "target_center": 0.56,
+          "snapped_center": 0.5591,
+          "target_width": 0.028,
+          "snapped_width": 0.0259
+        },
+        "R2": {
+          "measured_center": 0.361,
+          "target_center": 0.375,
+          "snapped_center": 0.3725,
+          "target_width": 0.016,
+          "snapped_width": 0.0245
+        }
+      },
+      "connectivity": {
+        "B0": true,
+        "T0": true,
+        "L0": true,
+        "R0": true,
+        "R2": true
+      },
+      "flush": true
+    },
+    {
+      "schema_version": 1,
+      "id": "33_mid_loop_near_right",
+      "label": "Mid-left loop plus near-right exit",
+      "topology": "Composite of 15_mid_loop_left:auto, 07_near_exit_right:R0 over 01_straight.",
+      "sockets": [
+        "B0",
+        "T0",
+        "R0"
+      ],
+      "socket_contract": {
+        "B0": {
+          "edge": "bottom",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.16
+        },
+        "T0": {
+          "edge": "top",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.035
+        },
+        "R0": {
+          "edge": "right",
+          "center": 0.56,
+          "direction": "horizontal",
+          "road_width": 0.028
+        }
+      },
+      "parts": [
+        [
+          "15_mid_loop_left",
+          "auto"
+        ],
+        [
+          "07_near_exit_right",
+          "R0"
+        ]
+      ],
+      "base": "01_straight",
+      "normalized_png": "composites/normalized/33_mid_loop_near_right.png",
+      "svg": "composites/svgs/33_mid_loop_near_right.svg",
+      "svg_paths": 729,
+      "seam_report": {
+        "R0": {
+          "measured_center": 0.5605,
+          "target_center": 0.56,
+          "snapped_center": 0.5598,
+          "target_width": 0.028,
+          "snapped_width": 0.0274
+        }
+      },
+      "connectivity": {
+        "B0": true,
+        "T0": true,
+        "R0": true
+      },
+      "flush": true
+    },
+    {
+      "schema_version": 1,
+      "id": "34_right_near_and_far",
+      "label": "Same-side double: near-right and far-right",
+      "topology": "Composite of 07_near_exit_right:R0, 12_far_exit_right:R2 over 01_straight.",
+      "sockets": [
+        "B0",
+        "T0",
+        "R0",
+        "R2"
+      ],
+      "socket_contract": {
+        "B0": {
+          "edge": "bottom",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.16
+        },
+        "T0": {
+          "edge": "top",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.035
+        },
+        "R0": {
+          "edge": "right",
+          "center": 0.56,
+          "direction": "horizontal",
+          "road_width": 0.028
+        },
+        "R2": {
+          "edge": "right",
+          "center": 0.375,
+          "direction": "horizontal",
+          "road_width": 0.016
+        }
+      },
+      "parts": [
+        [
+          "07_near_exit_right",
+          "R0"
+        ],
+        [
+          "12_far_exit_right",
+          "R2"
+        ]
+      ],
+      "base": "01_straight",
+      "normalized_png": "composites/normalized/34_right_near_and_far.png",
+      "svg": "composites/svgs/34_right_near_and_far.svg",
+      "svg_paths": 732,
+      "seam_report": {
+        "R0": {
+          "measured_center": 0.5605,
+          "target_center": 0.56,
+          "snapped_center": 0.5598,
+          "target_width": 0.028,
+          "snapped_width": 0.0274
+        },
+        "R2": {
+          "measured_center": 0.3768,
+          "target_center": 0.375,
+          "snapped_center": 0.3718,
+          "target_width": 0.016,
+          "snapped_width": 0.0231
+        }
+      },
+      "connectivity": {
+        "B0": true,
+        "T0": true,
+        "R0": true,
+        "R2": true
+      },
+      "flush": true
+    },
+    {
+      "schema_version": 1,
+      "id": "35_diamond_near_right",
+      "label": "Diamond rejoin plus near-right exit",
+      "topology": "Composite of 17_diamond_rejoin:auto, 07_near_exit_right:R0 over 01_straight.",
+      "sockets": [
+        "B0",
+        "T0",
+        "R0"
+      ],
+      "socket_contract": {
+        "B0": {
+          "edge": "bottom",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.16
+        },
+        "T0": {
+          "edge": "top",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.035
+        },
+        "R0": {
+          "edge": "right",
+          "center": 0.56,
+          "direction": "horizontal",
+          "road_width": 0.028
+        }
+      },
+      "parts": [
+        [
+          "17_diamond_rejoin",
+          "auto"
+        ],
+        [
+          "07_near_exit_right",
+          "R0"
+        ]
+      ],
+      "base": "01_straight",
+      "normalized_png": "composites/normalized/35_diamond_near_right.png",
+      "svg": "composites/svgs/35_diamond_near_right.svg",
+      "svg_paths": 735,
+      "seam_report": {
+        "R0": {
+          "measured_center": 0.5605,
+          "target_center": 0.56,
+          "snapped_center": 0.5598,
+          "target_width": 0.028,
+          "snapped_width": 0.0274
+        }
+      },
+      "connectivity": {
+        "B0": true,
+        "T0": true,
+        "R0": true
+      },
+      "flush": true
+    },
+    {
+      "schema_version": 1,
+      "id": "36_near_loop_far_right",
+      "label": "Near-left loop plus far-right exit",
+      "topology": "Composite of 13_near_loop_left:auto, 12_far_exit_right:R2 over 01_straight.",
+      "sockets": [
+        "B0",
+        "T0",
+        "R2"
+      ],
+      "socket_contract": {
+        "B0": {
+          "edge": "bottom",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.16
+        },
+        "T0": {
+          "edge": "top",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.035
+        },
+        "R2": {
+          "edge": "right",
+          "center": 0.375,
+          "direction": "horizontal",
+          "road_width": 0.016
+        }
+      },
+      "parts": [
+        [
+          "13_near_loop_left",
+          "auto"
+        ],
+        [
+          "12_far_exit_right",
+          "R2"
+        ]
+      ],
+      "base": "01_straight",
+      "normalized_png": "composites/normalized/36_near_loop_far_right.png",
+      "svg": "composites/svgs/36_near_loop_far_right.svg",
+      "svg_paths": 743,
+      "seam_report": {
+        "R2": {
+          "measured_center": 0.3754,
+          "target_center": 0.375,
+          "snapped_center": 0.371,
+          "target_width": 0.016,
+          "snapped_width": 0.0216
+        }
+      },
+      "connectivity": {
+        "B0": true,
+        "T0": true,
+        "R2": true
+      },
+      "flush": true
+    },
+    {
+      "schema_version": 1,
+      "id": "37_hub_with_mid_loop",
+      "label": "Near hub both sides plus mid-left loop",
+      "topology": "Composite of 08_near_exits_both:L0, 08_near_exits_both:R0, 15_mid_loop_left:auto over 01_straight.",
+      "sockets": [
+        "B0",
+        "T0",
+        "L0",
+        "R0"
+      ],
+      "socket_contract": {
+        "B0": {
+          "edge": "bottom",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.16
+        },
+        "T0": {
+          "edge": "top",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.035
+        },
+        "L0": {
+          "edge": "left",
+          "center": 0.56,
+          "direction": "horizontal",
+          "road_width": 0.028
+        },
+        "R0": {
+          "edge": "right",
+          "center": 0.56,
+          "direction": "horizontal",
+          "road_width": 0.028
+        }
+      },
+      "parts": [
+        [
+          "08_near_exits_both",
+          "L0"
+        ],
+        [
+          "08_near_exits_both",
+          "R0"
+        ],
+        [
+          "15_mid_loop_left",
+          "auto"
+        ]
+      ],
+      "base": "01_straight",
+      "normalized_png": "composites/normalized/37_hub_with_mid_loop.png",
+      "svg": "composites/svgs/37_hub_with_mid_loop.svg",
+      "svg_paths": 785,
+      "seam_report": {
+        "L0": {
+          "measured_center": 0.5584,
+          "target_center": 0.56,
+          "snapped_center": 0.5591,
+          "target_width": 0.028,
+          "snapped_width": 0.0288
+        },
+        "R0": {
+          "measured_center": 0.5591,
+          "target_center": 0.56,
+          "snapped_center": 0.5591,
+          "target_width": 0.028,
+          "snapped_width": 0.0259
+        }
+      },
+      "connectivity": {
+        "B0": true,
+        "T0": true,
+        "L0": true,
+        "R0": true
+      },
+      "flush": true
+    }
+  ]
+}

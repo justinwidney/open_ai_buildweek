@@ -1,0 +1,73 @@
+cubes:
+  - name: runs
+    sql_table: runs
+    description: >-
+      One simulated life (or a branch of one). A branch carries a
+      parent_run_id and the fork_month it diverged at; a root run has both
+      null. Mirrors @control-ai/db's `runs` table.
+
+    dimensions:
+      - name: id
+        sql: id
+        type: string
+        primary_key: true
+        public: true
+
+      - name: parent_run_id
+        sql: parent_run_id
+        type: string
+        description: The run this one branched from, or null for a root run.
+
+      - name: fork_month
+        sql: fork_month
+        type: number
+        description: The month a branch diverged from its parent, or null for a root run.
+
+      - name: label
+        sql: label
+        type: string
+
+      # RUN_STATUSES in @control-ai/shared/sim; test/model.test.mjs fails on drift.
+      - name: status
+        sql: status
+        type: string
+        description: "Values: draft | running | done | error."
+
+      - name: is_branch
+        sql: "CASE WHEN {CUBE}.parent_run_id IS NULL THEN FALSE ELSE TRUE END"
+        type: boolean
+
+      - name: fork_decision_label
+        sql: fork_decision_label
+        type: string
+        description: The decision that produced this branch, e.g. "Buy a house". Null on a root run.
+
+      - name: age_years_at_start
+        sql: age_years_at_start
+        type: number
+        description: >-
+          Primary person's age at month 0. Combined with run_months.month this is
+          what turns a month index into an age, for "where do I land at 60?"
+          questions: age = age_years_at_start + floor(month / 12).
+
+      - name: owner_id
+        sql: owner_id
+        type: string
+        description: Future per-user scoping. Null until auth exists.
+
+      - name: created_at
+        sql: created_at
+        type: time
+
+      - name: updated_at
+        sql: updated_at
+        type: time
+
+    measures:
+      - name: count
+        type: count
+
+      - name: branch_count
+        type: count
+        filters:
+          - sql: "{CUBE}.parent_run_id IS NOT NULL"

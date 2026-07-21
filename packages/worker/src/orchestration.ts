@@ -14,6 +14,13 @@ export interface ExtendRunParams {
   seed: string | number;
   /** Months computed per pool dispatch; default 60 so "zoom ahead" to a distant month doesn't eagerly compute the whole horizon up front. */
   chunkMonths?: number;
+  /**
+   * True when `fromSnapshot` is a fork point borrowed from a parent run (a
+   * branch), so its month is already persisted under the parent and must not
+   * be written into this run's own `run_months`. Set by `branchRun`; a plain
+   * root-run extension leaves it false so the genesis month header is stored.
+   */
+  startSnapshotOwnedByParent?: boolean;
 }
 
 /**
@@ -35,6 +42,7 @@ export async function extendRun(pool: Piscina, db: Database, params: ExtendRunPa
   await updateJobStatus(db, jobId, "running");
 
   try {
+    let isFirstChunk = true;
     while (remaining > 0) {
       const monthsToCompute = Math.min(chunkSize, remaining);
       const payload: TickJobPayload = {
@@ -44,9 +52,15 @@ export async function extendRun(pool: Piscina, db: Database, params: ExtendRunPa
         seed: params.seed,
       };
       const result: RunSimulationResult = await pool.run(payload);
-      await appendMonths(db, params.runId, result);
+      // The first snapshot of every chunk is the input month, already persisted by
+      // either the previous chunk (its last snapshot) or, for chunk one, the parent
+      // run when this is a branch. Only a genuine root-run genesis month needs its
+      // header written here.
+      const includeFirstSnapshotHeader = isFirstChunk && !params.startSnapshotOwnedByParent;
+      await appendMonths(db, params.runId, result, { includeFirstSnapshotHeader });
       current = result.snapshots[result.snapshots.length - 1]!;
       remaining -= monthsToCompute;
+      isFirstChunk = false;
     }
     await updateJobStatus(db, jobId, "done");
     return current;
@@ -79,5 +93,6 @@ export async function branchRun(pool: Piscina, db: Database, params: BranchRunPa
     returnsStrategyConfig: params.returnsStrategyConfig,
     seed: params.seed,
     chunkMonths: params.chunkMonths,
+    startSnapshotOwnedByParent: true,
   });
 }

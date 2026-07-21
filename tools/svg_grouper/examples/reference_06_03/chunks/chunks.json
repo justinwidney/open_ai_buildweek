@@ -1,0 +1,413 @@
+{
+  "source": "reference_06_03_continuous_road.svg",
+  "canvas": [
+    1200,
+    694
+  ],
+  "chunks": [
+    {
+      "id": "chunk_00_platform_road",
+      "file": "chunk_00_platform_road.svg",
+      "kind": "platform",
+      "bbox": [
+        408,
+        293,
+        892,
+        694
+      ],
+      "area_px": 148906,
+      "paths": 355,
+      "road_ports": [
+        [
+          705.8,
+          293.5
+        ],
+        [
+          548.6,
+          497.5
+        ]
+      ],
+      "natural_edge": 0.74
+    },
+    {
+      "id": "chunk_01_cloud",
+      "file": "chunk_01_cloud.svg",
+      "kind": "cloud",
+      "bbox": [
+        0,
+        0,
+        1200,
+        181
+      ],
+      "area_px": 119805,
+      "paths": 154,
+      "road_ports": [],
+      "natural_edge": 0.04
+    },
+    {
+      "id": "chunk_02_platform",
+      "file": "chunk_02_platform.svg",
+      "kind": "platform",
+      "bbox": [
+        0,
+        504,
+        480,
+        694
+      ],
+      "area_px": 69631,
+      "paths": 108,
+      "road_ports": [],
+      "natural_edge": 0.79
+    },
+    {
+      "id": "chunk_03_island",
+      "file": "chunk_03_island.svg",
+      "kind": "island",
+      "bbox": [
+        904,
+        292,
+        1200,
+        694
+      ],
+      "area_px": 67532,
+      "paths": 144,
+      "road_ports": [],
+      "natural_edge": 1.0
+    },
+    {
+      "id": "chunk_04_castle_road",
+      "file": "chunk_04_castle_road.svg",
+      "kind": "castle",
+      "bbox": [
+        498,
+        14,
+        781,
+        295
+      ],
+      "area_px": 58559,
+      "paths": 173,
+      "road_ports": [
+        [
+          705.8,
+          293.5
+        ]
+      ],
+      "natural_edge": 0.65
+    },
+    {
+      "id": "chunk_05_platform",
+      "file": "chunk_05_platform.svg",
+      "kind": "platform",
+      "bbox": [
+        290,
+        81,
+        503,
+        333
+      ],
+      "area_px": 24858,
+      "paths": 87,
+      "road_ports": [],
+      "natural_edge": 0.81
+    },
+    {
+      "id": "chunk_06_cloud",
+      "file": "chunk_06_cloud.svg",
+      "kind": "cloud",
+      "bbox": [
+        838,
+        154,
+        1200,
+        289
+      ],
+      "area_px": 20472,
+      "paths": 38,
+      "road_ports": [],
+      "natural_edge": 0.69
+    },
+    {
+      "id": "chunk_07_platform",
+      "file": "chunk_07_platform.svg",
+      "kind": "platform",
+      "bbox": [
+        779,
+        61,
+        961,
+        264
+      ],
+      "area_px": 17768,
+      "paths": 65,
+      "road_ports": [],
+      "natural_edge": 0.77
+    },
+    {
+      "id": "chunk_08_platform",
+      "file": "chunk_08_platform.svg",
+      "kind": "platform",
+      "bbox": [
+        113,
+        87,
+        318,
+        234
+      ],
+      "area_px": 17574,
+      "paths": 67,
+      "road_ports": [],
+      "natural_edge": 0.83
+    },
+    {
+      "id": "chunk_09_platform",
+      "file": "chunk_09_platform.svg",
+      "kind": "platform",
+      "bbox": [
+        865,
+        391,
+        984,
+        601
+      ],
+      "area_px": 13109,
+      "paths": 43,
+      "road_ports": [],
+      "natural_edge": 0.87
+    },
+    {
+      "id": "chunk_10_platform",
+      "file": "chunk_10_platform.svg",
+      "kind": "platform",
+      "bbox": [
+        404,
+        325,
+        518,
+        512
+      ],
+      "area_px": 9179,
+      "paths": 41,
+      "road_ports": [],
+      "natural_edge": 0.89
+    },
+    {
+      "id": "chunk_11_platform",
+      "file": "chunk_11_platform.svg",
+      "kind": "platform",
+      "bbox": [
+        935,
+        58,
+        1071,
+        208
+      ],
+      "area_px": 8987,
+      "paths": 36,
+      "road_ports": [],
+      "natural_edge": 0.9
+    },
+    {
+      "id": "chunk_12_platform",
+      "file": "chunk_12_platform.svg",
+      "kind": "platform",
+      "bbox": [
+        0,
+        99,
+        124,
+        204
+      ],
+      "area_px": 7574,
+      "paths": 25,
+      "road_ports": [],
+      "natural_edge": 0.97
+    },
+    {
+      "id": "chunk_13_platform",
+      "file": "chunk_13_platform.svg",
+      "kind": "platform",
+      "bbox": [
+        779,
+        258,
+        892,
+        390
+      ],
+      "area_px": 7052,
+      "paths": 51,
+      "road_ports": [],
+      "natural_edge": 0.79
+    },
+    {
+      "id": "chunk_14_platform",
+      "file": "chunk_14_platform.svg",
+      "kind": "platform",
+      "bbox": [
+        883,
+        243,
+        985,
+        352
+      ],
+      "area_px": 6194,
+      "paths": 27,
+      "road_ports": [],
+      "natural_edge": 0.96
+    },
+    {
+      "id": "chunk_15_platform",
+      "file": "chunk_15_platform.svg",
+      "kind": "platform",
+      "bbox": [
+        216,
+        70,
+        329,
+        155
+      ],
+      "area_px": 4962,
+      "paths": 26,
+      "road_ports": [],
+      "natural_edge": 0.62
+    },
+    {
+      "id": "chunk_16_island",
+      "file": "chunk_16_island.svg",
+      "kind": "island",
+      "bbox": [
+        1044,
+        59,
+        1174,
+        151
+      ],
+      "area_px": 4774,
+      "paths": 23,
+      "road_ports": [],
+      "natural_edge": 1.0
+    },
+    {
+      "id": "chunk_17_cloud",
+      "file": "chunk_17_cloud.svg",
+      "kind": "cloud",
+      "bbox": [
+        0,
+        163,
+        133,
+        239
+      ],
+      "area_px": 4328,
+      "paths": 12,
+      "road_ports": [],
+      "natural_edge": 0.74
+    },
+    {
+      "id": "chunk_18_island",
+      "file": "chunk_18_island.svg",
+      "kind": "island",
+      "bbox": [
+        1089,
+        99,
+        1200,
+        188
+      ],
+      "area_px": 4252,
+      "paths": 18,
+      "road_ports": [],
+      "natural_edge": 1.0
+    },
+    {
+      "id": "chunk_19_cloud",
+      "file": "chunk_19_cloud.svg",
+      "kind": "cloud",
+      "bbox": [
+        0,
+        395,
+        152,
+        446
+      ],
+      "area_px": 3819,
+      "paths": 5,
+      "road_ports": [],
+      "natural_edge": 1.0
+    },
+    {
+      "id": "chunk_20_platform",
+      "file": "chunk_20_platform.svg",
+      "kind": "platform",
+      "bbox": [
+        386,
+        578,
+        461,
+        645
+      ],
+      "area_px": 2520,
+      "paths": 21,
+      "road_ports": [],
+      "natural_edge": 0.35
+    },
+    {
+      "id": "chunk_21_cloud",
+      "file": "chunk_21_cloud.svg",
+      "kind": "cloud",
+      "bbox": [
+        78,
+        374,
+        207,
+        406
+      ],
+      "area_px": 1918,
+      "paths": 4,
+      "road_ports": [],
+      "natural_edge": 1.0
+    },
+    {
+      "id": "chunk_22_cloud",
+      "file": "chunk_22_cloud.svg",
+      "kind": "cloud",
+      "bbox": [
+        281,
+        258,
+        385,
+        288
+      ],
+      "area_px": 1534,
+      "paths": 3,
+      "road_ports": [],
+      "natural_edge": 1.0
+    },
+    {
+      "id": "chunk_23_cloud",
+      "file": "chunk_23_cloud.svg",
+      "kind": "cloud",
+      "bbox": [
+        1118,
+        315,
+        1200,
+        331
+      ],
+      "area_px": 657,
+      "paths": 1,
+      "road_ports": [],
+      "natural_edge": 1.0
+    },
+    {
+      "id": "chunk_24_island",
+      "file": "chunk_24_island.svg",
+      "kind": "island",
+      "bbox": [
+        1050,
+        33,
+        1093,
+        59
+      ],
+      "area_px": 637,
+      "paths": 7,
+      "road_ports": [],
+      "natural_edge": 1.0
+    },
+    {
+      "id": "chunk_25_cloud",
+      "file": "chunk_25_cloud.svg",
+      "kind": "cloud",
+      "bbox": [
+        0,
+        297,
+        67,
+        316
+      ],
+      "area_px": 519,
+      "paths": 2,
+      "road_ports": [],
+      "natural_edge": 1.0
+    }
+  ]
+}

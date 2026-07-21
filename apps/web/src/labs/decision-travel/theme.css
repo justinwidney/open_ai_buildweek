@@ -1,0 +1,103 @@
+/* Parchment / watercolor-fantasy theme, after the reference UI-kit sheet:
+   cream scrolls, ornate brown frames, a purple gem crest, gold accents. */
+:root {
+  --parch: #f3ead0;
+  --parch-2: #ece0c0;
+  --parch-edge: #dccda2;
+  --ink: #3a2e1e;
+  --ink-soft: #6d5c3f;
+  --frame: #7c6238;
+  --frame-dark: #4e3d22;
+  --gold: #c39a3f;
+  --plum: #6a4a97;
+  --plum-soft: #b9a7d8;
+  --sky-1: #b9c9e8;
+  --sky-2: #e7d9c4;
+  --good: #3f7d4a;
+  --bad: #b5563a;
+  --shadow: rgba(60, 44, 20, 0.28);
+}
+
+.dt-app {
+  min-height: 100vh;
+  color: var(--ink);
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  background: linear-gradient(180deg, var(--sky-1) 0%, #d8dcd0 45%, var(--sky-2) 100%);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---- Parchment scroll panel ---- */
+.scroll {
+  position: relative;
+  background:
+    radial-gradient(130% 100% at 50% 0%, rgba(255, 252, 240, 0.7), transparent 60%),
+    linear-gradient(160deg, var(--parch) 0%, var(--parch-2) 100%);
+  border: 2px solid var(--frame);
+  border-radius: 12px;
+  box-shadow: 0 6px 20px var(--shadow), inset 0 0 0 1px rgba(255, 250, 235, 0.5), inset 0 0 40px rgba(120, 96, 50, 0.12);
+}
+.scroll::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 1px solid rgba(124, 98, 56, 0.45);
+  border-radius: 8px;
+  pointer-events: none;
+}
+/* Ornate corner flourishes */
+.scroll::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 12px 12px, transparent 6px, rgba(124, 98, 56, 0.5) 6px, transparent 7px),
+    radial-gradient(circle at calc(100% - 12px) 12px, transparent 6px, rgba(124, 98, 56, 0.5) 6px, transparent 7px),
+    radial-gradient(circle at 12px calc(100% - 12px), transparent 6px, rgba(124, 98, 56, 0.5) 6px, transparent 7px),
+    radial-gradient(circle at calc(100% - 12px) calc(100% - 12px), transparent 6px, rgba(124, 98, 56, 0.5) 6px, transparent 7px);
+}
+
+/* ---- Buttons ---- */
+.ornate-btn {
+  font-family: inherit;
+  background: linear-gradient(180deg, #f6efda, #e3d3ac);
+  border: 1.5px solid var(--frame);
+  border-radius: 9px;
+  color: var(--ink);
+  padding: 9px 16px;
+  font-size: 15px;
+  cursor: pointer;
+  box-shadow: 0 2px 0 rgba(78, 61, 34, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  transition: transform 0.12s, filter 0.12s;
+}
+.ornate-btn:hover:not(:disabled) { filter: brightness(1.04); transform: translateY(-1px); }
+.ornate-btn:disabled { opacity: 0.45; cursor: default; }
+.ornate-btn.is-primary {
+  background: linear-gradient(180deg, #7d5cae, #5a3f86);
+  color: #f7f1e2;
+  border-color: var(--frame-dark);
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+}
+.ornate-btn.is-gold { background: linear-gradient(180deg, #e3c266, #c39a3f); border-color: #8a6a24; }
+
+/* ---- Crest ---- */
+.crest {
+  width: 42px;
+  height: 46px;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  color: var(--gold);
+  font-size: 20px;
+  background: linear-gradient(180deg, #7d5cae, #4e3573);
+  border: 2px solid var(--gold);
+  border-radius: 8px 8px 10px 10px;
+  clip-path: polygon(0 0, 100% 0, 100% 72%, 50% 100%, 0 72%);
+  box-shadow: 0 3px 8px var(--shadow);
+}
+
+/* ---- Headings ---- */
+.dt-title { font-size: 22px; letter-spacing: 0.5px; margin: 0; }
+.dt-sub { color: var(--ink-soft); font-size: 13px; }
+.eyebrow { text-transform: uppercase; letter-spacing: 1.5px; font-size: 11px; color: var(--ink-soft); }

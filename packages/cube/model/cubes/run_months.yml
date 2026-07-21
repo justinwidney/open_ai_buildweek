@@ -1,0 +1,56 @@
+cubes:
+  - name: run_months
+    sql_table: run_months
+    description: >-
+      One row per simulated month of a run: the month's net worth and tax
+      basis. This is the grain behind "net worth over time." One row per
+      (run_id, month), so under any month grouping a run's net worth is a
+      single value — the measures use max/min rather than sum to reflect
+      that (summing net worth across months would be meaningless).
+
+    joins:
+      - name: runs
+        sql: "{CUBE}.run_id = {runs}.id"
+        relationship: many_to_one
+
+    dimensions:
+      - name: id
+        sql: "{CUBE}.run_id || ':' || {CUBE}.month"
+        type: string
+        primary_key: true
+
+      - name: run_id
+        sql: run_id
+        type: string
+
+      - name: month
+        sql: month
+        type: number
+        description: Zero-based month index from the start of the run.
+
+      - name: net_worth_cents
+        sql: net_worth_cents
+        type: number
+
+      - name: net_worth_dollars
+        sql: "{CUBE}.net_worth_cents / 100.0"
+        type: number
+
+      - name: computed_at
+        sql: computed_at
+        type: time
+
+    measures:
+      - name: count
+        type: count
+
+      - name: net_worth
+        sql: "{CUBE}.net_worth_cents / 100.0"
+        type: max
+        description: >-
+          Net worth in dollars. max() so grouping by month returns that
+          month's single value; grouping across months returns the peak.
+
+      - name: min_net_worth
+        sql: "{CUBE}.net_worth_cents / 100.0"
+        type: min

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="694" viewBox="0 0 1200 694">
+  <defs><filter id="soft" x="-3%" y="-3%" width="106%" height="106%"><feGaussianBlur stdDeviation="4"/></filter></defs>
+  <rect width="1200" height="694" fill="#000"/>
+  <path d="M414 190 L770 188 811 218 828 259 885 294 914 332 900 381 865 416 832 451 422 462 400 430 402 385 421 348 442 309 447 275 400 238Z" fill="#fff" filter="url(#soft)"/>
+  <g fill="#000" filter="url(#soft)">
+    <rect x="458" y="256" width="70" height="113" rx="28"/>
+    <rect x="776" y="313" width="76" height="135" rx="30"/>
+  </g>
+</svg>

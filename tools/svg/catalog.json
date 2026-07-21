@@ -37,7 +37,7 @@
       "occlusion": "edge",
       "weight": 0.45,
       "includeByDefault": true,
-      "members": ["sprite_007", "sprite_022", "sprite_023", "sprite_024"]
+      "members": ["sprite_007", "sprite_022", "sprite_023", "sprite_024", "castle_final_island"]
     },
     {
       "id": "horizon-clouds",
@@ -97,7 +97,7 @@
       "occlusion": "none",
       "weight": 0.2,
       "includeByDefault": false,
-      "members": ["sprite_048", "sprite_052"]
+      "members": ["sprite_048", "sprite_052", "water_surface_flow", "waterfall_ribbon"]
     },
     {
       "id": "vegetation",
@@ -138,6 +138,7 @@
   ],
   "labels": {
     "sprite_007": "Castle skyline ridge",
+    "castle_final_island": "Watercolor castle on final island",
     "sprite_022": "Single mountain ridge",
     "sprite_023": "Long twin mountain ridge",
     "sprite_024": "Blue horizon ridge",
@@ -146,6 +147,8 @@
     "sprite_043": "Evergreen pair",
     "sprite_048": "Round blue pool",
     "sprite_052": "Small blue pool",
+    "water_surface_flow": "Animated watercolor sea wash",
+    "waterfall_ribbon": "Animated waterfall ribbon",
     "sprite_063": "Three-rock cluster",
     "sprite_064": "Left canyon shelf",
     "sprite_065": "Right canyon shelf",

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="694" viewBox="0 0 1200 694">
+  <defs><filter id="soft" x="-3%" y="-3%" width="106%" height="106%"><feGaussianBlur stdDeviation="3"/></filter></defs>
+  <rect width="1200" height="694" fill="#000"/>
+  <path d="M454 4 L744 4 758 48 776 82 804 117 827 155 818 198 782 226 739 248 503 248 457 231 421 204 430 160 448 122Z" fill="#fff" filter="url(#soft)"/>
+  <g fill="#000" filter="url(#soft)">
+    <ellipse cx="617" cy="22" rx="13" ry="18"/>
+    <ellipse cx="538" cy="67" rx="12" ry="17"/>
+    <ellipse cx="688" cy="73" rx="12" ry="17"/>
+  </g>
+</svg>

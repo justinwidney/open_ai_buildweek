@@ -1,0 +1,67 @@
+/**
+ * Portable life-simulation value contracts.
+ *
+ * The engine remains the dependency-light owner of these definitions; this
+ * facade gives web, persistence, and worker consumers an explicit shared
+ * entry point without creating an engine -> shared package cycle.
+ */
+export {
+  CATALOG_FILTER_OPERATORS,
+  DATA_QUALITY_LEVELS,
+  DECISION_IMPORTANCE_LEVELS,
+  DECISION_SESSION_STATUSES,
+  PAYMENTS_PER_NORMAL_YEAR,
+  PAY_CADENCES,
+  SHIFT_KINDS,
+  VALIDATION_SEVERITIES,
+  canTransitionDecisionSession,
+  isEffectiveAt,
+  isIsoDate,
+  isStableId,
+  isVersionId,
+  paymentsPerNormalYear,
+  transitionDecisionSession,
+  validateEffectivePeriod,
+  validatePaySchedule,
+  validateWorkSchedule,
+  validationResult,
+} from "@control-ai/engine";
+
+export type {
+  AssumptionOverride,
+  CatalogFacetFilter,
+  CatalogFilterOperator,
+  CatalogItemSummary,
+  CatalogPage,
+  CatalogQuery,
+  CatalogSort,
+  DataQuality,
+  DecisionComparisonPreview,
+  DecisionImportance,
+  DecisionImportanceLevel,
+  DecisionOptionPreview,
+  DecisionPreviewRequest,
+  DecisionSession,
+  DecisionSessionStatus,
+  DerivedProvenance,
+  EffectivePeriod,
+  JsonPrimitive,
+  JsonValue,
+  MonthlyPreviewDelta,
+  NonBusinessDayPolicy,
+  PayCadence,
+  PaySchedule,
+  PreviewExplanationLine,
+  PreviewMetric,
+  ReplayVersionSet,
+  ShiftKind,
+  SourceProvenance,
+  StableId,
+  ValidationIssue,
+  ValidationResult,
+  ValidationSeverity,
+  VersionId,
+  VersionedReference,
+  WorkPattern,
+  WorkSchedule,
+} from "@control-ai/engine";

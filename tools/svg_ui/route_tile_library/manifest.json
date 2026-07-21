@@ -1,0 +1,1245 @@
+{
+  "schema_version": 1,
+  "generation_mode": "OpenAI built-in image generation, one edit call per variant",
+  "normalized_canvas": [
+    1200,
+    694
+  ],
+  "vector_canvas": [
+    1200,
+    694
+  ],
+  "trace_settings": {
+    "filter_speckle": 8,
+    "color_precision": 7,
+    "layer_difference": 16,
+    "corner_threshold": 60,
+    "length_threshold": 4.0,
+    "splice_threshold": 45,
+    "path_precision": 2
+  },
+  "socket_contract": {
+    "B0": {
+      "edge": "bottom",
+      "center": 0.5,
+      "direction": "vertical",
+      "road_width": 0.16
+    },
+    "T0": {
+      "edge": "top",
+      "center": 0.5,
+      "direction": "vertical",
+      "road_width": 0.035
+    },
+    "L0": {
+      "edge": "left",
+      "center": 0.56,
+      "direction": "horizontal",
+      "road_width": 0.028
+    },
+    "R0": {
+      "edge": "right",
+      "center": 0.56,
+      "direction": "horizontal",
+      "road_width": 0.028
+    },
+    "L1": {
+      "edge": "left",
+      "center": 0.51,
+      "direction": "horizontal",
+      "road_width": 0.013
+    },
+    "R1": {
+      "edge": "right",
+      "center": 0.51,
+      "direction": "horizontal",
+      "road_width": 0.013
+    },
+    "L2": {
+      "edge": "left",
+      "center": 0.375,
+      "direction": "horizontal",
+      "road_width": 0.016
+    },
+    "R2": {
+      "edge": "right",
+      "center": 0.375,
+      "direction": "horizontal",
+      "road_width": 0.016
+    }
+  },
+  "road_detection": {
+    "red_min": 175,
+    "green_min": 155,
+    "blue_max": 190,
+    "red_blue_gap": 25,
+    "green_blue_gap": 5
+  },
+  "contact_sheet": "contact_sheet.png",
+  "seam_previews": [
+    "seams/socket_0_seam.png",
+    "seams/socket_1_seam.png",
+    "seams/socket_2_seam.png"
+  ],
+  "tiles": [
+    {
+      "schema_version": 1,
+      "id": "01_straight",
+      "label": "Straight main route",
+      "topology": "Keep one continuous main road from B0 to the castle at T0, with a natural near-straight perspective route and no forks.",
+      "sockets": [
+        "B0",
+        "T0"
+      ],
+      "socket_contract": {
+        "B0": {
+          "edge": "bottom",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.16
+        },
+        "T0": {
+          "edge": "top",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.035
+        }
+      },
+      "source_raster": "rasters/01_straight.png",
+      "normalized_png": "normalized/01_straight.png",
+      "svg": "svgs/01_straight.svg",
+      "svg_paths": 3790,
+      "seam_report": {},
+      "compatible_sockets": {
+        "B0": "B0",
+        "T0": "T0"
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "02_curve_left",
+      "label": "Left sweep",
+      "topology": "Keep one continuous main road from B0 to T0; make it sweep broadly left in the foreground and ease back to the castle.",
+      "sockets": [
+        "B0",
+        "T0"
+      ],
+      "socket_contract": {
+        "B0": {
+          "edge": "bottom",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.16
+        },
+        "T0": {
+          "edge": "top",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.035
+        }
+      },
+      "source_raster": "rasters/02_curve_left.png",
+      "normalized_png": "normalized/02_curve_left.png",
+      "svg": "svgs/02_curve_left.svg",
+      "svg_paths": 3937,
+      "seam_report": {},
+      "compatible_sockets": {
+        "B0": "B0",
+        "T0": "T0"
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "03_curve_right",
+      "label": "Right sweep",
+      "topology": "Keep one continuous main road from B0 to T0; make it sweep broadly right in the foreground and ease back to the castle.",
+      "sockets": [
+        "B0",
+        "T0"
+      ],
+      "socket_contract": {
+        "B0": {
+          "edge": "bottom",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.16
+        },
+        "T0": {
+          "edge": "top",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.035
+        }
+      },
+      "source_raster": "rasters/03_curve_right.png",
+      "normalized_png": "normalized/03_curve_right.png",
+      "svg": "svgs/03_curve_right.svg",
+      "svg_paths": 3922,
+      "seam_report": {},
+      "compatible_sockets": {
+        "B0": "B0",
+        "T0": "T0"
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "04_s_left_right",
+      "label": "Left-right S curve",
+      "topology": "Keep one main road from B0 to T0 with a readable S curve: first left, then right, then into the castle.",
+      "sockets": [
+        "B0",
+        "T0"
+      ],
+      "socket_contract": {
+        "B0": {
+          "edge": "bottom",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.16
+        },
+        "T0": {
+          "edge": "top",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.035
+        }
+      },
+      "source_raster": "rasters/04_s_left_right.png",
+      "normalized_png": "normalized/04_s_left_right.png",
+      "svg": "svgs/04_s_left_right.svg",
+      "svg_paths": 3884,
+      "seam_report": {},
+      "compatible_sockets": {
+        "B0": "B0",
+        "T0": "T0"
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "05_s_right_left",
+      "label": "Right-left S curve",
+      "topology": "Keep one main road from B0 to T0 with a readable reverse S curve: first right, then left, then into the castle.",
+      "sockets": [
+        "B0",
+        "T0"
+      ],
+      "socket_contract": {
+        "B0": {
+          "edge": "bottom",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.16
+        },
+        "T0": {
+          "edge": "top",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.035
+        }
+      },
+      "source_raster": "rasters/05_s_right_left.png",
+      "normalized_png": "normalized/05_s_right_left.png",
+      "svg": "svgs/05_s_right_left.svg",
+      "svg_paths": 3853,
+      "seam_report": {},
+      "compatible_sockets": {
+        "B0": "B0",
+        "T0": "T0"
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "06_near_exit_left",
+      "label": "Near left exit",
+      "topology": "Add one unmistakable Y junction in the near foreground. The main road continues to T0; a supported left branch reaches L0 and exits the canvas.",
+      "sockets": [
+        "B0",
+        "T0",
+        "L0"
+      ],
+      "socket_contract": {
+        "B0": {
+          "edge": "bottom",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.16
+        },
+        "T0": {
+          "edge": "top",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.035
+        },
+        "L0": {
+          "edge": "left",
+          "center": 0.56,
+          "direction": "horizontal",
+          "road_width": 0.028
+        }
+      },
+      "source_raster": "rasters/06_near_exit_left.png",
+      "normalized_png": "normalized/06_near_exit_left.png",
+      "svg": "svgs/06_near_exit_left.svg",
+      "svg_paths": 4243,
+      "seam_report": {
+        "L0": {
+          "measured_center": 0.5598,
+          "measured_width": 0.0274,
+          "target_center": 0.56,
+          "target_width": 0.028,
+          "snapped_center": 0.5598,
+          "snapped_width": 0.0303
+        }
+      },
+      "compatible_sockets": {
+        "B0": "B0",
+        "T0": "T0",
+        "L0": "R0"
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "07_near_exit_right",
+      "label": "Near right exit",
+      "topology": "Add one unmistakable Y junction in the near foreground. The main road continues to T0; a supported right branch reaches R0 and exits the canvas.",
+      "sockets": [
+        "B0",
+        "T0",
+        "R0"
+      ],
+      "socket_contract": {
+        "B0": {
+          "edge": "bottom",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.16
+        },
+        "T0": {
+          "edge": "top",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.035
+        },
+        "R0": {
+          "edge": "right",
+          "center": 0.56,
+          "direction": "horizontal",
+          "road_width": 0.028
+        }
+      },
+      "source_raster": "rasters/07_near_exit_right.png",
+      "normalized_png": "normalized/07_near_exit_right.png",
+      "svg": "svgs/07_near_exit_right.svg",
+      "svg_paths": 4157,
+      "seam_report": {
+        "R0": {
+          "measured_center": 0.5576,
+          "measured_width": 0.0259,
+          "target_center": 0.56,
+          "target_width": 0.028,
+          "snapped_center": 0.5605,
+          "snapped_width": 0.0288
+        }
+      },
+      "compatible_sockets": {
+        "B0": "B0",
+        "T0": "T0",
+        "R0": "L0"
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "08_near_exits_both",
+      "label": "Near exits both sides",
+      "topology": "Create a clear four-way hub in the near foreground: B0 enters, the main road continues to T0, and supported branches exit through both L0 and R0.",
+      "sockets": [
+        "B0",
+        "T0",
+        "L0",
+        "R0"
+      ],
+      "socket_contract": {
+        "B0": {
+          "edge": "bottom",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.16
+        },
+        "T0": {
+          "edge": "top",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.035
+        },
+        "L0": {
+          "edge": "left",
+          "center": 0.56,
+          "direction": "horizontal",
+          "road_width": 0.028
+        },
+        "R0": {
+          "edge": "right",
+          "center": 0.56,
+          "direction": "horizontal",
+          "road_width": 0.028
+        }
+      },
+      "source_raster": "rasters/08_near_exits_both.png",
+      "normalized_png": "normalized/08_near_exits_both.png",
+      "svg": "svgs/08_near_exits_both.svg",
+      "svg_paths": 4381,
+      "seam_report": {
+        "L0": {
+          "measured_center": 0.5569,
+          "measured_width": 0.0043,
+          "target_center": 0.56,
+          "target_width": 0.028,
+          "snapped_center": 0.5576,
+          "snapped_width": 0.0259
+        },
+        "R0": {
+          "measured_center": 0.5627,
+          "measured_width": 0.0043,
+          "target_center": 0.56,
+          "target_width": 0.028,
+          "snapped_center": 0.5584,
+          "snapped_width": 0.0187
+        }
+      },
+      "compatible_sockets": {
+        "B0": "B0",
+        "T0": "T0",
+        "L0": "R0",
+        "R0": "L0"
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "09_mid_exit_left",
+      "label": "Middle left exit",
+      "topology": "Add one Y junction halfway to the castle. The main road continues to T0; a supported branch curves left to L1.",
+      "sockets": [
+        "B0",
+        "T0",
+        "L1"
+      ],
+      "socket_contract": {
+        "B0": {
+          "edge": "bottom",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.16
+        },
+        "T0": {
+          "edge": "top",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.035
+        },
+        "L1": {
+          "edge": "left",
+          "center": 0.51,
+          "direction": "horizontal",
+          "road_width": 0.013
+        }
+      },
+      "source_raster": "rasters/09_mid_exit_left.png",
+      "normalized_png": "normalized/09_mid_exit_left.png",
+      "svg": "svgs/09_mid_exit_left.svg",
+      "svg_paths": 4200,
+      "seam_report": {
+        "L1": {
+          "measured_center": 0.5108,
+          "measured_width": 0.013,
+          "target_center": 0.51,
+          "target_width": 0.013,
+          "snapped_center": 0.5101,
+          "snapped_width": 0.0144
+        }
+      },
+      "compatible_sockets": {
+        "B0": "B0",
+        "T0": "T0",
+        "L1": "R1"
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "10_mid_exit_right",
+      "label": "Middle right exit",
+      "topology": "Add one Y junction halfway to the castle. The main road continues to T0; a supported branch curves right to R1.",
+      "sockets": [
+        "B0",
+        "T0",
+        "R1"
+      ],
+      "socket_contract": {
+        "B0": {
+          "edge": "bottom",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.16
+        },
+        "T0": {
+          "edge": "top",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.035
+        },
+        "R1": {
+          "edge": "right",
+          "center": 0.51,
+          "direction": "horizontal",
+          "road_width": 0.013
+        }
+      },
+      "source_raster": "rasters/10_mid_exit_right.png",
+      "normalized_png": "normalized/10_mid_exit_right.png",
+      "svg": "svgs/10_mid_exit_right.svg",
+      "svg_paths": 4004,
+      "seam_report": {
+        "R1": {
+          "measured_center": 0.5101,
+          "measured_width": 0.0115,
+          "target_center": 0.51,
+          "target_width": 0.013,
+          "snapped_center": 0.5101,
+          "snapped_width": 0.0144
+        }
+      },
+      "compatible_sockets": {
+        "B0": "B0",
+        "T0": "T0",
+        "R1": "L1"
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "11_far_exit_left",
+      "label": "Far left exit",
+      "topology": "Add one small but unmistakable distant Y junction near the castle approach. Keep the main road to T0 and route a supported left branch to L2.",
+      "sockets": [
+        "B0",
+        "T0",
+        "L2"
+      ],
+      "socket_contract": {
+        "B0": {
+          "edge": "bottom",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.16
+        },
+        "T0": {
+          "edge": "top",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.035
+        },
+        "L2": {
+          "edge": "left",
+          "center": 0.375,
+          "direction": "horizontal",
+          "road_width": 0.016
+        }
+      },
+      "source_raster": "rasters/11_far_exit_left.png",
+      "normalized_png": "normalized/11_far_exit_left.png",
+      "svg": "svgs/11_far_exit_left.svg",
+      "svg_paths": 4207,
+      "seam_report": {
+        "L2": {
+          "measured_center": 0.3725,
+          "measured_width": 0.0159,
+          "target_center": 0.375,
+          "target_width": 0.016,
+          "snapped_center": 0.3754,
+          "snapped_width": 0.0159
+        }
+      },
+      "compatible_sockets": {
+        "B0": "B0",
+        "T0": "T0",
+        "L2": "R2"
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "12_far_exit_right",
+      "label": "Far right exit",
+      "topology": "Add one small but unmistakable distant Y junction near the castle approach. Keep the main road to T0 and route a supported right branch to R2.",
+      "sockets": [
+        "B0",
+        "T0",
+        "R2"
+      ],
+      "socket_contract": {
+        "B0": {
+          "edge": "bottom",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.16
+        },
+        "T0": {
+          "edge": "top",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.035
+        },
+        "R2": {
+          "edge": "right",
+          "center": 0.375,
+          "direction": "horizontal",
+          "road_width": 0.016
+        }
+      },
+      "source_raster": "rasters/12_far_exit_right.png",
+      "normalized_png": "normalized/12_far_exit_right.png",
+      "svg": "svgs/12_far_exit_right.svg",
+      "svg_paths": 4120,
+      "seam_report": {
+        "R2": {
+          "measured_center": 0.3775,
+          "measured_width": 0.0173,
+          "target_center": 0.375,
+          "target_width": 0.016,
+          "snapped_center": 0.3754,
+          "snapped_width": 0.0159
+        }
+      },
+      "compatible_sockets": {
+        "B0": "B0",
+        "T0": "T0",
+        "R2": "L2"
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "13_near_loop_left",
+      "label": "Near left loop",
+      "topology": "Split the road near B0 into a left scenic branch and a main branch; reconnect them cleanly before the midpoint, forming one grounded teardrop loop.",
+      "sockets": [
+        "B0",
+        "T0"
+      ],
+      "socket_contract": {
+        "B0": {
+          "edge": "bottom",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.16
+        },
+        "T0": {
+          "edge": "top",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.035
+        }
+      },
+      "source_raster": "rasters/13_near_loop_left.png",
+      "normalized_png": "normalized/13_near_loop_left.png",
+      "svg": "svgs/13_near_loop_left.svg",
+      "svg_paths": 3876,
+      "seam_report": {},
+      "compatible_sockets": {
+        "B0": "B0",
+        "T0": "T0"
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "14_near_loop_right",
+      "label": "Near right loop",
+      "topology": "Split the road near B0 into a right scenic branch and a main branch; reconnect them cleanly before the midpoint, forming one grounded teardrop loop.",
+      "sockets": [
+        "B0",
+        "T0"
+      ],
+      "socket_contract": {
+        "B0": {
+          "edge": "bottom",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.16
+        },
+        "T0": {
+          "edge": "top",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.035
+        }
+      },
+      "source_raster": "rasters/14_near_loop_right.png",
+      "normalized_png": "normalized/14_near_loop_right.png",
+      "svg": "svgs/14_near_loop_right.svg",
+      "svg_paths": 3900,
+      "seam_report": {},
+      "compatible_sockets": {
+        "B0": "B0",
+        "T0": "T0"
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "15_mid_loop_left",
+      "label": "Middle left loop",
+      "topology": "At mid-distance split off a left route and reconnect it farther toward the castle, forming a clear compact loop on one coherent island.",
+      "sockets": [
+        "B0",
+        "T0"
+      ],
+      "socket_contract": {
+        "B0": {
+          "edge": "bottom",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.16
+        },
+        "T0": {
+          "edge": "top",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.035
+        }
+      },
+      "source_raster": "rasters/15_mid_loop_left.png",
+      "normalized_png": "normalized/15_mid_loop_left.png",
+      "svg": "svgs/15_mid_loop_left.svg",
+      "svg_paths": 4098,
+      "seam_report": {},
+      "compatible_sockets": {
+        "B0": "B0",
+        "T0": "T0"
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "16_mid_loop_right",
+      "label": "Middle right loop",
+      "topology": "At mid-distance split off a right route and reconnect it farther toward the castle, forming a clear compact loop on one coherent island.",
+      "sockets": [
+        "B0",
+        "T0"
+      ],
+      "socket_contract": {
+        "B0": {
+          "edge": "bottom",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.16
+        },
+        "T0": {
+          "edge": "top",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.035
+        }
+      },
+      "source_raster": "rasters/16_mid_loop_right.png",
+      "normalized_png": "normalized/16_mid_loop_right.png",
+      "svg": "svgs/16_mid_loop_right.svg",
+      "svg_paths": 3902,
+      "seam_report": {},
+      "compatible_sockets": {
+        "B0": "B0",
+        "T0": "T0"
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "17_diamond_rejoin",
+      "label": "Diamond split and rejoin",
+      "topology": "Split the main road into equally readable left and right alternatives around a central rocky grove, then merge both routes back into one road to T0.",
+      "sockets": [
+        "B0",
+        "T0"
+      ],
+      "socket_contract": {
+        "B0": {
+          "edge": "bottom",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.16
+        },
+        "T0": {
+          "edge": "top",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.035
+        }
+      },
+      "source_raster": "rasters/17_diamond_rejoin.png",
+      "normalized_png": "normalized/17_diamond_rejoin.png",
+      "svg": "svgs/17_diamond_rejoin.svg",
+      "svg_paths": 4061,
+      "seam_report": {},
+      "compatible_sockets": {
+        "B0": "B0",
+        "T0": "T0"
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "18_two_loops",
+      "label": "Two sequential loops",
+      "topology": "Create two natural sequential split-and-rejoin choices: a broad left loop in the foreground followed by a smaller right loop in the middle distance.",
+      "sockets": [
+        "B0",
+        "T0"
+      ],
+      "socket_contract": {
+        "B0": {
+          "edge": "bottom",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.16
+        },
+        "T0": {
+          "edge": "top",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.035
+        }
+      },
+      "source_raster": "rasters/18_two_loops.png",
+      "normalized_png": "normalized/18_two_loops.png",
+      "svg": "svgs/18_two_loops.svg",
+      "svg_paths": 4038,
+      "seam_report": {},
+      "compatible_sockets": {
+        "B0": "B0",
+        "T0": "T0"
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "19_left_ingress_merge",
+      "label": "Left ingress merges",
+      "topology": "A supported road enters from L0 and merges smoothly into the B0-to-T0 main road at a clear near-foreground Y junction.",
+      "sockets": [
+        "B0",
+        "T0",
+        "L0"
+      ],
+      "socket_contract": {
+        "B0": {
+          "edge": "bottom",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.16
+        },
+        "T0": {
+          "edge": "top",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.035
+        },
+        "L0": {
+          "edge": "left",
+          "center": 0.56,
+          "direction": "horizontal",
+          "road_width": 0.028
+        }
+      },
+      "source_raster": "rasters/19_left_ingress_merge.png",
+      "normalized_png": "normalized/19_left_ingress_merge.png",
+      "svg": "svgs/19_left_ingress_merge.svg",
+      "svg_paths": 4355,
+      "seam_report": {
+        "L0": {
+          "measured_center": 0.5634,
+          "measured_width": 0.0259,
+          "target_center": 0.56,
+          "target_width": 0.028,
+          "snapped_center": 0.5598,
+          "snapped_width": 0.0274
+        }
+      },
+      "compatible_sockets": {
+        "B0": "B0",
+        "T0": "T0",
+        "L0": "R0"
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "20_right_ingress_merge",
+      "label": "Right ingress merges",
+      "topology": "A supported road enters from R0 and merges smoothly into the B0-to-T0 main road at a clear near-foreground Y junction.",
+      "sockets": [
+        "B0",
+        "T0",
+        "R0"
+      ],
+      "socket_contract": {
+        "B0": {
+          "edge": "bottom",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.16
+        },
+        "T0": {
+          "edge": "top",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.035
+        },
+        "R0": {
+          "edge": "right",
+          "center": 0.56,
+          "direction": "horizontal",
+          "road_width": 0.028
+        }
+      },
+      "source_raster": "rasters/20_right_ingress_merge.png",
+      "normalized_png": "normalized/20_right_ingress_merge.png",
+      "svg": "svgs/20_right_ingress_merge.svg",
+      "svg_paths": 4103,
+      "seam_report": {
+        "R0": {
+          "measured_center": 0.5591,
+          "measured_width": 0.0259,
+          "target_center": 0.56,
+          "target_width": 0.028,
+          "snapped_center": 0.5598,
+          "snapped_width": 0.0274
+        }
+      },
+      "compatible_sockets": {
+        "B0": "B0",
+        "T0": "T0",
+        "R0": "L0"
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "21_left_to_right_crossroute",
+      "label": "Left-right cross route",
+      "topology": "A supported L0-to-R0 route crosses and joins the main B0-to-T0 road at one clear central four-way intersection.",
+      "sockets": [
+        "B0",
+        "T0",
+        "L0",
+        "R0"
+      ],
+      "socket_contract": {
+        "B0": {
+          "edge": "bottom",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.16
+        },
+        "T0": {
+          "edge": "top",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.035
+        },
+        "L0": {
+          "edge": "left",
+          "center": 0.56,
+          "direction": "horizontal",
+          "road_width": 0.028
+        },
+        "R0": {
+          "edge": "right",
+          "center": 0.56,
+          "direction": "horizontal",
+          "road_width": 0.028
+        }
+      },
+      "source_raster": "rasters/21_left_to_right_crossroute.png",
+      "normalized_png": "normalized/21_left_to_right_crossroute.png",
+      "svg": "svgs/21_left_to_right_crossroute.svg",
+      "svg_paths": 4348,
+      "seam_report": {
+        "L0": {
+          "measured_center": 0.5735,
+          "measured_width": 0.0288,
+          "target_center": 0.56,
+          "target_width": 0.028,
+          "snapped_center": 0.5612,
+          "snapped_width": 0.0274
+        },
+        "R0": {
+          "measured_center": 0.5555,
+          "measured_width": 0.0043,
+          "target_center": 0.56,
+          "target_width": 0.028,
+          "snapped_center": 0.5526,
+          "snapped_width": 0.0216
+        }
+      },
+      "compatible_sockets": {
+        "B0": "B0",
+        "T0": "T0",
+        "L0": "R0",
+        "R0": "L0"
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "22_near_left_far_right",
+      "label": "Near-left and far-right exits",
+      "topology": "Place two distinct junctions: a near left branch exits at L0, then a distant right branch exits at R2; keep the main route continuous to T0.",
+      "sockets": [
+        "B0",
+        "T0",
+        "L0",
+        "R2"
+      ],
+      "socket_contract": {
+        "B0": {
+          "edge": "bottom",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.16
+        },
+        "T0": {
+          "edge": "top",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.035
+        },
+        "L0": {
+          "edge": "left",
+          "center": 0.56,
+          "direction": "horizontal",
+          "road_width": 0.028
+        },
+        "R2": {
+          "edge": "right",
+          "center": 0.375,
+          "direction": "horizontal",
+          "road_width": 0.016
+        }
+      },
+      "source_raster": "rasters/22_near_left_far_right.png",
+      "normalized_png": "normalized/22_near_left_far_right.png",
+      "svg": "svgs/22_near_left_far_right.svg",
+      "svg_paths": 4424,
+      "seam_report": {
+        "L0": {
+          "measured_center": 0.5598,
+          "measured_width": 0.0245,
+          "target_center": 0.56,
+          "target_width": 0.028,
+          "snapped_center": 0.5598,
+          "snapped_width": 0.0274
+        },
+        "R2": {
+          "measured_center": 0.3768,
+          "measured_width": 0.0216,
+          "target_center": 0.375,
+          "target_width": 0.016,
+          "snapped_center": 0.3761,
+          "snapped_width": 0.0173
+        }
+      },
+      "compatible_sockets": {
+        "B0": "B0",
+        "T0": "T0",
+        "L0": "R0",
+        "R2": "L2"
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "23_far_crossroute",
+      "label": "Far left-right cross route",
+      "topology": "A distant supported L2-to-R2 cross-route meets the main B0-to-T0 road before the castle.",
+      "sockets": [
+        "B0",
+        "T0",
+        "L2",
+        "R2"
+      ],
+      "socket_contract": {
+        "B0": {
+          "edge": "bottom",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.16
+        },
+        "T0": {
+          "edge": "top",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.035
+        },
+        "L2": {
+          "edge": "left",
+          "center": 0.375,
+          "direction": "horizontal",
+          "road_width": 0.016
+        },
+        "R2": {
+          "edge": "right",
+          "center": 0.375,
+          "direction": "horizontal",
+          "road_width": 0.016
+        }
+      },
+      "source_raster": "rasters/23_near_right_far_left.png",
+      "normalized_png": "normalized/23_far_crossroute.png",
+      "svg": "svgs/23_far_crossroute.svg",
+      "svg_paths": 4307,
+      "seam_report": {
+        "L2": {
+          "measured_center": 0.3732,
+          "measured_width": 0.0144,
+          "target_center": 0.375,
+          "target_width": 0.016,
+          "snapped_center": 0.3746,
+          "snapped_width": 0.0173
+        },
+        "R2": {
+          "measured_center": 0.3682,
+          "measured_width": 0.0159,
+          "target_center": 0.375,
+          "target_width": 0.016,
+          "snapped_center": 0.3754,
+          "snapped_width": 0.0159
+        }
+      },
+      "compatible_sockets": {
+        "B0": "B0",
+        "T0": "T0",
+        "L2": "R2",
+        "R2": "L2"
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "24_three_stage_network",
+      "label": "Cross route plus distant loop",
+      "topology": "A supported L0-to-R0 cross-route meets the main road, followed by one small split-and-rejoin loop before T0.",
+      "sockets": [
+        "B0",
+        "T0",
+        "L0",
+        "R0"
+      ],
+      "socket_contract": {
+        "B0": {
+          "edge": "bottom",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.16
+        },
+        "T0": {
+          "edge": "top",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.035
+        },
+        "L0": {
+          "edge": "left",
+          "center": 0.56,
+          "direction": "horizontal",
+          "road_width": 0.028
+        },
+        "R0": {
+          "edge": "right",
+          "center": 0.56,
+          "direction": "horizontal",
+          "road_width": 0.028
+        }
+      },
+      "source_raster": "rasters/24_three_stage_network.png",
+      "normalized_png": "normalized/24_three_stage_network.png",
+      "svg": "svgs/24_three_stage_network.svg",
+      "svg_paths": 4372,
+      "seam_report": {
+        "L0": {
+          "measured_center": 0.5908,
+          "measured_width": 0.0058,
+          "target_center": 0.56,
+          "target_width": 0.028,
+          "snapped_center": 0.5598,
+          "snapped_width": 0.0216
+        },
+        "R0": {
+          "measured_center": 0.5353,
+          "measured_width": 0.0274,
+          "target_center": 0.56,
+          "target_width": 0.028,
+          "snapped_center": 0.5591,
+          "snapped_width": 0.0288
+        }
+      },
+      "compatible_sockets": {
+        "B0": "B0",
+        "T0": "T0",
+        "L0": "R0",
+        "R0": "L0"
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "25_full_connector_hub",
+      "label": "Mid connector hub with rejoin",
+      "topology": "A broad mid-distance hub serves L1 and R1 while an internal right alternative rejoins the B0-to-T0 main road before the castle.",
+      "sockets": [
+        "B0",
+        "T0",
+        "L1",
+        "R1"
+      ],
+      "socket_contract": {
+        "B0": {
+          "edge": "bottom",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.16
+        },
+        "T0": {
+          "edge": "top",
+          "center": 0.5,
+          "direction": "vertical",
+          "road_width": 0.035
+        },
+        "L1": {
+          "edge": "left",
+          "center": 0.51,
+          "direction": "horizontal",
+          "road_width": 0.013
+        },
+        "R1": {
+          "edge": "right",
+          "center": 0.51,
+          "direction": "horizontal",
+          "road_width": 0.013
+        }
+      },
+      "source_raster": "rasters/25_full_connector_hub.png",
+      "normalized_png": "normalized/25_full_connector_hub.png",
+      "svg": "svgs/25_full_connector_hub.svg",
+      "svg_paths": 4321,
+      "seam_report": {
+        "L1": {
+          "measured_center": 0.5086,
+          "measured_width": 0.0259,
+          "target_center": 0.51,
+          "target_width": 0.013,
+          "snapped_center": 0.5101,
+          "snapped_width": 0.0144
+        },
+        "R1": {
+          "measured_center": 0.5115,
+          "measured_width": 0.0259,
+          "target_center": 0.51,
+          "target_width": 0.013,
+          "snapped_center": 0.5108,
+          "snapped_width": 0.013
+        }
+      },
+      "compatible_sockets": {
+        "B0": "B0",
+        "T0": "T0",
+        "L1": "R1",
+        "R1": "L1"
+      }
+    }
+  ]
+}

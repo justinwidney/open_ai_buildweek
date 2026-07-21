@@ -14,6 +14,14 @@ export interface IncomeViews {
   socialSecurityWageCents: Cents;
   /** Gross minus every deduction and tax — what actually lands in the bank this month. */
   takeHomeCents: Cents;
+  // Tax components as positive amounts withheld this month (the line items are stored as negative
+  // outflows; these flip the sign so "how much went to federal tax" reads as a positive figure).
+  federalTaxCents: Cents;
+  stateTaxCents: Cents;
+  /** Social Security + Medicare (incl. additional Medicare) combined. */
+  ficaTaxCents: Cents;
+  /** Federal + state + FICA — every tax withheld from this income this month. */
+  totalTaxCents: Cents;
 }
 
 export function incomeViews(result: AdjustableResult): IncomeViews {
@@ -30,5 +38,9 @@ export function incomeViews(result: AdjustableResult): IncomeViews {
     taxFreeCents: -pretax,
     socialSecurityWageCents: result.grossCents + pretax,
     takeHomeCents: result.netCents,
+    federalTaxCents: -federalTax,
+    stateTaxCents: -stateTax,
+    ficaTaxCents: -(ficaSs + ficaMedicare),
+    totalTaxCents: -(federalTax + stateTax + ficaSs + ficaMedicare),
   };
 }

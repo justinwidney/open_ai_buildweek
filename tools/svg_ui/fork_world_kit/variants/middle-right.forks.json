@@ -1,0 +1,405 @@
+{
+  "variant": "middle-right",
+  "forks": [
+    {
+      "schema_version": 2,
+      "fork_id": "fork-middle-right-01-right",
+      "feature": "fork",
+      "side": "right",
+      "attach": [
+        0.513,
+        0.56
+      ],
+      "exit": [
+        1.06,
+        0.32
+      ],
+      "spline": [
+        [
+          0.491,
+          0.56
+        ],
+        [
+          0.513,
+          0.56
+        ],
+        [
+          0.5217,
+          0.545
+        ],
+        [
+          0.5339,
+          0.5329
+        ],
+        [
+          0.549,
+          0.5217
+        ],
+        [
+          0.5663,
+          0.5111
+        ],
+        [
+          0.5855,
+          0.5009
+        ],
+        [
+          0.6062,
+          0.491
+        ],
+        [
+          0.6281,
+          0.4813
+        ],
+        [
+          0.6512,
+          0.4719
+        ],
+        [
+          0.6754,
+          0.4626
+        ],
+        [
+          0.7007,
+          0.4535
+        ],
+        [
+          0.727,
+          0.4445
+        ],
+        [
+          0.7544,
+          0.4356
+        ],
+        [
+          0.7826,
+          0.4269
+        ],
+        [
+          0.8117,
+          0.4182
+        ],
+        [
+          0.8412,
+          0.4096
+        ],
+        [
+          0.8709,
+          0.4012
+        ],
+        [
+          0.9003,
+          0.3928
+        ],
+        [
+          0.9288,
+          0.3844
+        ],
+        [
+          0.9561,
+          0.3762
+        ],
+        [
+          0.9813,
+          0.368
+        ],
+        [
+          1.004,
+          0.3598
+        ],
+        [
+          1.0235,
+          0.3518
+        ],
+        [
+          1.0393,
+          0.3438
+        ],
+        [
+          1.051,
+          0.3358
+        ],
+        [
+          1.058,
+          0.3279
+        ],
+        [
+          1.06,
+          0.32
+        ]
+      ],
+      "bbox": {
+        "pixels": [
+          577.2,
+          207.1,
+          1298.9,
+          442.1
+        ],
+        "normalized": [
+          0.481,
+          0.2983,
+          1.0824,
+          0.637
+        ]
+      },
+      "parts": {
+        "land": {
+          "selector": "#fork-middle-right-01-right-land",
+          "bbox": {
+            "pixels": [
+              577.2,
+              207.1,
+              1298.9,
+              442.1
+            ],
+            "normalized": [
+              0.481,
+              0.2983,
+              1.0824,
+              0.637
+            ]
+          },
+          "elements": [
+            "fork-middle-right-01-right-land-base-01",
+            "fork-middle-right-01-right-land-inner-01",
+            "fork-middle-right-01-right-land-patch-01",
+            "fork-middle-right-01-right-land-patch-02",
+            "fork-middle-right-01-right-land-patch-03",
+            "fork-middle-right-01-right-land-patch-04",
+            "fork-middle-right-01-right-land-patch-05",
+            "fork-middle-right-01-right-land-patch-06",
+            "fork-middle-right-01-right-land-patch-07",
+            "fork-middle-right-01-right-land-patch-08",
+            "fork-middle-right-01-right-land-patch-09",
+            "fork-middle-right-01-right-land-patch-10"
+          ]
+        },
+        "underside": {
+          "selector": "#fork-middle-right-01-right-underside",
+          "bbox": {
+            "pixels": [
+              611.9,
+              256.7,
+              1244.3,
+              418.8
+            ],
+            "normalized": [
+              0.5099,
+              0.3699,
+              1.0369,
+              0.6035
+            ]
+          },
+          "elements": [
+            "fork-middle-right-01-right-rock-base-01",
+            "fork-middle-right-01-right-rock-detail-01",
+            "fork-middle-right-01-right-rock-base-02",
+            "fork-middle-right-01-right-rock-detail-02",
+            "fork-middle-right-01-right-rock-base-03",
+            "fork-middle-right-01-right-rock-detail-03",
+            "fork-middle-right-01-right-rock-base-04",
+            "fork-middle-right-01-right-rock-detail-04",
+            "fork-middle-right-01-right-rock-base-05",
+            "fork-middle-right-01-right-rock-detail-05",
+            "fork-middle-right-01-right-rock-base-06",
+            "fork-middle-right-01-right-rock-detail-06"
+          ]
+        },
+        "road": {
+          "selector": "#fork-middle-right-01-right-road",
+          "bbox": {
+            "pixels": [
+              578.0,
+              211.9,
+              1287.0,
+              441.8
+            ],
+            "normalized": [
+              0.4816,
+              0.3053,
+              1.0725,
+              0.6366
+            ]
+          },
+          "elements": [
+            "fork-middle-right-01-right-road-edge-01",
+            "fork-middle-right-01-right-road-base-01",
+            "fork-middle-right-01-right-road-highlight-01",
+            "fork-middle-right-01-right-road-speckle-01",
+            "fork-middle-right-01-right-road-speckle-02",
+            "fork-middle-right-01-right-road-speckle-03",
+            "fork-middle-right-01-right-road-speckle-04",
+            "fork-middle-right-01-right-road-speckle-05",
+            "fork-middle-right-01-right-road-speckle-06",
+            "fork-middle-right-01-right-road-speckle-07",
+            "fork-middle-right-01-right-road-speckle-08",
+            "fork-middle-right-01-right-road-speckle-09",
+            "fork-middle-right-01-right-road-speckle-10",
+            "fork-middle-right-01-right-road-speckle-11",
+            "fork-middle-right-01-right-road-speckle-12",
+            "fork-middle-right-01-right-road-speckle-13",
+            "fork-middle-right-01-right-road-speckle-14",
+            "fork-middle-right-01-right-road-speckle-15",
+            "fork-middle-right-01-right-road-speckle-16",
+            "fork-middle-right-01-right-road-speckle-17",
+            "fork-middle-right-01-right-road-speckle-18",
+            "fork-middle-right-01-right-road-speckle-19",
+            "fork-middle-right-01-right-road-speckle-20",
+            "fork-middle-right-01-right-road-speckle-21",
+            "fork-middle-right-01-right-road-speckle-22",
+            "fork-middle-right-01-right-road-speckle-23",
+            "fork-middle-right-01-right-road-speckle-24"
+          ]
+        },
+        "vegetation": {
+          "selector": "#fork-middle-right-01-right-vegetation",
+          "bbox": {
+            "pixels": [
+              655.3,
+              325.4,
+              667.4,
+              347.3
+            ],
+            "normalized": [
+              0.5461,
+              0.4688,
+              0.5562,
+              0.5004
+            ]
+          },
+          "elements": [
+            "fork-middle-right-01-right-tree-base-01",
+            "fork-middle-right-01-right-tree-highlight-01"
+          ]
+        }
+      },
+      "suggested_slice": 3,
+      "graph_edge": {
+        "id": "route-fork-middle-right-01-right",
+        "role": "branch-right",
+        "pts": [
+          [
+            0.491,
+            0.56
+          ],
+          [
+            0.513,
+            0.56
+          ],
+          [
+            0.5217,
+            0.545
+          ],
+          [
+            0.5339,
+            0.5329
+          ],
+          [
+            0.549,
+            0.5217
+          ],
+          [
+            0.5663,
+            0.5111
+          ],
+          [
+            0.5855,
+            0.5009
+          ],
+          [
+            0.6062,
+            0.491
+          ],
+          [
+            0.6281,
+            0.4813
+          ],
+          [
+            0.6512,
+            0.4719
+          ],
+          [
+            0.6754,
+            0.4626
+          ],
+          [
+            0.7007,
+            0.4535
+          ],
+          [
+            0.727,
+            0.4445
+          ],
+          [
+            0.7544,
+            0.4356
+          ],
+          [
+            0.7826,
+            0.4269
+          ],
+          [
+            0.8117,
+            0.4182
+          ],
+          [
+            0.8412,
+            0.4096
+          ],
+          [
+            0.8709,
+            0.4012
+          ],
+          [
+            0.9003,
+            0.3928
+          ],
+          [
+            0.9288,
+            0.3844
+          ],
+          [
+            0.9561,
+            0.3762
+          ],
+          [
+            0.9813,
+            0.368
+          ],
+          [
+            1.004,
+            0.3598
+          ],
+          [
+            1.0235,
+            0.3518
+          ],
+          [
+            1.0393,
+            0.3438
+          ],
+          [
+            1.051,
+            0.3358
+          ],
+          [
+            1.058,
+            0.3279
+          ],
+          [
+            1.06,
+            0.32
+          ]
+        ],
+        "exit": "scene-middle-right-01-right.html"
+      },
+      "selectors": {
+        "fork": "#fork-middle-right-01-right",
+        "road": "#fork-middle-right-01-right-road",
+        "land": "#fork-middle-right-01-right-land",
+        "underside": "#fork-middle-right-01-right-underside",
+        "vegetation": "#fork-middle-right-01-right-vegetation"
+      }
+    }
+  ]
+}

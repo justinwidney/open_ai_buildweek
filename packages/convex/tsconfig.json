@@ -1,0 +1,21 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "lib": ["ES2022"],
+    "types": []
+  },
+  // Deliberately limited to the files that do NOT import `./_generated/*`.
+  // Convex generates that directory from a live deployment (`npx convex dev`
+  // or `codegen`), and it is not in the repository — so a typecheck spanning
+  // the handler files would fail on a clean clone, for a reason unrelated to
+  // whatever was actually broken.
+  //
+  // The split of duties is clean rather than a compromise: this config guards
+  // the *cross-package* contract (validators.ts asserts every Convex validator
+  // still matches its `@control-ai/shared/sim` union, and schema.ts must
+  // compile against them), while the Convex CLI typechecks the handlers on
+  // every `convex dev` / `convex deploy` — which is also the only place they
+  // can be checked properly.
+  "include": ["convex/validators.ts", "convex/schema.ts"]
+}

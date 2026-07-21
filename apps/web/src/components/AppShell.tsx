@@ -10,12 +10,24 @@ export type SkillPanelData = {
   concepts: string[];
 };
 
+export type ShellTool = {
+  id: string;
+  label: string;
+  icon: ReactNode;
+};
+
 export type AppShellProps = {
-  /** The Three.js canvas or other full-bleed experience. */
+  /** The full-bleed world scene. */
   children: ReactNode;
   activeSkill?: SkillPanelData;
+  tools?: readonly ShellTool[];
+  activeTool?: string;
+  panel?: ReactNode;
+  panelTitle?: string;
+  defaultPanelOpen?: boolean;
+  worldHud?: ReactNode;
   onMenuClick?: () => void;
-  onToolClick?: (tool: "skills" | "path" | "add" | "ideas" | "profile" | "share") => void;
+  onToolClick?: (tool: string) => void;
   onPromptSubmit?: (prompt: string) => void;
   onActivitiesClick?: () => void;
 };
@@ -35,30 +47,34 @@ const defaultSkill: SkillPanelData = {
   ],
 };
 
-const toolIcons = {
-  skills: "✳",
-  path: "⌁",
-  add: "+",
-  ideas: "♧",
-  profile: "♙",
-  share: "↗",
-} as const;
+const DEFAULT_TOOLS: readonly ShellTool[] = [
+  { id: "skills", label: "Skills", icon: "\u2733" },
+  { id: "path", label: "Path", icon: "\u2301" },
+  { id: "add", label: "Add", icon: "+" },
+  { id: "ideas", label: "Ideas", icon: "\u2667" },
+  { id: "profile", label: "Profile", icon: "\u2659" },
+  { id: "share", label: "Share", icon: "\u2197" },
+];
 
 function ToolButton({
   tool,
+  active,
   onClick,
 }: {
-  tool: keyof typeof toolIcons;
-  onClick?: AppShellProps["onToolClick"];
+  tool: ShellTool;
+  active: boolean;
+  onClick: (tool: string) => void;
 }) {
   return (
     <button
       type="button"
-      className={"shell-icon-button shell-tool--" + tool}
-      onClick={() => onClick?.(tool)}
-      aria-label={tool}
+      className={`shell-icon-button shell-tool--${tool.id}${active ? " is-active" : ""}`}
+      onClick={() => onClick(tool.id)}
+      aria-label={tool.label}
+      aria-pressed={active}
+      title={tool.label}
     >
-      {toolIcons[tool]}
+      {tool.icon}
     </button>
   );
 }
@@ -77,12 +93,18 @@ function Meter({ label, value }: { label: string; value: number }) {
 export function AppShell({
   children,
   activeSkill = defaultSkill,
+  tools = DEFAULT_TOOLS,
+  activeTool,
+  panel,
+  panelTitle,
+  defaultPanelOpen = false,
+  worldHud,
   onMenuClick,
   onToolClick,
   onPromptSubmit,
   onActivitiesClick,
 }: AppShellProps) {
-  const [isSkillPanelOpen, setSkillPanelOpen] = useState(false);
+  const [isPanelOpen, setPanelOpen] = useState(defaultPanelOpen);
 
   const handlePrompt = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -92,58 +114,78 @@ export function AppShell({
     event.currentTarget.reset();
   };
 
+  const handleToolClick = (tool: string) => {
+    setPanelOpen(true);
+    onToolClick?.(tool);
+  };
+
+  const handleMenuClick = () => {
+    setPanelOpen((open) => !open);
+    onMenuClick?.();
+  };
+
   return (
     <main className="app-shell">
       <div className="app-shell__world">{children}</div>
       <div className="app-shell__scrim" aria-hidden="true" />
 
       <header className="app-shell__brand">
-        <button type="button" className="shell-icon-button shell-menu-button" onClick={onMenuClick} aria-label="Open menu">
+        <button type="button" className="shell-icon-button shell-menu-button" onClick={handleMenuClick} aria-label="Toggle information panel">
           <span /><span /><span />
         </button>
-        <div className="app-shell__wordmark"><strong>Control AI</strong><span>Skill Planner</span></div>
+        <div className="app-shell__wordmark"><strong>Control AI</strong><span>Life Pathfinder</span></div>
       </header>
 
-      <nav className="app-shell__tools" aria-label="World tools">
-        <ToolButton tool="skills" onClick={(tool) => {
-          setSkillPanelOpen((open) => !open);
-          onToolClick?.(tool);
-        }} />
-        <ToolButton tool="path" onClick={onToolClick} />
-        <ToolButton tool="add" onClick={onToolClick} />
-        <ToolButton tool="ideas" onClick={onToolClick} />
-        <ToolButton tool="profile" onClick={onToolClick} />
-        <ToolButton tool="share" onClick={onToolClick} />
+      <nav className="app-shell__tools" aria-label="Journey pages">
+        {tools.map((tool) => (
+          <ToolButton
+            active={tool.id === activeTool}
+            key={tool.id}
+            onClick={handleToolClick}
+            tool={tool}
+          />
+        ))}
       </nav>
 
-      <aside className={`skill-panel${isSkillPanelOpen ? " skill-panel--open" : ""}`} aria-label="Active skill details">
-        <button className="skill-panel__close" aria-label="Close skill details" onClick={() => setSkillPanelOpen(false)}>×</button>
-        <div className="skill-panel__ribbon">Active Skill</div>
-        <div className="skill-panel__identity">
-          <div className="skill-panel__crest" aria-hidden="true">♛</div>
-          <div><h1>{activeSkill.title}</h1><p>{activeSkill.subtitle}</p></div>
-        </div>
-        <section className="skill-panel__section">
-          <h2>Aim / Intention</h2>
-          <p>Grow leadership to inspire, guide, and empower others, while staying true to your own values.</p>
-        </section>
-        <section className="skill-panel__section skill-panel__progress">
-          <h2>Progress</h2>
-          <div className="skill-panel__level"><span>Level</span><b>{activeSkill.level}</b></div>
-          <Meter label="Experience" value={activeSkill.experience} />
-          <Meter label="Next Level" value={activeSkill.nextLevel} />
-        </section>
-        <section className="skill-panel__section skill-panel__concepts">
-          <h2>Key Concepts</h2>
-          <ul>{activeSkill.concepts.map((concept) => <li key={concept}>{concept}</li>)}</ul>
-        </section>
-        <button type="button" className="skill-panel__activities" onClick={onActivitiesClick}>View Activities <span>›</span></button>
+      {worldHud && <div className="app-shell__hud">{worldHud}</div>}
+
+      <aside className={`skill-panel${isPanelOpen ? " skill-panel--open" : ""}${panel ? " skill-panel--page" : ""}`} aria-label={panelTitle ? `${panelTitle} page` : "Active skill details"}>
+        <button className="skill-panel__close" type="button" aria-label="Close information panel" onClick={() => setPanelOpen(false)}>{"\u00d7"}</button>
+        {panel ? (
+          <>
+            <div className="skill-panel__ribbon">{panelTitle ?? "Your journey"}</div>
+            <div className="skill-panel__page-content">{panel}</div>
+          </>
+        ) : (
+          <>
+            <div className="skill-panel__ribbon">Active Skill</div>
+            <div className="skill-panel__identity">
+              <div className="skill-panel__crest" aria-hidden="true">{"\u265b"}</div>
+              <div><h1>{activeSkill.title}</h1><p>{activeSkill.subtitle}</p></div>
+            </div>
+            <section className="skill-panel__section">
+              <h2>Aim / Intention</h2>
+              <p>Grow leadership to inspire, guide, and empower others, while staying true to your own values.</p>
+            </section>
+            <section className="skill-panel__section skill-panel__progress">
+              <h2>Progress</h2>
+              <div className="skill-panel__level"><span>Level</span><b>{activeSkill.level}</b></div>
+              <Meter label="Experience" value={activeSkill.experience} />
+              <Meter label="Next Level" value={activeSkill.nextLevel} />
+            </section>
+            <section className="skill-panel__section skill-panel__concepts">
+              <h2>Key Concepts</h2>
+              <ul>{activeSkill.concepts.map((concept) => <li key={concept}>{concept}</li>)}</ul>
+            </section>
+            <button type="button" className="skill-panel__activities" onClick={onActivitiesClick}>View Activities <span>{"\u203a"}</span></button>
+          </>
+        )}
       </aside>
 
       <form className="app-shell__prompt" onSubmit={handlePrompt}>
-        <span className="prompt-spark" aria-hidden="true">✳</span>
-        <label className="sr-only" htmlFor="world-prompt">Ask a question or jump to a skill</label>
-        <input id="world-prompt" name="prompt" autoComplete="off" placeholder="Ask a question or jump to a skill..." />
+        <span className="prompt-spark" aria-hidden="true">{"\u2733"}</span>
+        <label className="sr-only" htmlFor="world-prompt">Ask a question or jump to a page</label>
+        <input id="world-prompt" name="prompt" autoComplete="off" placeholder="Ask a question or jump to a page..." />
         <button type="submit" aria-label="Submit question">?</button>
       </form>
     </main>

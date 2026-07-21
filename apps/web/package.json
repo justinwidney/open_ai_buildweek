@@ -9,6 +9,7 @@
     "typecheck": "tsc -b --pretty false"
   },
   "dependencies": {
+    "@control-ai/engine": "workspace:*",
     "@control-ai/shared": "workspace:*",
     "@vitejs/plugin-react": "latest",
     "react": "latest",

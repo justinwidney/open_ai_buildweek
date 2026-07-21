@@ -19,6 +19,8 @@ world loop.
 | H. Platform detail is independently authored | `platform-detail.html` | `src/labs/platformDetailLab.ts` | `content/forward/decorations.ts` + `signage.ts` |
 | I. Sprites align by view, depth, color, and alpha | `sprite-grid.html` | `src/labs/spriteGridLab.ts` | `LayeredParallaxBackground.tsx` orbital sprite configuration |
 | J. Procedural SVG background without gameplay meshes | `background-only.html` | `src/labs/backgroundOnlyLab.tsx` + `tools/svg/catalog.json` | Curated SVG groups, weighted seeded recycling, optional cloud obstruction, and zero WebGL canvases |
+| K. Level 2 integrated world run | `level-two-world.html` | `src/labs/levelTwoWorldLab.tsx` + `src/labs/levelTwoThreeRuntime.ts` | One WebGL canvas, five stopped route steps on a connected watercolor island spine, a continuous sand road, water below the cliffs, passed-segment retirement, castle chapter reset, and exact primary/parallel world rotation |
+| L. Decision travel route language | `decision-travel.html` | `src/labs/decision-travel/DecisionTravelLab.tsx` + `src/labs/decision-travel/decisionMaps.ts` | Parchment decisions paired with a deterministic 25-map SVG catalog: straight routes for simple choices, curves for uncertainty, directional forks for decisions, and dense networks for complex events |
 
 Shared lab-only code lives in `src/labs/lab.css`, `threeLab.ts`, and
 `labWorldObjects.ts`. The neutral gameplay base is shared through

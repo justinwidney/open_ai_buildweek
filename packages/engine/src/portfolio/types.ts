@@ -1,9 +1,12 @@
 import type { Cents } from "../money/index.js";
+import type { AccountType } from "../accounts/types.js";
 
 export interface HoldingConfig {
   id: string;
   label: string;
   assetClassId: string;
+  /** The tax wrapper this holding sits in. Defaults to `taxableBrokerage` when omitted (see accounts/). */
+  accountType?: AccountType;
 }
 
 export interface HoldingState {

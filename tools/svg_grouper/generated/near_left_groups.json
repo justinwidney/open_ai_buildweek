@@ -1,0 +1,1110 @@
+{
+  "source": "near_left_watercolor_600.svg",
+  "canvas": [
+    600,
+    347
+  ],
+  "background": [
+    {
+      "id": "bg_00_sky",
+      "label": "sky",
+      "fill": "#77B2CD",
+      "visible_px": 4589
+    },
+    {
+      "id": "bg_01_sky",
+      "label": "sky",
+      "fill": "#73B0CB",
+      "visible_px": 3336
+    },
+    {
+      "id": "bg_02_terrain",
+      "label": "terrain",
+      "fill": "#8E845F",
+      "visible_px": 409
+    }
+  ],
+  "objects": [
+    {
+      "id": "obj_00_scene",
+      "label": "scene",
+      "bbox": [
+        0,
+        0,
+        600,
+        347
+      ],
+      "visible_px": 199866,
+      "paths": 541,
+      "parts_in_svg": 1,
+      "subgroups": [
+        {
+          "id": "obj_00_scene__blue_00",
+          "label": "blue_00",
+          "bbox": [
+            0,
+            0,
+            600,
+            162
+          ],
+          "paths": 8,
+          "parts_in_svg": 4,
+          "top_colors": [
+            "#466388",
+            "#4C71A4",
+            "#4D6480",
+            "#5C7597",
+            "#5D7595",
+            "#697179"
+          ]
+        },
+        {
+          "id": "obj_00_scene__terrain_01",
+          "label": "terrain_01",
+          "bbox": [
+            0,
+            38,
+            429,
+            347
+          ],
+          "paths": 106,
+          "parts_in_svg": 11,
+          "top_colors": [
+            "#857B56",
+            "#857D56",
+            "#867F51",
+            "#877C4A",
+            "#877F61",
+            "#887651"
+          ]
+        },
+        {
+          "id": "obj_00_scene__vegetation_02",
+          "label": "vegetation_02",
+          "bbox": [
+            142,
+            56,
+            300,
+            150
+          ],
+          "paths": 6,
+          "parts_in_svg": 5,
+          "top_colors": [
+            "#635E3C",
+            "#6A6549",
+            "#6C6543",
+            "#716B44",
+            "#797269",
+            "#7B735B"
+          ]
+        },
+        {
+          "id": "obj_00_scene__terrain_03",
+          "label": "terrain_03",
+          "bbox": [
+            452,
+            240,
+            600,
+            347
+          ],
+          "paths": 22,
+          "parts_in_svg": 4,
+          "top_colors": [
+            "#857A50",
+            "#86763B",
+            "#89804F",
+            "#8B7B47",
+            "#8E7E5E",
+            "#8E814D"
+          ]
+        },
+        {
+          "id": "obj_00_scene__blue_04",
+          "label": "blue_04",
+          "bbox": [
+            0,
+            82,
+            219,
+            309
+          ],
+          "paths": 15,
+          "parts_in_svg": 4,
+          "top_colors": [
+            "#53AACB",
+            "#62ADC9",
+            "#697A8C",
+            "#6AACC9",
+            "#6BABC8",
+            "#6CABC9"
+          ]
+        },
+        {
+          "id": "obj_00_scene__vegetation_05",
+          "label": "vegetation_05",
+          "bbox": [
+            314,
+            153,
+            490,
+            332
+          ],
+          "paths": 30,
+          "parts_in_svg": 5,
+          "top_colors": [
+            "#444A3C",
+            "#494C36",
+            "#515238",
+            "#565436",
+            "#585D49",
+            "#5D5A39"
+          ]
+        },
+        {
+          "id": "obj_00_scene__route_network",
+          "label": "route_network",
+          "bbox": [
+            91,
+            64,
+            541,
+            347
+          ],
+          "paths": 27,
+          "parts_in_svg": 4,
+          "top_colors": [
+            "#B8A266",
+            "#B9A268",
+            "#B9A367",
+            "#BBA567",
+            "#BCA472",
+            "#CDAD78"
+          ]
+        },
+        {
+          "id": "obj_00_scene__blue_07",
+          "label": "blue_07",
+          "bbox": [
+            376,
+            149,
+            594,
+            347
+          ],
+          "paths": 27,
+          "parts_in_svg": 6,
+          "top_colors": [
+            "#535C66",
+            "#57A8C9",
+            "#5CA5C4",
+            "#5D9EBE",
+            "#5EA6C3",
+            "#60A8C7"
+          ]
+        },
+        {
+          "id": "obj_00_scene__terrain_08",
+          "label": "terrain_08",
+          "bbox": [
+            312,
+            205,
+            491,
+            347
+          ],
+          "paths": 22,
+          "parts_in_svg": 4,
+          "top_colors": [
+            "#877A44",
+            "#8C7E4C",
+            "#8E8152",
+            "#90814A",
+            "#938658",
+            "#988F64"
+          ]
+        },
+        {
+          "id": "obj_00_scene__terrain_09",
+          "label": "terrain_09",
+          "bbox": [
+            481,
+            161,
+            586,
+            205
+          ],
+          "paths": 5,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#8F8964",
+            "#928868",
+            "#A19970",
+            "#AA9F7C",
+            "#B1A06F"
+          ]
+        },
+        {
+          "id": "obj_00_scene__terrain_10",
+          "label": "terrain_10",
+          "bbox": [
+            10,
+            45,
+            109,
+            103
+          ],
+          "paths": 5,
+          "parts_in_svg": 3,
+          "top_colors": [
+            "#8A8677",
+            "#998D6A",
+            "#A49672",
+            "#AAA28E",
+            "#AEA484"
+          ]
+        },
+        {
+          "id": "obj_00_scene__white_11",
+          "label": "white_11",
+          "bbox": [
+            372,
+            5,
+            600,
+            145
+          ],
+          "paths": 27,
+          "parts_in_svg": 4,
+          "top_colors": [
+            "#A8B7D6",
+            "#ABC5D4",
+            "#ACBABF",
+            "#AFBBC2",
+            "#B8C4D1",
+            "#BCC5DA"
+          ]
+        },
+        {
+          "id": "obj_00_scene__vegetation_12",
+          "label": "vegetation_12",
+          "bbox": [
+            164,
+            254,
+            294,
+            347
+          ],
+          "paths": 17,
+          "parts_in_svg": 4,
+          "top_colors": [
+            "#3D4334",
+            "#3E4435",
+            "#4A4E3C",
+            "#53574A",
+            "#56553A",
+            "#626042"
+          ]
+        },
+        {
+          "id": "obj_00_scene__blue_13",
+          "label": "blue_13",
+          "bbox": [
+            91,
+            95,
+            263,
+            212
+          ],
+          "paths": 11,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#4AA4C8",
+            "#5BABCB",
+            "#5DA9CA",
+            "#69AECC",
+            "#75AFC8",
+            "#7AB5CF"
+          ]
+        },
+        {
+          "id": "obj_00_scene__white_14",
+          "label": "white_14",
+          "bbox": [
+            0,
+            6,
+            231,
+            83
+          ],
+          "paths": 15,
+          "parts_in_svg": 4,
+          "top_colors": [
+            "#B5C0CC",
+            "#B9CCE2",
+            "#BAC6CF",
+            "#BECAD9",
+            "#BFCEE0",
+            "#C2CEDC"
+          ]
+        },
+        {
+          "id": "obj_00_scene__vegetation_15",
+          "label": "vegetation_15",
+          "bbox": [
+            546,
+            219,
+            600,
+            347
+          ],
+          "paths": 6,
+          "parts_in_svg": 3,
+          "top_colors": [
+            "#3E4435",
+            "#4B4E34",
+            "#5A5B42",
+            "#6E6D59",
+            "#7B703F",
+            "#837B4E"
+          ]
+        },
+        {
+          "id": "obj_00_scene__blue_16",
+          "label": "blue_16",
+          "bbox": [
+            468,
+            60,
+            569,
+            126
+          ],
+          "paths": 3,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#74A5B9",
+            "#7DB3CC",
+            "#A0AFC6"
+          ]
+        },
+        {
+          "id": "obj_00_scene__rock_17",
+          "label": "rock_17",
+          "bbox": [
+            82,
+            209,
+            167,
+            263
+          ],
+          "paths": 4,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#5E6162",
+            "#6A6B68",
+            "#7C7F83",
+            "#838C95"
+          ]
+        },
+        {
+          "id": "obj_00_scene__rock_18",
+          "label": "rock_18",
+          "bbox": [
+            264,
+            12,
+            365,
+            76
+          ],
+          "paths": 6,
+          "parts_in_svg": 3,
+          "top_colors": [
+            "#5F6A69",
+            "#808893",
+            "#888788",
+            "#8A908D",
+            "#A1A29E",
+            "#ADA59B"
+          ]
+        },
+        {
+          "id": "obj_00_scene__vegetation_19",
+          "label": "vegetation_19",
+          "bbox": [
+            44,
+            261,
+            179,
+            347
+          ],
+          "paths": 8,
+          "parts_in_svg": 3,
+          "top_colors": [
+            "#544E3A",
+            "#6F6745",
+            "#70633A",
+            "#75683F",
+            "#786F60",
+            "#7A6E5E"
+          ]
+        },
+        {
+          "id": "obj_00_scene__rock_20",
+          "label": "rock_20",
+          "bbox": [
+            185,
+            70,
+            245,
+            143
+          ],
+          "paths": 4,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#646564",
+            "#686A69",
+            "#757B7D",
+            "#8A8681"
+          ]
+        },
+        {
+          "id": "obj_00_scene__terrain_21",
+          "label": "terrain_21",
+          "bbox": [
+            396,
+            31,
+            493,
+            162
+          ],
+          "paths": 8,
+          "parts_in_svg": 3,
+          "top_colors": [
+            "#898265",
+            "#898365",
+            "#8F8A73",
+            "#9C9076",
+            "#9C9279",
+            "#A89A7A"
+          ]
+        },
+        {
+          "id": "obj_00_scene__vegetation_22",
+          "label": "vegetation_22",
+          "bbox": [
+            473,
+            244,
+            541,
+            323
+          ],
+          "paths": 4,
+          "parts_in_svg": 3,
+          "top_colors": [
+            "#565A43",
+            "#706647",
+            "#736B54",
+            "#777362"
+          ]
+        },
+        {
+          "id": "obj_00_scene__rock_23",
+          "label": "rock_23",
+          "bbox": [
+            400,
+            230,
+            478,
+            343
+          ],
+          "paths": 5,
+          "parts_in_svg": 3,
+          "top_colors": [
+            "#5F656A",
+            "#64655E",
+            "#666A6A",
+            "#68685E",
+            "#87817D"
+          ]
+        },
+        {
+          "id": "obj_00_scene__rock_24",
+          "label": "rock_24",
+          "bbox": [
+            185,
+            118,
+            274,
+            264
+          ],
+          "paths": 5,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#5A5E62",
+            "#666660",
+            "#727776",
+            "#81868A",
+            "#8E9294"
+          ]
+        },
+        {
+          "id": "obj_00_scene__vegetation_25",
+          "label": "vegetation_25",
+          "bbox": [
+            308,
+            39,
+            475,
+            160
+          ],
+          "paths": 15,
+          "parts_in_svg": 4,
+          "top_colors": [
+            "#535232",
+            "#59593F",
+            "#5D5E43",
+            "#62624E",
+            "#656242",
+            "#67654B"
+          ]
+        },
+        {
+          "id": "obj_00_scene__vegetation_26",
+          "label": "vegetation_26",
+          "bbox": [
+            92,
+            161,
+            200,
+            251
+          ],
+          "paths": 4,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#66634B",
+            "#696B52",
+            "#6B664B",
+            "#78745C"
+          ]
+        },
+        {
+          "id": "obj_00_scene__vegetation_27",
+          "label": "vegetation_27",
+          "bbox": [
+            229,
+            242,
+            276,
+            282
+          ],
+          "paths": 3,
+          "parts_in_svg": 3,
+          "top_colors": [
+            "#676551",
+            "#777158",
+            "#7D7445"
+          ]
+        },
+        {
+          "id": "obj_00_scene__rock_28",
+          "label": "rock_28",
+          "bbox": [
+            477,
+            184,
+            600,
+            293
+          ],
+          "paths": 8,
+          "parts_in_svg": 5,
+          "top_colors": [
+            "#5D605E",
+            "#63665C",
+            "#656B61",
+            "#6C6F71",
+            "#726D68",
+            "#747B81"
+          ]
+        },
+        {
+          "id": "obj_00_scene__white_29",
+          "label": "white_29",
+          "bbox": [
+            242,
+            25,
+            335,
+            82
+          ],
+          "paths": 6,
+          "parts_in_svg": 4,
+          "top_colors": [
+            "#C9CFD9",
+            "#CED6E3",
+            "#CFC3B3",
+            "#D6BEA3",
+            "#D6C2A8",
+            "#DCCAB2"
+          ]
+        },
+        {
+          "id": "obj_00_scene__white_30",
+          "label": "white_30",
+          "bbox": [
+            0,
+            93,
+            66,
+            119
+          ],
+          "paths": 4,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#C9D7E7",
+            "#D2DDE9",
+            "#DAE1EA",
+            "#DAE3EC"
+          ]
+        },
+        {
+          "id": "obj_00_scene__blue_31",
+          "label": "blue_31",
+          "bbox": [
+            549,
+            158,
+            600,
+            206
+          ],
+          "paths": 3,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#4CA9CA",
+            "#62A7C7",
+            "#6DB1CB"
+          ]
+        },
+        {
+          "id": "obj_00_scene__rock_32",
+          "label": "rock_32",
+          "bbox": [
+            119,
+            291,
+            191,
+            347
+          ],
+          "paths": 4,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#57564F",
+            "#595855",
+            "#5F6464",
+            "#868585"
+          ]
+        },
+        {
+          "id": "obj_00_scene__rock_33",
+          "label": "rock_33",
+          "bbox": [
+            428,
+            36,
+            509,
+            106
+          ],
+          "paths": 5,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#736F6B",
+            "#787771",
+            "#828581",
+            "#A8ACAA",
+            "#ADA799"
+          ]
+        },
+        {
+          "id": "obj_00_scene__vegetation_34",
+          "label": "vegetation_34",
+          "bbox": [
+            7,
+            48,
+            108,
+            101
+          ],
+          "paths": 4,
+          "parts_in_svg": 3,
+          "top_colors": [
+            "#656554",
+            "#696958",
+            "#7D7767",
+            "#80796A"
+          ]
+        },
+        {
+          "id": "obj_00_scene__white_35",
+          "label": "white_35",
+          "bbox": [
+            402,
+            155,
+            569,
+            295
+          ],
+          "paths": 6,
+          "parts_in_svg": 3,
+          "top_colors": [
+            "#9FBACE",
+            "#ADC7D7",
+            "#B1C1CF",
+            "#B5C9DB",
+            "#BAC2CA",
+            "#C3D3E0"
+          ]
+        },
+        {
+          "id": "obj_00_scene__sand_36",
+          "label": "sand_36",
+          "bbox": [
+            209,
+            7,
+            551,
+            105
+          ],
+          "paths": 5,
+          "parts_in_svg": 3,
+          "top_colors": [
+            "#B8A166",
+            "#BAB09E",
+            "#BCA778",
+            "#C5BAA5",
+            "#E3CA96"
+          ]
+        },
+        {
+          "id": "obj_00_scene__rock_37",
+          "label": "rock_37",
+          "bbox": [
+            72,
+            69,
+            189,
+            175
+          ],
+          "paths": 9,
+          "parts_in_svg": 3,
+          "top_colors": [
+            "#65685F",
+            "#686F76",
+            "#6A6F72",
+            "#6F736B",
+            "#78786D",
+            "#828789"
+          ]
+        },
+        {
+          "id": "obj_00_scene__blue_38",
+          "label": "blue_38",
+          "bbox": [
+            401,
+            104,
+            461,
+            141
+          ],
+          "paths": 3,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#71ACC8",
+            "#75ABC5",
+            "#8DB5CA"
+          ]
+        },
+        {
+          "id": "obj_00_scene__vegetation_39",
+          "label": "vegetation_39",
+          "bbox": [
+            451,
+            80,
+            586,
+            218
+          ],
+          "paths": 6,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#626147",
+            "#6A684C",
+            "#706B50",
+            "#70705E",
+            "#817861",
+            "#888A6F"
+          ]
+        },
+        {
+          "id": "obj_00_scene__vegetation_40",
+          "label": "vegetation_40",
+          "bbox": [
+            0,
+            256,
+            66,
+            347
+          ],
+          "paths": 5,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#625B3C",
+            "#6B6440",
+            "#7E6F38",
+            "#80785B",
+            "#837132"
+          ]
+        },
+        {
+          "id": "obj_00_scene__rock_41",
+          "label": "rock_41",
+          "bbox": [
+            525,
+            30,
+            587,
+            93
+          ],
+          "paths": 3,
+          "parts_in_svg": 3,
+          "top_colors": [
+            "#959184",
+            "#979DA2",
+            "#97A1A9"
+          ]
+        },
+        {
+          "id": "obj_00_scene__terrain_42",
+          "label": "terrain_42",
+          "bbox": [
+            476,
+            43,
+            600,
+            89
+          ],
+          "paths": 4,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#89826E",
+            "#908769",
+            "#968B79",
+            "#AFA380"
+          ]
+        },
+        {
+          "id": "obj_00_scene__vegetation_43",
+          "label": "vegetation_43",
+          "bbox": [
+            246,
+            125,
+            332,
+            226
+          ],
+          "paths": 5,
+          "parts_in_svg": 3,
+          "top_colors": [
+            "#686757",
+            "#756F50",
+            "#78725F",
+            "#7B744F",
+            "#888B73"
+          ]
+        },
+        {
+          "id": "obj_00_scene__vegetation_44",
+          "label": "vegetation_44",
+          "bbox": [
+            109,
+            36,
+            196,
+            94
+          ],
+          "paths": 4,
+          "parts_in_svg": 3,
+          "top_colors": [
+            "#746E5F",
+            "#79725A",
+            "#847958",
+            "#84806B"
+          ]
+        },
+        {
+          "id": "obj_00_scene__white_45",
+          "label": "white_45",
+          "bbox": [
+            0,
+            198,
+            76,
+            223
+          ],
+          "paths": 4,
+          "parts_in_svg": 1,
+          "top_colors": [
+            "#CED3DC",
+            "#E1E0E0",
+            "#E6E2E0",
+            "#E9E6E1"
+          ]
+        },
+        {
+          "id": "obj_00_scene__rock_46",
+          "label": "rock_46",
+          "bbox": [
+            360,
+            151,
+            441,
+            198
+          ],
+          "paths": 4,
+          "parts_in_svg": 1,
+          "top_colors": [
+            "#5B5C5B",
+            "#5D6260",
+            "#6A6A6A",
+            "#959293"
+          ]
+        },
+        {
+          "id": "obj_00_scene__rock_47",
+          "label": "rock_47",
+          "bbox": [
+            361,
+            45,
+            436,
+            135
+          ],
+          "paths": 4,
+          "parts_in_svg": 1,
+          "top_colors": [
+            "#606260",
+            "#797F84",
+            "#989689",
+            "#9B9289"
+          ]
+        },
+        {
+          "id": "obj_00_scene__vegetation_48",
+          "label": "vegetation_48",
+          "bbox": [
+            327,
+            331,
+            405,
+            347
+          ],
+          "paths": 3,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#5C5B3D",
+            "#616145",
+            "#83795B"
+          ]
+        },
+        {
+          "id": "obj_00_scene__vegetation_49",
+          "label": "vegetation_49",
+          "bbox": [
+            53,
+            136,
+            102,
+            182
+          ],
+          "paths": 3,
+          "parts_in_svg": 1,
+          "top_colors": [
+            "#646448",
+            "#676956",
+            "#7F7750"
+          ]
+        },
+        {
+          "id": "obj_00_scene__vegetation_50",
+          "label": "vegetation_50",
+          "bbox": [
+            481,
+            32,
+            591,
+            90
+          ],
+          "paths": 3,
+          "parts_in_svg": 1,
+          "top_colors": [
+            "#727161",
+            "#807963",
+            "#827964"
+          ]
+        },
+        {
+          "id": "obj_00_scene__rock_51",
+          "label": "rock_51",
+          "bbox": [
+            31,
+            168,
+            95,
+            205
+          ],
+          "paths": 3,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#5D6265",
+            "#676D6F",
+            "#6A6B5E"
+          ]
+        },
+        {
+          "id": "obj_00_scene__white_52",
+          "label": "white_52",
+          "bbox": [
+            138,
+            88,
+            255,
+            166
+          ],
+          "paths": 4,
+          "parts_in_svg": 1,
+          "top_colors": [
+            "#B0C7DE",
+            "#BBD1E4",
+            "#BCD4E2",
+            "#C8D7E3"
+          ]
+        },
+        {
+          "id": "obj_00_scene__rock_53",
+          "label": "rock_53",
+          "bbox": [
+            0,
+            43,
+            159,
+            101
+          ],
+          "paths": 4,
+          "parts_in_svg": 1,
+          "top_colors": [
+            "#6C6A60",
+            "#847F73",
+            "#96958D",
+            "#A3A194"
+          ]
+        },
+        {
+          "id": "obj_00_scene__accent_54",
+          "label": "accent_54",
+          "bbox": [
+            423,
+            247,
+            441,
+            272
+          ],
+          "paths": 1,
+          "parts_in_svg": 1,
+          "top_colors": [
+            "#847A72"
+          ]
+        },
+        {
+          "id": "obj_00_scene__vegetation_55",
+          "label": "vegetation_55",
+          "bbox": [
+            464,
+            332,
+            549,
+            347
+          ],
+          "paths": 3,
+          "parts_in_svg": 1,
+          "top_colors": [
+            "#635F52",
+            "#6C6543",
+            "#837547"
+          ]
+        },
+        {
+          "id": "obj_00_scene__rock_56",
+          "label": "rock_56",
+          "bbox": [
+            448,
+            113,
+            490,
+            166
+          ],
+          "paths": 3,
+          "parts_in_svg": 2,
+          "top_colors": [
+            "#5E615D",
+            "#7E7C75",
+            "#A0AEB3"
+          ]
+        }
+      ]
+    }
+  ]
+}

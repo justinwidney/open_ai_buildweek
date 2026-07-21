@@ -45,3 +45,51 @@ policy change).
   approximations in `federal-income-tax.ts`/`state-tax.ts`).
 
 Depends on: `money/`, `types/`.
+
+## Searchable life-choice catalogs (planned)
+
+The detailed crossroads require versioned, queryable catalogs in addition to
+the current calculation datasets. Initial catalogs should include:
+
+- **careers/jobs:** occupation and specialization ids, region, credential and
+  experience requirements, pay ranges, pay cadence, typical hours and
+  overtime, shift/rotation patterns (including 10/4 and 7/7), bonus/commission
+  models, benefits, raise/promotion and unemployment assumptions;
+- **education paths:** institution/program/credential, duration, tuition and
+  fees, aid, living costs, completion probability, entry requirements, and
+  linked career outcomes; and
+- **housing:** rent and purchase property types, region, price/rent ranges,
+  mortgage products, down-payment/closing costs, property tax, insurance,
+  utilities/fees, maintenance, appreciation/depreciation, and selling costs.
+
+Catalog records use stable ids and normalized numeric fields; labels,
+descriptions, aliases, tags, and locale keys support full-text search and
+faceted filters. Range/frequency/unit semantics must be explicit. Search order
+may change without changing simulation values, while a selected record/version
+must resolve to the same assumptions later.
+
+## Provenance, versions, and gaps (planned)
+
+Every bundle and record needs a schema version, data version, source id/url,
+publisher, geography, currency, `asOf`, effective date range, retrieval date,
+methodology/transform note, confidence/quality flag, and license where
+applicable. Derived values list their source records and formula version.
+Defaults are explicit and jurisdiction-aware; unsupported or stale data returns
+a warning/missing value rather than silently substituting a national average.
+
+Bundles should be immutable, validate referential integrity, and expose a
+manifest/hash used by branch and forecast replay. Updates create a new bundle;
+committed runs keep their original version. Separate catalog ingestion and
+validation from engine runtime so search indexes and refresh jobs cannot alter
+an in-progress simulation.
+
+## Additional acceptance criteria
+
+- Catalog search/filter is deterministic for a query, locale, and data version;
+  stable tie-breaking and pagination are documented.
+- Every simulation-affecting field has unit, frequency, geography, effective
+  dates, provenance, and a quality status; missing required data fails bundle
+  validation.
+- Tests cover stale/unsupported jurisdiction warnings, catalog migrations,
+  referential integrity, immutable old versions, canonical manifest hashing,
+  and representative career, education, rental, and purchase records.

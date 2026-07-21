@@ -3,61 +3,40 @@ import assert from "node:assert/strict";
 import { fileURLToPath } from "node:url";
 import { PGlite } from "@electric-sql/pglite";
 import { migrate } from "drizzle-orm/pglite/migrator";
-import {
-  cents,
-  createFixedReturnsStrategy,
-  createRandomSource,
-  initialDebtState,
-  initialFinancialAssetState,
-  initialHoldingState,
-  initialTaxBasis,
-  referenceData2026,
-  runSimulation,
-  type ExpenseState,
-  type IncomeState,
-  type LifeStateSnapshot,
-  type PhysicalAssetState,
-} from "@control-ai/engine";
-import { computeNetWorthCents } from "@control-ai/engine";
+import { cents, createFixedReturnsStrategy, createRandomSource, referenceData2026, runSimulation, type LifeStateSnapshot } from "@control-ai/engine";
+import { buildInitialSnapshot as buildFromSeed, type ReturnsStrategyConfig, type RootSeed } from "@control-ai/shared/sim";
 import { appendMonths, createBranch, createPgliteDb, getSnapshotAt, saveRun, type Database } from "./index.js";
 
 const migrationsFolder = fileURLToPath(new URL("../drizzle", import.meta.url));
 
-function buildInitialSnapshot(runId: string): LifeStateSnapshot {
-  const income: IncomeState = {
-    config: { id: "job-1", label: "Engineer", baseMonthlyGrossCents: cents(8_000), annualGrowthRate: 0.03, stateCode: "TX", pretaxDeferralRate: 0.06, startMonth: 0 },
-  };
-  const expense: ExpenseState = {
-    config: { id: "rent", label: "Rent", category: "fixed", baseMonthlyAmountCents: cents(1_800), annualInflationRate: 0.03, startMonth: 0 },
-  };
-  const debt = initialDebtState({ id: "mortgage", label: "Mortgage", originalPrincipalCents: cents(400_000), annualRate: 0.0655, termMonths: 360, startMonth: 0, monthlyEscrowCents: cents(400) });
-  const cash = initialFinancialAssetState({ id: "checking", label: "Checking", annualInterestRate: 0.005 }, cents(10_000));
-  const holding = initialHoldingState({ id: "brokerage", label: "Brokerage", assetClassId: "equity" }, cents(5_000));
-  const house: PhysicalAssetState = {
-    config: { id: "house", label: "Home", purchasePriceCents: cents(400_000), purchaseMonth: 0, annualValueChangeRate: 0.03, monthlyUpkeepCents: cents(300), linkedDebtId: "mortgage" },
-  };
-  const taxBasis = initialTaxBasis(2026, "single");
-  const netWorthCents = computeNetWorthCents({ financialAssets: [cash], portfolio: { holdings: [holding] }, physicalAssets: [house], debts: [debt], month: 0 });
+/**
+ * The run these tests persist, expressed as a `RootSeed` — the same value
+ * stored in the `root_seed` column. Using it here rather than hand-building a
+ * `LifeStateSnapshot` keeps the fixture honest: what gets saved really is
+ * enough to rebuild what gets simulated.
+ */
+const TEST_SEED: RootSeed = {
+  version: 1,
+  startCalendarYear: 2026,
+  filingStatus: "single",
+  ageYearsAtStart: 30,
+  incomes: [{ id: "job-1", label: "Engineer", baseMonthlyGrossCents: cents(8_000), annualGrowthRate: 0.03, stateCode: "TX", pretaxDeferralRate: 0.06, startMonth: 0 }],
+  expenses: [{ id: "rent", label: "Rent", category: "fixed", baseMonthlyAmountCents: cents(1_800), annualInflationRate: 0.03, startMonth: 0 }],
+  debts: [{ id: "mortgage", label: "Mortgage", originalPrincipalCents: cents(400_000), annualRate: 0.0655, termMonths: 360, startMonth: 0, monthlyEscrowCents: cents(400) }],
+  financialAssets: [{ config: { id: "checking", label: "Checking", annualInterestRate: 0.005 }, openingBalanceCents: cents(10_000) }],
+  holdings: [{ config: { id: "brokerage", label: "Brokerage", assetClassId: "equity" }, openingBalanceCents: cents(5_000) }],
+  physicalAssets: [{ id: "house", label: "Home", purchasePriceCents: cents(400_000), purchaseMonth: 0, annualValueChangeRate: 0.03, monthlyUpkeepCents: cents(300), linkedDebtId: "mortgage" }],
+  rngSeed: "db-test-seed",
+};
 
-  return {
-    runId,
-    month: 0,
-    parentSnapshotRef: null,
-    decisions: [],
-    incomes: [income],
-    expenses: [expense],
-    debts: [debt],
-    financialAssets: [cash],
-    portfolio: { holdings: [holding] },
-    physicalAssets: [house],
-    taxBasis,
-    netWorthCents,
-    extensions: {},
-  };
+const TEST_STRATEGY: ReturnsStrategyConfig = { kind: "fixed", annualRatesByAssetClass: { equity: 0.07 } };
+
+function buildInitialSnapshot(runId: string): LifeStateSnapshot {
+  return buildFromSeed(runId, TEST_SEED);
 }
 
 function runOptions() {
-  return { returnsStrategy: createFixedReturnsStrategy({ equity: 0.07 }), referenceData: referenceData2026, rng: createRandomSource("db-test-seed") };
+  return { returnsStrategy: createFixedReturnsStrategy({ equity: 0.07 }), referenceData: referenceData2026, rng: createRandomSource(TEST_SEED.rngSeed) };
 }
 
 describe("@control-ai/db repository (against PGlite)", () => {
@@ -76,7 +55,7 @@ describe("@control-ai/db repository (against PGlite)", () => {
 
   it("saves a run and persists appended months, then reads a matching snapshot back", async () => {
     const initial = buildInitialSnapshot("run-1");
-    await saveRun(db, { id: "run-1", label: "Baseline", rootSeed: { note: "test" }, returnsStrategy: { kind: "fixed" } });
+    await saveRun(db, { id: "run-1", label: "Baseline", rootSeed: TEST_SEED, returnsStrategy: TEST_STRATEGY });
 
     const result = runSimulation(initial, 12, runOptions());
     await appendMonths(db, "run-1", result);
@@ -90,7 +69,7 @@ describe("@control-ai/db repository (against PGlite)", () => {
 
   it("re-appending an already-persisted month does not error or duplicate the run_months header", async () => {
     const initial = buildInitialSnapshot("run-2");
-    await saveRun(db, { id: "run-2", label: "Idempotency check", rootSeed: {}, returnsStrategy: {} });
+    await saveRun(db, { id: "run-2", label: "Idempotency check", rootSeed: TEST_SEED, returnsStrategy: TEST_STRATEGY });
     const result = runSimulation(initial, 3, runOptions());
     await appendMonths(db, "run-2", result);
     // Re-append the exact same result — run_months uses onConflictDoNothing, so this must not throw.
@@ -99,7 +78,7 @@ describe("@control-ai/db repository (against PGlite)", () => {
 
   it("a branch delegates to its parent for months at or before the fork, and to its own rows after", async () => {
     const parentInitial = buildInitialSnapshot("parent-1");
-    await saveRun(db, { id: "parent-1", label: "Parent", rootSeed: {}, returnsStrategy: {} });
+    await saveRun(db, { id: "parent-1", label: "Parent", rootSeed: TEST_SEED, returnsStrategy: TEST_STRATEGY });
     const parentResult = runSimulation(parentInitial, 24, runOptions());
     await appendMonths(db, "parent-1", parentResult);
 
